@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, CircularProgress } from "@mui/material";
-import logo from "../assets/images/logo1.png";
+import logo from "../assets/images/LOGO.jpeg";
 
 const LoadingScreen = () => {
     return (

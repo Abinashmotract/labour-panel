@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Grid, Box, Button, Typography, FormControl, RadioGroup, FormControlLabel, Radio } from "@mui/material";
 import { Email, Visibility, VisibilityOff, Lock, PersonOutlined } from "@mui/icons-material";
-import logo from "../assets/images/logo1.png";
+import logo from "../assets/images/LOGO2.jpeg";
 import watermark from "../assets/images/watermark1.png";
-import watermark1 from "../assets/images/3997198-uhd_4096_2160_25fps.mp4";
 import Cookies from 'js-cookie';
 import "../css/login.scss";
 import Input from "../custom/Input";
@@ -104,19 +103,51 @@ const Login = ({ onLoginSuccess }) => {
             <source src={watermark1} type="video/mp4" />
             Your browser does not support the video tag.
           </video> */}
+
           <img src="https://imgs.search.brave.com/FGqh4uVn8vkK8qtN3N35kfRyWWJwWZgX-QyIUFe65Rs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzM4L2E0/L2I1LzM4YTRiNWY3/Njk0NzU5MGRjZTgx/YzhmOTk0NWY2YTIx/LmpwZw" />
 
-          <Box sx={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", display: { xs: "none", md: "flex" }, flexDirection: "column", justifyContent: "center", alignItems: "flex-start", zIndex: 2, px: 8, backgroundColor: "rgba(0, 0, 0, 0.5)", }}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              display: { xs: "none", md: "flex" },
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              zIndex: 2,
+              px: 8,
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+            }}
+          >
             <Typography variant="h6" sx={{ color: "white" }}>
               Welcome to
             </Typography>
-            <Typography variant="h2" sx={{ fontWeight: "bold", color: "white", fontSize: { sm: "2.5rem", md: "3rem" }, }}>
-              Hair Style Salon
+            <Typography
+              variant="h2"
+              sx={{
+                fontWeight: "bold",
+                color: "white",
+                fontSize: { sm: "2.5rem", md: "3rem" },
+              }}
+            >
+              MistriConnect
             </Typography>
-            <Typography variant="body1" sx={{ color: "white", maxWidth: { sm: 600, md: 800 }, mt: 2, fontSize: { sm: "1rem" }, }}>
-              Discover the art of transformation with our expert stylists. Whether you're after a bold new look or subtle sophistication, we deliver styles that speak for you. Walk in for a haircut — walk out with confidence.
+            <Typography
+              variant="body1"
+              sx={{
+                color: "white",
+                maxWidth: { sm: 600, md: 800 },
+                mt: 2,
+                fontSize: { sm: "1rem" },
+              }}
+            >
+              Find reliable mistri and labour workers for your home or commercial projects. Whether it’s carpentry, plumbing, electrical, or general repairs — get skilled professionals at your doorstep, quickly and affordably.
             </Typography>
           </Box>
+
         </Grid>
         <Grid
           item

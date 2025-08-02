@@ -10,7 +10,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
-import logo from "../../../assets/images/LOGO2.png";
+import logo from "../../../assets/images/LOGO2.jpeg";
 import { tokens } from "../../../theme";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import {
