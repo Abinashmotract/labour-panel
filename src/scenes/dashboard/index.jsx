@@ -15,7 +15,6 @@ import {
 import {
   Header,
 } from "../../components";
-import { useNavigate } from "react-router-dom";
 import { tokens } from "../../theme";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -60,10 +59,6 @@ function Dashboard() {
       if (response.data.success) {
         console.log(response.data.data, 'overview data')
         setOverviewData(response.data.data);
-        // const recent = response.data.data.recentActivity.map((item) => ({
-        //   ...item,
-        //   time: timeAgo(item.timeRaw),
-        // }));
         setRawRecentActivity(response.data.data.recentActivity); // stores raw datetime
         setRecentActivity(response.data.data.recentActivity); // visible activity with time text
       }
@@ -154,7 +149,7 @@ function Dashboard() {
           <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
 
           <Grid container spacing={2} sx={{ mb: 3 }}>
-            {overviewStats.map((stat) => (
+            {overviewStats?.map((stat) => (
               <Grid item xs={12} sm={6} md={4} lg={2.4} key={stat.title}>
                 <Card sx={{ background: stat.color, borderRadius: 2, boxShadow: 4, border: '0.5px solid #6d295a' }}>
                   <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>

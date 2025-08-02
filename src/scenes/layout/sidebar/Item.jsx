@@ -24,6 +24,7 @@ const Item = ({ title, path, icon }) => {
         fontWeight: "bold",
         backgroundColor: isActive ? "#f2f0f0" : "transparent",
         borderTopLeftRadius: "30px",
+        borderBottomRightRadius: "30px",
         transition: "all 0.4s ease",
         ...(isActive
           ? {

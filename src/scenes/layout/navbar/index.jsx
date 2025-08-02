@@ -98,7 +98,7 @@ const Navbar = () => {
         position: "sticky",
         top: 0,
         zIndex: 100,
-        background: "linear-gradient(180deg, #6D295A 0%, #420C36 100%)",
+        background: "darkslategray",
         minHeight: { xs: "60px", sm: "70px" }
       }}
     >

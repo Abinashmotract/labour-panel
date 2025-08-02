@@ -61,14 +61,14 @@ const SideBar = () => {
 
   const navSections = {
     admin: [
-      { title: "Customers", path: "/customers", icon: <PeopleAltOutlined /> },
-      { title: "Stylist", path: "/stylist", icon: <PeopleAltOutlined /> },
-      { title: "Stylist Reviews", path: "/stylist-reviews", icon: <PersonOutlined /> },
-      { title: "Products", path: "/product", icon: <PersonOutlined /> },
-      { title: "Product Category", path: "/category", icon: <PeopleAltOutlined /> },
-      { title: "Stylist Services", path: "/service", icon: <PeopleAltOutlined /> },
-      { title: "Order Details", path: "/order-details", icon: <PeopleAltOutlined /> },
-      { title: "Appointment Status", path: "/appointment-status", icon: <PersonOutlined /> },
+      { title: "Labours", path: "/labours", icon: <PeopleAltOutlined /> },
+      { title: "Contracter", path: "/contracter", icon: <PeopleAltOutlined /> },
+      // { title: "Stylist Reviews", path: "/stylist-reviews", icon: <PersonOutlined /> },
+      // { title: "Products", path: "/product", icon: <PersonOutlined /> },
+      // { title: "Product Category", path: "/category", icon: <PeopleAltOutlined /> },
+      // { title: "Stylist Services", path: "/service", icon: <PeopleAltOutlined /> },
+      // { title: "Order Details", path: "/order-details", icon: <PeopleAltOutlined /> },
+      // { title: "Appointment Status", path: "/appointment-status", icon: <PersonOutlined /> },
     ],
     vendor: [
       { title: "Packages", path: "/packages", icon: <InventoryOutlined /> },
@@ -97,7 +97,7 @@ const SideBar = () => {
         zIndex: 1000,
         minWidth: collapsed ? "80px" : "250px",
         border: 0,
-        background: "linear-gradient(180deg, #6D295A 0%, #420C36 100%)",
+        background: "darkslategray",
         "@media (max-width: 768px)": {
           width: toggled ? "250px" : "0px",
           minWidth: toggled ? "250px" : "0px",
@@ -119,7 +119,7 @@ const SideBar = () => {
           }}>
             {!collapsed && (
               <Box display="flex" alignItems="center" gap="12px" sx={{ transition: ".3s ease" }}>
-                <img alt="avatar" src={logo} className="mt-3" height={isMobile ? "40" : "50"} style={{ maxWidth: "100%" }} />
+                <img alt="avatar" src={logo} className="" height={isMobile ? "40" : "30"} style={{ maxWidth: "100%" }} />
               </Box>
             )}
             {isMdDevices && toggled && (

@@ -128,24 +128,20 @@ export default function CustomerDetails() {
     const columns = userTableColumns({ handleDelete, handleView });
 
     return (
-        <Box className="p-1">
-            <Container maxWidth={false}>
-                <Header title="All Customers" />
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-                    <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: '1px solid purple', borderRadius: '10px' }}>
-                        <InputBase placeholder="Search user" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
-                        <IconButton type="button" sx={{ p: 1 }}>
-                            <SearchOutlined />
-                        </IconButton>
-                    </Box>
+        <Box>
+            <Header title="All Labours" />
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+                <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: '1px solid purple', borderRadius: '10px' }}>
+                    <InputBase placeholder="Search user" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
+                    <IconButton type="button" sx={{ p: 1 }}>
+                        <SearchOutlined />
+                    </IconButton>
                 </Box>
-                <CustomTable columns={columns} rows={filteredUsers} loading={loading} checkboxSelection />
-            </Container>
-            <ShowDetailsDialog
-                open={isDetailsDialogOpen}
-                onClose={() => setIsDetailsDialogOpen(false)}
-                data={selectedUserDetails}
-            />
+            </Box>
+
+            <CustomTable columns={columns} rows={filteredUsers} loading={loading} checkboxSelection />
+
+            <ShowDetailsDialog open={isDetailsDialogOpen} onClose={() => setIsDetailsDialogOpen(false)} data={selectedUserDetails} />
             <Alert
                 open={alertOpen}
                 title="Delete Service"

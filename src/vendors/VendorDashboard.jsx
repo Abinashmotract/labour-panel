@@ -106,7 +106,7 @@ const VendorDashboard = () => {
               cursor: "pointer",
               transition: "transform 0.2s",
               "&:hover": { transform: "scale(1.05)" },
-              background: "linear-gradient(180deg, #6D295A 0%, #420C36 100%)",
+              background: "darkslategray",
               color: "#FFFFFF",
               gridColumn: {
                 xs: "span 1",
@@ -222,7 +222,7 @@ const VendorDashboard = () => {
         <Box sx={{ minHeight: "100vh" }}>
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }, gap: { xs: 2, sm: 3, md: 4 } }}>
             <Box className="p-4" sx={{
-              background: "linear-gradient(180deg, #6D295A 0%, #420C36 100%)",
+              background: "darkslategray",
               borderRadius: 2,
               color: "white",
               padding: { xs: "1rem", sm: "1.5rem" }
@@ -248,7 +248,7 @@ const VendorDashboard = () => {
                   size="small"
                   sx={{
                     width: { xs: "100%", sm: "auto" },
-                    background: "linear-gradient(180deg, #6D295A 0%, #420C36 100%)",
+                    background: "darkslategray",
                     alignSelf: { xs: "stretch", sm: "center" },
                     fontSize: { xs: "0.75rem", sm: "0.875rem" }
                   }}
@@ -258,7 +258,7 @@ const VendorDashboard = () => {
               </Box>
             </Box>
             <Box className="p-4 h-100" sx={{
-              background: "linear-gradient(180deg, #6D295A 0%, #420C36 100%)",
+              background: "darkslategray",
               color: "white",
               borderRadius: 2,
               padding: { xs: "1rem", sm: "1.5rem" }
@@ -268,7 +268,7 @@ const VendorDashboard = () => {
               <Typography variant="body2" sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" } }}>After tax</Typography>
             </Box>
             <Box className="p-4 h-100" sx={{
-              background: "linear-gradient(180deg, #6D295A 0%, #420C36 100%)",
+              background: "darkslategray",
               color: "white",
               borderRadius: 2,
               padding: { xs: "1rem", sm: "1.5rem" }
@@ -278,7 +278,7 @@ const VendorDashboard = () => {
             </Box>
           </Box>
           <Box mt={4} className="p-4" sx={{
-            background: "linear-gradient(180deg, #6D295A 0%, #420C36 100%)",
+            background: "darkslategray",
             color: "white",
             borderRadius: 2,
             padding: { xs: "1rem", sm: "1.5rem" }

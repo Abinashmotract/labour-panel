@@ -100,10 +100,11 @@ const Login = ({ onLoginSuccess }) => {
     <Box className="login-container" sx={{ height: "100vh", display: "flex", flexDirection: "column", }}>
       <Grid container spacing={0} sx={{ flex: 1 }}>
         <Grid item xs={12} md={8} className="left-column" sx={{ position: "relative", overflow: "hidden", minHeight: { xs: "50vh", md: "100%" }, }}>
-          <video autoPlay muted loop playsInline style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0, }}>
+          {/* <video autoPlay muted loop playsInline style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0, }}>
             <source src={watermark1} type="video/mp4" />
             Your browser does not support the video tag.
-          </video>
+          </video> */}
+          <img src="https://imgs.search.brave.com/FGqh4uVn8vkK8qtN3N35kfRyWWJwWZgX-QyIUFe65Rs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzM4L2E0/L2I1LzM4YTRiNWY3/Njk0NzU5MGRjZTgx/YzhmOTk0NWY2YTIx/LmpwZw" />
 
           <Box sx={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", display: { xs: "none", md: "flex" }, flexDirection: "column", justifyContent: "center", alignItems: "flex-start", zIndex: 2, px: 8, backgroundColor: "rgba(0, 0, 0, 0.5)", }}>
             <Typography variant="h6" sx={{ color: "white" }}>
@@ -150,7 +151,7 @@ const Login = ({ onLoginSuccess }) => {
             <FormControl>
               <RadioGroup row aria-labelledby="panel-selection" name="panel-selection" value={panelType} onChange={(e) => setPanelType(e.target.value)}>
                 <FormControlLabel value="adminpanel" control={<Radio />} label="ADMIN PANEL" />
-                <FormControlLabel value="vendorpanel" control={<Radio />} label="VENDOR PANEL" />
+                <FormControlLabel value="vendorpanel" control={<Radio />} label="CONTRACTE PANEL" />
               </RadioGroup>
             </FormControl>
             {panelType === "adminpanel" || panelType === "vendorpanel" ? (

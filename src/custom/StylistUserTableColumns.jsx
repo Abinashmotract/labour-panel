@@ -8,24 +8,24 @@ export const stylistUserTableColumns = ({ handleToggleStatus, handleDelete, hand
     { field: "fullName", headerName: "Name", width: 180 },
     { field: "email", headerName: "Email", width: 220 },
     { field: "phone", headerName: "Phone", width: 150 },
-    {
-        field: "role",
-        headerName: "Role",
-        width: 120,
-        renderCell: (params) => (
-            <Chip
-                label={params.row.role || "N/A"}
-                size="small"
-                variant="filled"
-                sx={{
-                    bgcolor: params.row.role?.toLowerCase() === "admin" ? 'primary.main' : 'secondary.main',
-                    color: 'white',
-                    fontWeight: 'bold',
-                    textTransform: 'capitalize',
-                }}
-            />
-        ),
-    },
+    // {
+    //     field: "role",
+    //     headerName: "Role",
+    //     width: 120,
+    //     renderCell: (params) => (
+    //         <Chip
+    //             label={params.row.role || "N/A"}
+    //             size="small"
+    //             variant="filled"
+    //             sx={{
+    //                 bgcolor: params.row.role?.toLowerCase() === "admin" ? 'primary.main' : 'secondary.main',
+    //                 color: 'white',
+    //                 fontWeight: 'bold',
+    //                 textTransform: 'capitalize',
+    //             }}
+    //         />
+    //     ),
+    // },
     {
         field: "gender",
         headerName: "Gender",

@@ -11,11 +11,11 @@ import Appointment from "./scenes/vendor/Appointment";
 import Packages from "./scenes/vendor/Packages";
 import Availability from "./scenes/vendor/Availability";
 import Portfolio from "./scenes/vendor/Portfolio";
-import Product from "./scenes/vendor/Product";
+import Product from "./scenes/admin/Product";
 import { useAuth } from "./utils/context/AuthContext";
 import OrderDetails from "./scenes/admin/OrderDetails";
-import CustomerDetails from "./scenes/admin/CustomerDetails";
-import RegisteredStylist from "./scenes/admin/RegisteredStylist";
+import Labours from "./scenes/admin/Labours";
+import Contracter from "./scenes/admin/Contracter";
 import Category from "./scenes/admin/Category";
 import ServiceCategory from "./scenes/admin/ServiceCategory";
 import LoadingScreen from "./components/LoadingScreen";
@@ -39,8 +39,8 @@ const AppRouter = () => {
             {panelType === "admin" ? (
               <>
                 <Route index element={<Dashboard />} />
-                <Route path="customers" element={<CustomerDetails />} />
-                <Route path="stylist" element={<RegisteredStylist />} />
+                <Route path="labours" element={<Labours />} />
+                <Route path="contracter" element={<Contracter />} />
                 <Route path="stylist-reviews" element={<AllReviews />} />
                 <Route path="product" element={<Product />} />
                 <Route path="category" element={<Category />} />

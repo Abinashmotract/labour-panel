@@ -246,72 +246,70 @@ export default function Product() {
   return (
     <Box className="p-1">
       <Header title="Products" subtitle="Managing products and inventory" />
-      <Container maxWidth={false}>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3, mt: 3 }}>
-          <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: '1px solid purple', borderRadius: '10px' }}>
-            <InputBase placeholder="Search Product name or subtitle" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
-            <IconButton type="button" sx={{ p: 1 }}>
-              <SearchOutlined />
-            </IconButton>
-          </Box>
-          <Box display="flex" alignItems="center" gap={2}>
-            {selectedRows.length >= 1 && (
-              <CustomIconButton
-                icon={<DeleteIcon />}
-                text={selectedRows.length === 1 ? "Delete" : `Delete (${selectedRows.length})`}
-                color="#d32f2f"
-                variant="outlined"
-                onClick={() => {
-                  if (selectedRows.length === 1) {
-                    handleDelete(selectedRows[0]);
-                  } else {
-                    handleMultiDelete();
-                  }
-                }}
-                fontWeight="bold"
-              />
-            )}
-            <CustomIconButton icon={<PersonAdd />} text="Add New Product" fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenProduct} />
-          </Box>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3, mt: 3 }}>
+        <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: '1px solid purple', borderRadius: '10px' }}>
+          <InputBase placeholder="Search Product name or subtitle" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
+          <IconButton type="button" sx={{ p: 1 }}>
+            <SearchOutlined />
+          </IconButton>
         </Box>
+        <Box display="flex" alignItems="center" gap={2}>
+          {selectedRows.length >= 1 && (
+            <CustomIconButton
+              icon={<DeleteIcon />}
+              text={selectedRows.length === 1 ? "Delete" : `Delete (${selectedRows.length})`}
+              color="#d32f2f"
+              variant="outlined"
+              onClick={() => {
+                if (selectedRows.length === 1) {
+                  handleDelete(selectedRows[0]);
+                } else {
+                  handleMultiDelete();
+                }
+              }}
+              fontWeight="bold"
+            />
+          )}
+          <CustomIconButton icon={<PersonAdd />} text="Add New Product" fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenProduct} />
+        </Box>
+      </Box>
 
-        <CustomTable
-          rows={filteredUsers}
-          columns={columns}
-          loading={loading}
-          checkboxSelection
-          noRowsMessage="No products found"
-          onSelectionModelChange={handleSelectionModelChange}
-          selectionModel={selectedRows}
-        />
+      <CustomTable
+        rows={filteredUsers}
+        columns={columns}
+        loading={loading}
+        checkboxSelection
+        noRowsMessage="No products found"
+        onSelectionModelChange={handleSelectionModelChange}
+        selectionModel={selectedRows}
+      />
 
-        <ProductEntityDialog
-          open={openProductDialog}
-          handleClose={handleCloseProductDialog}
-          onSuccess={fetchAllProducts}
-          dialogTitle={dialogMode === 'create' ? "Add New Product" : dialogMode === 'edit' ? "Edit Product" : "View Product Details"}
-          buttonText={dialogMode === 'create' ? "Add Product" : dialogMode === 'edit' ? "Update Product" : "Close"}
-          mode={dialogMode}
-          initialData={selectedProduct}
-        />
+      <ProductEntityDialog
+        open={openProductDialog}
+        handleClose={handleCloseProductDialog}
+        onSuccess={fetchAllProducts}
+        dialogTitle={dialogMode === 'create' ? "Add New Product" : dialogMode === 'edit' ? "Edit Product" : "View Product Details"}
+        buttonText={dialogMode === 'create' ? "Add Product" : dialogMode === 'edit' ? "Update Product" : "Close"}
+        mode={dialogMode}
+        initialData={selectedProduct}
+      />
 
-        <Alert
-          open={alertOpen}
-          onClose={() => setAlertOpen(false)}
-          onConfirm={handleConfirmDelete}
-          loading={deleting}
-          title="Delete Product"
-          description="Are you sure you want to delete this product? This action cannot be undone."
-        />
-        <Alert
-          open={multiDeleteOpen}
-          onClose={() => setMultiDeleteOpen(false)}
-          onConfirm={handleConfirmMultiDelete}
-          loading={multiDeleting}
-          title="Delete Products"
-          description={`Are you sure you want to delete these ${selectedRows.length} products? This action cannot be undone.`}
-        />
-      </Container>
+      <Alert
+        open={alertOpen}
+        onClose={() => setAlertOpen(false)}
+        onConfirm={handleConfirmDelete}
+        loading={deleting}
+        title="Delete Product"
+        description="Are you sure you want to delete this product? This action cannot be undone."
+      />
+      <Alert
+        open={multiDeleteOpen}
+        onClose={() => setMultiDeleteOpen(false)}
+        onConfirm={handleConfirmMultiDelete}
+        loading={multiDeleting}
+        title="Delete Products"
+        description={`Are you sure you want to delete these ${selectedRows.length} products? This action cannot be undone.`}
+      />
     </Box>
   );
 };

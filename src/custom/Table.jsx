@@ -59,7 +59,7 @@ const CustomTable = ({ columns, rows, loading, checkboxSelection = false, noRows
                                     background: "transparent"
                                 },
                                 "&::-webkit-scrollbar-thumb": {
-                                    background: "linear-gradient(180deg, #6D295A 0%, #420C36 100%)",
+                                    background: "darkslategray",
                                     borderRadius: "4px"
                                 },
                                 "scrollbarWidth": "thin",
