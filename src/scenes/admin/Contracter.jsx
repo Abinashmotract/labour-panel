@@ -1,10 +1,4 @@
-import {
-  Box,
-  Container,
-  IconButton,
-  InputBase,
-  useTheme,
-} from "@mui/material";
+import { Box, Container, IconButton, InputBase, useTheme } from "@mui/material";
 import { Header } from "../../components";
 import { SearchOutlined } from "@mui/icons-material";
 import { useEffect, useState } from "react";
@@ -27,29 +21,36 @@ export default function RegisteredStylist() {
   const [togglingIds, setTogglingIds] = useState({});
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [selectedStylistDetails, setSelectedStylistDetails] = useState(null);
-  const [deleteDialog, setDeleteDialog] = useState({ open: false, id: null, loading: false });
+  const [deleteDialog, setDeleteDialog] = useState({
+    open: false,
+    id: null,
+    loading: false,
+  });
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const authToken = Cookies.get("token");
 
   const formatAddress = (address) => {
-    if (!address) return 'N/A';
-    if (typeof address === 'string') return address;
-    if (typeof address === 'object') {
-      return Object.values(address).filter(Boolean).join(', ');
+    if (!address) return "N/A";
+    if (typeof address === "string") return address;
+    if (typeof address === "object") {
+      return Object.values(address).filter(Boolean).join(", ");
     }
-    return 'N/A';
+    return "N/A";
   };
 
   const fetchAllStylistUserDetials = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/stylist/admin/get-all`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+      const response = await axios.get(
+        `${API_BASE_URL}/admin/contractors/all`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
       if (response?.data?.status === 200) {
         setOriginalStylists(response.data.data);
         const formattedData = response?.data?.data.map((stylist) => ({
@@ -74,7 +75,6 @@ export default function RegisteredStylist() {
     }
   };
 
-
   useEffect(() => {
     if (authToken) {
       fetchAllStylistUserDetials();
@@ -82,7 +82,7 @@ export default function RegisteredStylist() {
   }, [authToken]);
 
   const handleView = (row) => {
-    const fullStylistDetails = originalStylists.find(s => s._id === row.id);
+    const fullStylistDetails = originalStylists.find((s) => s._id === row.id);
     if (fullStylistDetails) {
       fullStylistDetails.address = formatAddress(fullStylistDetails.address);
     }
@@ -90,27 +90,30 @@ export default function RegisteredStylist() {
     setIsDetailsDialogOpen(true);
   };
 
-  const handleToggleStatus = async (id) => {
+  const handleToggleStatus = async (id, currentStatus) => {
     setTogglingIds((prev) => ({ ...prev, [id]: true }));
+
     try {
-      const response = await axios.patch(`${API_BASE_URL}/stylist/admin/toggle/${id}`, {}, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      console.log('Toggle response:', response.data.data);
-      showSuccessToast(response?.data?.message || "Stylist status updated!");
-      // After successful toggle, re-fetch the stylist user details
+      const response = await axios.patch(
+        `${API_BASE_URL}/admin/contractors/${id}`,
+        { isApproved: !currentStatus },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      showSuccessToast(response?.data?.message || "Approval status updated!");
       await fetchAllStylistUserDetials();
     } catch (error) {
-      console.log("Toggle error:", error);
+      console.error("Toggle error:", error);
       showErrorToast("An error occurred while toggling approval.");
     } finally {
       setTogglingIds((prev) => ({ ...prev, [id]: false }));
     }
   };
-
 
   const handleSearch = async (e) => {
     const value = e.target.value;
@@ -120,14 +123,17 @@ export default function RegisteredStylist() {
       return;
     }
     try {
-      const response = await axios.get(`${API_BASE_URL}/stylist/admin/search-stylist`, {
-        params: { query: value },
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${API_BASE_URL}/stylist/admin/search-stylist`,
+        {
+          params: { query: value },
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
       if (response?.data?.status === 200 && response?.data?.success) {
         const formattedData = (response?.data?.data || []).map((stylist) => ({
           id: stylist._id,
@@ -138,7 +144,9 @@ export default function RegisteredStylist() {
           dob: stylist.dob ? new Date(stylist.dob).toLocaleDateString() : "N/A",
           gender: stylist.gender || "N/A",
           approved: stylist.isApproved ?? false,
-          createdAt: stylist.createdAt ? new Date(stylist.createdAt).toLocaleDateString() : "N/A",
+          createdAt: stylist.createdAt
+            ? new Date(stylist.createdAt).toLocaleDateString()
+            : "N/A",
           address: formatAddress(stylist.address),
         }));
         setFilteredUsers(formattedData);
@@ -150,7 +158,6 @@ export default function RegisteredStylist() {
     }
   };
 
-
   const handleDelete = (id) => {
     setDeleteDialog({ open: true, id, loading: false });
   };
@@ -160,40 +167,76 @@ export default function RegisteredStylist() {
     console.log("Deleting stylist with ID:", id);
     setDeleteDialog((prev) => ({ ...prev, loading: true }));
     try {
-      const response = await axios.delete(`${API_BASE_URL}/stylist/admin/delete-stylist/${id}`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.delete(
+        `${API_BASE_URL}/admin/contractors/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (response?.data?.status === 200) {
-        showSuccessToast(response?.data?.message || "Stylist deleted successfully");
-        setAllUsers((prevList) => prevList.filter(user => user.id !== id));
-        setFilteredUsers((prevList) => prevList.filter(user => user.id !== id));
+        showSuccessToast(
+          response?.data?.message || "Stylist deleted successfully"
+        );
+        setAllUsers((prevList) => prevList.filter((user) => user.id !== id));
+        setFilteredUsers((prevList) =>
+          prevList.filter((user) => user.id !== id)
+        );
       } else {
         showErrorToast("Failed to delete stylist.");
       }
     } catch (error) {
-      showErrorToast(error?.response?.data?.message || "An error occurred while deleting.");
+      showErrorToast(
+        error?.response?.data?.message || "An error occurred while deleting."
+      );
     } finally {
       setDeleteDialog({ open: false, id: null, loading: false });
     }
   };
 
-  const columns = stylistUserTableColumns({ handleToggleStatus, handleDelete, handleView, togglingIds });
+  const columns = stylistUserTableColumns({
+    handleToggleStatus,
+    handleDelete,
+    handleView,
+    togglingIds,
+  });
 
   return (
     <Box className="p-1">
       <Header title="All Verified Contracter " />
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-        <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: '1px solid purple', borderRadius: '10px' }}>
-          <InputBase placeholder="Search user" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        <Box
+          display="flex"
+          alignItems="center"
+          bgcolor={colors.primary[400]}
+          sx={{ border: "1px solid purple", borderRadius: "10px" }}
+        >
+          <InputBase
+            placeholder="Search user"
+            value={searchText}
+            onChange={handleSearch}
+            sx={{ ml: 2, flex: 1 }}
+          />
           <IconButton type="button" sx={{ p: 1 }}>
             <SearchOutlined />
           </IconButton>
         </Box>
       </Box>
-      <CustomTable columns={columns} rows={filteredUsers} loading={loading} checkboxSelection />
+      <CustomTable
+        columns={columns}
+        rows={filteredUsers}
+        loading={loading}
+        checkboxSelection
+      />
       <ShowDetailsDialog
         open={isDetailsDialogOpen}
         onClose={() => setIsDetailsDialogOpen(false)}
@@ -203,10 +246,12 @@ export default function RegisteredStylist() {
         open={deleteDialog.open}
         title="Delete Stylist"
         description="Are you sure you want to delete this stylist?"
-        onClose={() => setDeleteDialog({ open: false, id: null, loading: false })}
+        onClose={() =>
+          setDeleteDialog({ open: false, id: null, loading: false })
+        }
         onConfirm={handleConfirmDelete}
         loading={deleteDialog.loading}
       />
     </Box>
   );
-};
+}
