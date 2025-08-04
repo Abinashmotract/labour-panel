@@ -17,7 +17,7 @@ import OrderDetails from "./scenes/admin/OrderDetails";
 import Labours from "./scenes/admin/Labours";
 import Contracter from "./scenes/admin/Contracter";
 import Category from "./scenes/admin/Category";
-import ServiceCategory from "./scenes/admin/ServiceCategory";
+import CreateSkill from "./scenes/admin/CreateSkill";
 import LoadingScreen from "./components/LoadingScreen";
 import Services from "./scenes/vendor/Services";
 import AppointmentStatus from "./scenes/admin/AppointmentStatus";
@@ -40,11 +40,11 @@ const AppRouter = () => {
               <>
                 <Route index element={<Dashboard />} />
                 <Route path="labours" element={<Labours />} />
+                <Route path="skills" element={<CreateSkill />} />
                 <Route path="contracter" element={<Contracter />} />
                 <Route path="stylist-reviews" element={<AllReviews />} />
                 <Route path="product" element={<Product />} />
                 <Route path="category" element={<Category />} />
-                <Route path="service" element={<ServiceCategory />} />
                 <Route path="service-management" element={<ServiceManagement />} />
                 <Route path="order-details" element={<OrderDetails />} />
                 <Route path="appointment-status" element={<AppointmentStatus />} />

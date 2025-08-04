@@ -1,10 +1,4 @@
-import {
-    Box,
-    Container,
-    IconButton,
-    InputBase,
-    useTheme,
-} from "@mui/material";
+import { Box, Container, IconButton, InputBase, useTheme } from "@mui/material";
 import { Header } from "../../components";
 import { SearchOutlined, PersonAdd } from "@mui/icons-material";
 import { useEffect, useState } from "react";
@@ -17,7 +11,7 @@ import { tokens } from "../../theme";
 import { showErrorToast, showSuccessToast } from "../../Toast";
 import Cookies from "js-cookie";
 import { CustomIconButton } from "../../custom/Button";
-import { serviceTableColumns } from "../../custom/TableColumns";
+import { skillsTableColumns } from "../../custom/TableColumns";
 import Alert from "../../custom/Alert";
 
 export default function ServiceCategory() {
@@ -34,7 +28,9 @@ export default function ServiceCategory() {
     const [viewValue, setViewValue] = useState("");
     const [viewStatus, setViewStatus] = useState(undefined);
     const [openSubCategoryDialog, setOpenSubCategoryDialog] = useState(false);
-    const [selectedServiceId, setSelectedServiceId] = useState(null);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [editId, setEditId] = useState(null);
+    const [editValue, setEditValue] = useState("");
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -42,19 +38,20 @@ export default function ServiceCategory() {
 
     const fetchAllServices = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/service/admin/get`, {
+            const response = await axios.get(`${API_BASE_URL}/skill/admin/skills`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${authToken}`,
                 },
             });
             if (response?.data?.status === 200) {
-                const formattedData = response?.data?.allServices?.map((service) => ({
-                    id: service._id,
-                    name: service.name || "N/A",
-                    approved: !!service.isActive,
-                    createdAt: service.createdAt
-                        ? new Date(service.createdAt).toLocaleDateString()
+                const skills = response?.data?.data?.skills || [];
+                const formattedData = skills?.map((skill) => ({
+                    id: skill._id,
+                    name: skill.name || "N/A",
+                    approved: !!skill.isActive,
+                    createdAt: skill.createdAt
+                        ? new Date(skill.createdAt).toLocaleDateString()
                         : "N/A",
                 }));
                 setAllServices(formattedData);
@@ -87,13 +84,17 @@ export default function ServiceCategory() {
     const handleToggleStatus = async (id) => {
         setTogglingIds((prev) => ({ ...prev, [id]: true }));
         try {
-            const response = await axios.patch(`${API_BASE_URL}/service/admin/toggle/${id}`, {}, {
-                headers: {
-                    Authorization: `Bearer ${authToken}`,
-                    "Content-Type": "application/json",
-                },
-            });
-            console.log('Toggle response:', response.data.data);
+            const response = await axios.patch(
+                `${API_BASE_URL}/skill/admin/skills/${id}/toggle`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            console.log("Toggle response:", response.data.data);
             showSuccessToast(response?.data?.message || "Service status updated!");
             await fetchAllServices();
         } catch (error) {
@@ -126,21 +127,32 @@ export default function ServiceCategory() {
         if (!deleteId) return;
         setDeleting(true);
         try {
-            const response = await axios.delete(`${API_BASE_URL}/service/admin/delete/${deleteId}`, {
-                headers: {
-                    Authorization: `Bearer ${authToken}`,
-                    "Content-Type": "application/json",
-                },
-            });
+            const response = await axios.delete(
+                `${API_BASE_URL}/skill/admin/skills/${deleteId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
             if (response?.data?.status === 200) {
-                showSuccessToast(response?.data?.message || "Service deleted successfully");
-                setAllServices((prevServices) => prevServices.filter((service) => service.id !== deleteId));
-                setFilteredUsers((prevUsers) => prevUsers.filter((user) => user.id !== deleteId));
+                showSuccessToast(
+                    response?.data?.message || "Service deleted successfully"
+                );
+                setAllServices((prevServices) =>
+                    prevServices.filter((service) => service.id !== deleteId)
+                );
+                setFilteredUsers((prevUsers) =>
+                    prevUsers.filter((user) => user.id !== deleteId)
+                );
             } else {
                 showErrorToast("Failed to delete service.");
             }
         } catch (error) {
-            showErrorToast(error?.response?.data?.message || "An error occurred while deleting.");
+            showErrorToast(
+                error?.response?.data?.message || "An error occurred while deleting."
+            );
         } finally {
             setDeleting(false);
             setAlertOpen(false);
@@ -159,56 +171,106 @@ export default function ServiceCategory() {
         setViewStatus(undefined);
     };
 
-    const handleAddSubService = (serviceId) => {
-        setSelectedServiceId(serviceId);
-        setOpenSubCategoryDialog(true);
+    const handleEdit = (row) => {
+        setEditValue(row.name);
+        setEditId(row.id);
+        setIsEditMode(true);
+        setOpenCategoryDialog(true);
     };
 
-    const columns = serviceTableColumns({ handleToggleStatus, handleDelete, handleView, togglingIds, handleAddSubService });
+    const columns = skillsTableColumns({
+        handleToggleStatus,
+        handleDelete,
+        handleView,
+        togglingIds,
+        handleEdit
+    });
 
     return (
         <Box className="p-1">
-            <Container maxWidth={false}>
-                <Header title="Create Service" />
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2, flexDirection: { xs: "column", sm: "row" }, gap: 2, }}>
-                    <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: '1px solid purple', borderRadius: '10px', width: { xs: '100%', sm: 'auto' }, }}>
-                        <InputBase placeholder="Search Service" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
-                        <IconButton type="button" sx={{ p: 1 }}>
-                            <SearchOutlined />
-                        </IconButton>
-                    </Box>
-                    <CustomIconButton icon={<PersonAdd />} text="Add New Service" fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenCategory} sx={{ width: { xs: '100%', sm: 'auto' } }} />
+            <Header title="Create Service" />
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    mb: 2,
+                    flexDirection: { xs: "column", sm: "row" },
+                    gap: 2,
+                }}
+            >
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    bgcolor={colors.primary[400]}
+                    sx={{
+                        border: "1px solid purple",
+                        borderRadius: "10px",
+                        width: { xs: "100%", sm: "auto" },
+                    }}
+                >
+                    <InputBase
+                        placeholder="Search Skill"
+                        value={searchText}
+                        onChange={handleSearch}
+                        sx={{ ml: 2, flex: 1 }}
+                    />
+                    <IconButton type="button" sx={{ p: 1 }}>
+                        <SearchOutlined />
+                    </IconButton>
                 </Box>
-                <CustomTable columns={columns} rows={filteredUsers} loading={loading} />
-            </Container>
+                <CustomIconButton
+                    icon={<PersonAdd />}
+                    text="Add New Skill"
+                    fontWeight="bold"
+                    color="#6d295a"
+                    variant="outlined"
+                    onClick={handleOpenCategory}
+                    sx={{ width: { xs: "100%", sm: "auto" } }}
+                />
+            </Box>
+            <CustomTable columns={columns} rows={filteredUsers} loading={loading} />
 
             <EntityDialog
                 open={openCategoryDialog}
                 handleClose={handleCloseCategoryDialog}
-                dialogTitle="Add New Service"
-                apiEndpoint="/service/admin/create"
+                dialogTitle="Add New Skill"
+                apiEndpoint="/skill/admin/create"
                 onSuccess={() => {
                     handleCloseCategoryDialog();
                     fetchAllServices();
                 }}
                 inputLabel="Service Name"
-                buttonText="Add Service"
+                buttonText="Add Skill"
                 showPriceFields={true}
             />
             <EntityDialog
-                open={isViewDialog}
-                handleClose={handleCloseViewDialog}
-                isView={true}
-                viewValue={viewValue}
-                viewStatus={viewStatus}
-                inputLabel="Service Name"
-                showPriceFields={true}
+                open={openCategoryDialog}
+                handleClose={() => {
+                    setOpenCategoryDialog(false);
+                    setIsEditMode(false);
+                    setEditId(null);
+                    setEditValue("");
+                }}
+                dialogTitle={isEditMode ? "Edit Skill" : "Add New Skill"}
+                apiEndpoint="/skill/admin/create"
+                onSuccess={() => {
+                    fetchAllServices();
+                    setOpenCategoryDialog(false);
+                    setIsEditMode(false);
+                    setEditId(null);
+                    setEditValue("");
+                }}
+                inputLabel="Skill Name"
+                buttonText={isEditMode ? "Update Skill" : "Add Skill"}
+                isEdit={isEditMode}
+                editId={editId}
+                editValue={editValue}
             />
 
             <CreateSubservices
                 open={openSubCategoryDialog}
                 handleClose={() => setOpenSubCategoryDialog(false)}
-                serviceId={selectedServiceId}
                 onSuccess={fetchAllServices}
             />
 
@@ -223,4 +285,4 @@ export default function ServiceCategory() {
             />
         </Box>
     );
-};
+}

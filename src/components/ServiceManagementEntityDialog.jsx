@@ -84,13 +84,13 @@ export default function ServiceManagementEntityDialog({ open, handleClose, onSuc
       handleClose();
     } catch (err) {
       setLoading(false);
-      setError(err.response?.data?.message || 'Failed to add service management');
+      setError(err.response?.data?.message || 'Failed to Add Skill management');
     }
   };
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
-      <DialogTitle>{viewMode ? 'View Service Management' : 'Add New Service Management'}</DialogTitle>
+      <DialogTitle>{viewMode ? 'View Service Management' : 'Add New Skill Management'}</DialogTitle>
       <DialogContent>
         {viewMode ? (
           <Box>

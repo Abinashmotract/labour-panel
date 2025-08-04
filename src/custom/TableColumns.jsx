@@ -119,63 +119,79 @@ export const productCategoryTableColumns = ({ handleToggleStatus, handleDelete, 
     },
 ];
 
-export const serviceTableColumns = ({ handleToggleStatus, handleDelete, handleView, togglingIds, handleAddSubService }) => [
-    { field: "name", headerName: "Service Name", flex: 1 },
-    {
-        field: "addSubService",
-        headerName: "Add Sub Services",
-        flex: 0.8,
-        sortable: false,
-        renderCell: (params) => (
-            <CustomIconButton
-                size="small"
-                icon={<Plus size={16} />}
-                color="rgb(34, 197, 94)"
-                onClick={(e) => {
-                    e.stopPropagation();
-                    handleAddSubService(params.row);
-                }}
-                text="Add"
-            />
-        ),
-    },
-    {
-        field: "approved",
-        headerName: "Status",
-        width: 120,
-        renderCell: (params) => {
-            const isLoading = togglingIds?.[params.row.id];
-            return (
-                <Box display="flex" alignItems="center" justifyContent="center" width="100%">
-                    {isLoading ? (
-                        <CircularProgress size={20} color="success" />
-                    ) : (
-                        <Switch
-                            checked={params.row.approved}
-                            onChange={() => handleToggleStatus(params.row.id)}
-                            onClick={(e) => e.stopPropagation()}
-                            color="success"
-                            size="medium"
-                        />
-                    )}
-                </Box>
-            );
+export const skillsTableColumns = ({
+    handleToggleStatus,
+    handleDelete,
+    handleView,
+    togglingIds,
+    handleEdit
+}) => [
+        {
+            field: "name",
+            headerName: "Skill Name",
+            flex: 1,
         },
-    },
-    { field: "createdAt", headerName: "Created At", flex: 0.8 },
-    {
-        field: "action",
-        headerName: "Action",
-        width: 180,
-        sortable: false,
-        renderCell: (params) => (
-            <Box sx={{ display: 'flex', gap: 0.5 }}>
-                <CustomIconButton size="small" icon={<Eye size={16} />} color="rgb(77 141 225)" onClick={() => handleView(params.row)} />
-                <CustomIconButton size="small" icon={<Trash2 size={16} />} color="hsl(0 84.2% 60.2%)" onClick={() => handleDelete(params.row.id)} />
-            </Box>
-        ),
-    },
-];
+        {
+            field: "approved",
+            headerName: "Status",
+            flex: 1,
+            renderCell: (params) => {
+                const isLoading = togglingIds?.[params.row.id];
+                return (
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        width="100%"
+                        gap={1} // spacing between label and switch
+                    >
+                        {isLoading ? (
+                            <CircularProgress size={20} color="success" />
+                        ) : (
+                            <Switch
+                                checked={params.row.approved}
+                                onChange={() => handleToggleStatus(params.row.id)}
+                                onClick={(e) => e.stopPropagation()}
+                                size="medium"
+                                sx={{
+                                    '& .MuiSwitch-switchBase.Mui-checked': {
+                                        color: '#2B3990',
+                                    },
+                                    '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                                        backgroundColor: '#2B3990',
+                                    },
+                                }}
+                            />
+                        )}
+                    </Box>
+                );
+            },
+        },
+        {
+            field: "createdAt",
+            headerName: "Created At",
+            flex: 1,
+            valueGetter: (params) =>
+                params.row.createdAt
+                    ? new Date(params.row.createdAt).toLocaleDateString()
+                    : "N/A",
+        },
+        {
+            field: "action",
+            headerName: "Action",
+            flex: 1,
+            sortable: false,
+            renderCell: (params) => (
+                <Box sx={{ display: 'flex', gap: 0.5 }}>
+                    <CustomIconButton size="small" icon={<Eye size={16} />} color="rgb(77 141 225)" onClick={() => handleView(params.row)} />
+                    <CustomIconButton size="small" icon={<Pencil size={16} />} color="green" onClick={() => handleEdit(params.row)} />
+                    <CustomIconButton size="small" icon={<Trash2 size={16} />} color="hsl(0 84.2% 60.2%)" onClick={() => handleDelete(params.row.id)} />
+                </Box>
+            ),
+        },
+    ];
+
+
 
 export const ProductTableColumns = ({ handleDelete, handleView, handleEdit }) => [
     {

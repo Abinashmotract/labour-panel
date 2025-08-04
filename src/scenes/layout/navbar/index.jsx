@@ -92,16 +92,17 @@ const Navbar = () => {
 
   return (
     <FlexBetween
-      padding={{ xs: "0.5rem", sm: "1rem" }}
+      padding={{ xs: "0.25rem 0.5rem", sm: "0.5rem 1rem" }}
       backgroundColor="transparent"
       sx={{
         position: "sticky",
         top: 0,
         zIndex: 100,
-        background: "darkslategray",
-        minHeight: { xs: "60px", sm: "70px" }
+        background: "#2B3990",
+        minHeight: { xs: "48px", sm: "56px" } // Reduce height
       }}
     >
+
       <FlexBetween gap={{ xs: "0.5rem", sm: "1.75rem" }}>
         {!isNonMobile && (
           <IconButton onClick={handleMobileToggle} sx={{ color: "#FFFFFF", padding: { xs: "8px", sm: "12px" } }}>

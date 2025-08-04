@@ -4,11 +4,6 @@ import {
   CardContent,
   Typography,
   useTheme,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Avatar,
   Grid,
   CircularProgress,
 } from "@mui/material";
@@ -22,10 +17,6 @@ import { API_BASE_URL } from "../../utils/apiConfig";
 import Cookies from "js-cookie";
 import PersonIcon from '@mui/icons-material/Person';
 import BookIcon from '@mui/icons-material/Book';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-import EventIcon from '@mui/icons-material/Event';
 
 const timeAgo = (date) => {
   const now = new Date();
@@ -90,53 +81,24 @@ function Dashboard() {
 
   const overviewStats = [
     {
-      title: "Total Users",
-      value: overviewData.totalUsers || 0,
-      color: "#E0BBE4",
+      title: "Total Labours",
+      value: overviewData.totalLabour || 0,
+      color: "white",
       icon: <PersonIcon />,
     },
     {
-      title: "Active Bookings",
-      value: overviewData.activeBookings || 0,
-      color: "#957DAD",
+      title: "Total Contractor",
+      value: overviewData.totalContractors || 0,
+      color: "white",
       icon: <BookIcon />,
     },
-    {
-      title: "Completed Services",
-      value: overviewData.completedServices || 0,
-      color: "#D291BC",
-      icon: <CheckCircleIcon />,
-    },
-    {
-      title: "Revenue",
-      value: overviewData.revenue || 0,
-      color: "#FEC8D8",
-      icon: <AttachMoneyIcon />,
-    },
-    {
-      title: "Pending Approvals",
-      value: overviewData.pendingApprovals || 0,
-      color: "#FFDFD3",
-      icon: <HourglassEmptyIcon />,
+     {
+      title: "Total Pending",
+      value: overviewData.totalPendingContractors || 0,
+      color: "white",
+      icon: <BookIcon />,
     },
   ];
-
-  const getAvatarColor = (type) => {
-    switch (type) {
-      case "booking":
-        return "#ffe0b2"; // orange
-      case "review":
-        return "#c8e6c9"; // green
-      case "profile":
-        return "#bbdefb"; // blue
-      case "approval":
-        return "#f8bbd0"; // pink
-      case "product":
-        return "#d1c4e9"; // purple
-      default:
-        return "#e0e0e0"; // grey fallback
-    }
-  };
 
   return (
     <Box sx={{ width: "100%", maxWidth: "100%" }}>
@@ -151,13 +113,13 @@ function Dashboard() {
           <Grid container spacing={2} sx={{ mb: 3 }}>
             {overviewStats?.map((stat) => (
               <Grid item xs={12} sm={6} md={4} lg={2.4} key={stat.title}>
-                <Card sx={{ background: stat.color, borderRadius: 2, boxShadow: 4, border: '0.5px solid #6d295a' }}>
+                <Card sx={{ background: stat.color, borderRadius: 2, boxShadow: 4, border: '0.5px solid #2B3990' }}>
                   <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
                     {stat.icon}
-                    <Typography variant="subtitle2" sx={{ mt: 1, color: '#6D295A', fontWeight: 700 }}>
+                    <Typography variant="subtitle2" sx={{ mt: 1, color: '#000', fontWeight: 700 }}>
                       {stat.title}
                     </Typography>
-                    <Typography variant="h5" sx={{ fontWeight: 900, color: '#222' }}>
+                    <Typography variant="h5" sx={{ fontWeight: 900, color: '#000' }}>
                       {stat.value}
                     </Typography>
                   </CardContent>
@@ -165,74 +127,6 @@ function Dashboard() {
               </Grid>
             ))}
           </Grid>
-
-          {/* Recent Activity Feed */}
-          <Card sx={{ borderRadius: 3 }}>
-            <CardContent>
-              <Typography variant="h6" sx={{ mb: 2, color: '#6D295A', fontWeight: 700 }}>
-                Recent Activity
-              </Typography>
-              <List>
-                {recentActivity?.map((activity, idx) => (
-                  <ListItem
-                    button
-                    key={idx}
-                    sx={{ borderRadius: 2, mb: 1, '&:hover': { background: '#F3E8F1' } }}
-                  >
-                    <ListItemAvatar>
-                      <Box position="relative" display="inline-flex">
-                        {/* Animated progress ring */}
-                        <CircularProgress
-                          variant="indeterminate"
-                          size={46}
-                          thickness={4}
-                          sx={{
-                            color: getAvatarColor(activity.type),
-                            animationDuration: '2s',
-                          }}
-                        />
-                        {/* Avatar in center */}
-                        <Box
-                          position="absolute"
-                          top={0}
-                          left={0}
-                          bottom={0}
-                          right={0}
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          <Avatar
-                            sx={{
-                              bgcolor: getAvatarColor(activity.type),
-                              border: '2px solid #6D295A',
-                              width: 36,
-                              height: 36,
-                            }}
-                          >
-                            <EventIcon sx={{ color: 'black', fontSize: 20 }} />
-                          </Avatar>
-                        </Box>
-                      </Box>
-                    </ListItemAvatar>
-
-                    <ListItemText
-                      primary={
-                        <Typography sx={{ fontWeight: 600 }}>
-                          {activity.message}
-                        </Typography>
-                      }
-                      secondary={
-                        <Typography variant="caption" sx={{ color: '#7b7b7b' }}>
-                          {activity.time}
-                        </Typography>
-                      }
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </CardContent>
-          </Card>
         </>
       )}
     </Box>
