@@ -19,7 +19,6 @@ import { showErrorToast, showSuccessToast, showCustomMessage } from "../Toast";
 import { CustomIconButton } from "../custom/Button";
 import { Close, PersonAdd } from "@mui/icons-material";
 import Cookies from "js-cookie";
-import SelectInput from "../custom/Select";
 import sillsOptions from "../json/sillsOptions";
 
 const EntityDialog = ({
@@ -47,6 +46,7 @@ const EntityDialog = ({
     } else if (isEdit && editValue) {
       setInputValue(editValue);
     } else if (isView && viewValue) {
+      console.log(viewValue, 'viewValue')
       setInputValue(viewValue);
     }
   }, [open, isEdit, editValue, isView, viewValue]);
@@ -119,15 +119,23 @@ const EntityDialog = ({
       <Divider sx={{ borderBottomWidth: 1, borderColor: "black" }} />
       <DialogContent>
         {isView ? (
-          <Input
-            placeholder={`Write ${inputLabel.toLowerCase()}`}
-            type="text"
-            height={50}
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            disabled
-            fullWidth
-          />
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
+            <Typography variant="body1">
+              <strong>Skill Name:</strong> {viewValue?.name || "N/A"}
+            </Typography>
+
+            <Box display="flex" alignItems="center" gap={1}>
+              <Typography variant="body1"><strong>Status:</strong></Typography>
+              <Chip
+                label={viewValue?.approved ? "Active" : "Inactive"}
+                color={viewValue?.approved ? "success" : "error"}
+                sx={{
+                  fontWeight: "bold",
+                  color: "#fff",
+                }}
+              />
+            </Box>
+          </Box>
         ) : (
           <>
             <InputLabel sx={{ color: "black", fontWeight: 500 }}>{inputLabel}</InputLabel>

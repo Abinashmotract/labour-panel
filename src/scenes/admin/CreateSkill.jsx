@@ -26,7 +26,6 @@ export default function ServiceCategory() {
     const [deleting, setDeleting] = useState(false);
     const [isViewDialog, setIsViewDialog] = useState(false);
     const [viewValue, setViewValue] = useState("");
-    const [viewStatus, setViewStatus] = useState(undefined);
     const [openSubCategoryDialog, setOpenSubCategoryDialog] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
     const [editId, setEditId] = useState(null);
@@ -165,12 +164,6 @@ export default function ServiceCategory() {
         setIsViewDialog(true);
     };
 
-    const handleCloseViewDialog = () => {
-        setIsViewDialog(false);
-        setViewValue("");
-        setViewStatus(undefined);
-    };
-
     const handleEdit = (row) => {
         setEditValue(row.name);
         setEditId(row.id);
@@ -243,7 +236,21 @@ export default function ServiceCategory() {
                 inputLabel="Service Name"
                 buttonText="Add Skill"
                 showPriceFields={true}
+                viewValue={viewValue}
             />
+            <EntityDialog
+                open={isViewDialog}
+                handleClose={() => {
+                    setIsViewDialog(false);
+                    setViewValue("");
+                }}
+                isView={true}
+                viewValue={viewValue}
+                dialogTitle="View Skill"
+                inputLabel="Skill Name"
+            />
+
+
             <EntityDialog
                 open={openCategoryDialog}
                 handleClose={() => {
