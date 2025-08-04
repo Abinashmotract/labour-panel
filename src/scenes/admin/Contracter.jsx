@@ -8,7 +8,7 @@ import { API_BASE_URL } from "../../utils/apiConfig";
 import { tokens } from "../../theme";
 import { showErrorToast, showSuccessToast } from "../../Toast";
 import Cookies from "js-cookie";
-import { labourUserTableColumns } from "../../custom/labourUserTableColumns";
+import { stylistUserTableColumns } from "../../custom/StylistUserTableColumns";
 import ShowDetailsDialog from "../../components/ShowDetailsDialog";
 import Alert from "../../custom/Alert";
 
@@ -196,7 +196,7 @@ export default function RegisteredStylist() {
     }
   };
 
-  const columns = labourUserTableColumns({
+  const columns = stylistUserTableColumns({
     handleToggleStatus,
     handleDelete,
     handleView,

@@ -4,7 +4,7 @@ import { Box, Chip, Button, Switch, CircularProgress } from "@mui/material";
 import { CheckCircle2, Eye, PlusCircle, Trash2 } from "lucide-react";
 import { CustomIconButton } from "./Button";
 
-export const labourUserTableColumns = ({
+export const stylistUserTableColumns = ({
   handleToggleStatus,
   handleDelete,
   handleView,
