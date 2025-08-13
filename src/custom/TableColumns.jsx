@@ -5,6 +5,26 @@ import ImageWithLoader from "./ImageWithLoader";
 import PersonIcon from "@mui/icons-material/Person";
 
 export const userTableColumns = ({ handleDelete, handleView }) => [
+    {
+        field: "photo",
+        headerName: "Profile Picture",
+        flex: 0.5,
+        renderCell: (params) => {
+            const photoUrl =
+                params.row.profilePicture && params.row.profilePicture.length > 0
+                    ? params.row.profilePicture
+                    : null;
+
+            const fallbackUrl =
+                "https://w7.pngwing.com/pngs/406/861/png-transparent-default-facebook-user-profile-blue-silhouette-neck-symbol-sky-folder-users-blue-silhouette-application-thumbnail.png";
+            return (
+                <ImageWithLoader
+                    src={photoUrl || fallbackUrl}
+                    alt={params.row.fullName || "Profile"}
+                />
+            );
+        },
+    },
     { field: "fullName", headerName: "Full Name", flex: 1 },
     { field: "email", headerName: "Email", flex: 1 },
     { field: "mobile", headerName: "Mobile", flex: 1 },
@@ -27,7 +47,6 @@ export const userTableColumns = ({ handleDelete, handleView }) => [
             />
         ),
     },
-    { field: "city", headerName: "City", flex: 0.6 },
     {
         field: "gender",
         headerName: "Gender",
@@ -119,7 +138,7 @@ export const productCategoryTableColumns = ({ handleToggleStatus, handleDelete, 
     },
 ];
 
-export const serviceTableColumns = ({ handleToggleStatus, handleDelete, handleView, togglingIds, handleAddSubService }) => [
+export const agentTableColumns = ({ handleToggleStatus, handleDelete, handleView, togglingIds, handleAddSubService }) => [
     { field: "name", headerName: "Service Name", flex: 1 },
     {
         field: "addSubService",

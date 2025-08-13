@@ -17,7 +17,7 @@ import OrderDetails from "./scenes/admin/OrderDetails";
 import Labours from "./scenes/admin/Labours";
 import Contracter from "./scenes/admin/Contracter";
 import Category from "./scenes/admin/Category";
-import ServiceCategory from "./scenes/admin/ServiceCategory";
+import CreateAgent from "./scenes/admin/CreateAgent";
 import LoadingScreen from "./components/LoadingScreen";
 import Services from "./scenes/vendor/Services";
 import AppointmentStatus from "./scenes/admin/AppointmentStatus";
@@ -44,7 +44,7 @@ const AppRouter = () => {
                 <Route path="stylist-reviews" element={<AllReviews />} />
                 <Route path="product" element={<Product />} />
                 <Route path="category" element={<Category />} />
-                <Route path="service" element={<ServiceCategory />} />
+                <Route path="agent" element={<CreateAgent />} />
                 <Route path="service-management" element={<ServiceManagement />} />
                 <Route path="order-details" element={<OrderDetails />} />
                 <Route path="appointment-status" element={<AppointmentStatus />} />

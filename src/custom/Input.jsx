@@ -11,7 +11,7 @@ const Input = ({ placeholder, type = "text", value, onChange, icon, endIcon, onE
             name={name}
             multiline={multiline}
             rows={rows}
-            margin="normal"
+            margin="none"
             InputProps={{
                 startAdornment: icon && (
                     <InputAdornment position="start">{icon}</InputAdornment>

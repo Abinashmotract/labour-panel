@@ -12,13 +12,13 @@ import axios from "axios";
 import CustomTable from "../../custom/Table";
 import { API_BASE_URL } from "../../utils/apiConfig";
 import CreateSubservices from "../../components/CreateSubservices";
-import EntityDialog from "../../components/EntityDialog";
 import { tokens } from "../../theme";
 import { showErrorToast, showSuccessToast } from "../../Toast";
 import Cookies from "js-cookie";
 import { CustomIconButton } from "../../custom/Button";
-import { serviceTableColumns } from "../../custom/TableColumns";
+import { agentTableColumns } from "../../custom/TableColumns";
 import Alert from "../../custom/Alert";
+import AgentEntityDialog from "../../components/AgentEntityDialog";
 
 export default function ServiceCategory() {
     const [allServices, setAllServices] = useState([]);
@@ -40,7 +40,7 @@ export default function ServiceCategory() {
     const colors = tokens(theme.palette.mode);
     const authToken = Cookies.get("token");
 
-    const fetchAllServices = async () => {
+    const fetchAllagent = async () => {
         try {
             const response = await axios.get(`${API_BASE_URL}/service/admin/get`, {
                 headers: {
@@ -68,7 +68,7 @@ export default function ServiceCategory() {
 
     useEffect(() => {
         if (authToken) {
-            fetchAllServices();
+            fetchAllagent();
         }
     }, [authToken]);
 
@@ -95,7 +95,7 @@ export default function ServiceCategory() {
             });
             console.log('Toggle response:', response.data.data);
             showSuccessToast(response?.data?.message || "Service status updated!");
-            await fetchAllServices();
+            await fetchAllagent();
         } catch (error) {
             console.log("Toggle error:", error);
             showErrorToast("An error occurred while toggling approval.");
@@ -164,38 +164,36 @@ export default function ServiceCategory() {
         setOpenSubCategoryDialog(true);
     };
 
-    const columns = serviceTableColumns({ handleToggleStatus, handleDelete, handleView, togglingIds, handleAddSubService });
+    const columns = agentTableColumns({ handleToggleStatus, handleDelete, handleView, togglingIds, handleAddSubService });
 
     return (
         <Box className="p-1">
-            <Container maxWidth={false}>
-                <Header title="Create Service" />
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2, flexDirection: { xs: "column", sm: "row" }, gap: 2, }}>
-                    <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: '1px solid purple', borderRadius: '10px', width: { xs: '100%', sm: 'auto' }, }}>
-                        <InputBase placeholder="Search Service" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
-                        <IconButton type="button" sx={{ p: 1 }}>
-                            <SearchOutlined />
-                        </IconButton>
-                    </Box>
-                    <CustomIconButton icon={<PersonAdd />} text="Add New Service" fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenCategory} sx={{ width: { xs: '100%', sm: 'auto' } }} />
+            <Header title="Agent" />
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2, flexDirection: { xs: "column", sm: "row" }, gap: 2, }}>
+                <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: '1px solid purple', borderRadius: '10px', width: { xs: '100%', sm: 'auto' }, }}>
+                    <InputBase placeholder="Search Agent" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
+                    <IconButton type="button" sx={{ p: 1 }}>
+                        <SearchOutlined />
+                    </IconButton>
                 </Box>
-                <CustomTable columns={columns} rows={filteredUsers} loading={loading} />
-            </Container>
+                <CustomIconButton icon={<PersonAdd />} text="Create New Agent" fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenCategory} sx={{ width: { xs: '100%', sm: 'auto' } }} />
+            </Box>
+            <CustomTable columns={columns} rows={filteredUsers} loading={loading} />
 
-            <EntityDialog
+            <AgentEntityDialog
                 open={openCategoryDialog}
                 handleClose={handleCloseCategoryDialog}
-                dialogTitle="Add New Service"
+                dialogTitle="Create New Agent"
                 apiEndpoint="/service/admin/create"
                 onSuccess={() => {
                     handleCloseCategoryDialog();
-                    fetchAllServices();
+                    fetchAllagent();
                 }}
                 inputLabel="Service Name"
                 buttonText="Add Service"
                 showPriceFields={true}
             />
-            <EntityDialog
+            <AgentEntityDialog
                 open={isViewDialog}
                 handleClose={handleCloseViewDialog}
                 isView={true}
@@ -209,7 +207,7 @@ export default function ServiceCategory() {
                 open={openSubCategoryDialog}
                 handleClose={() => setOpenSubCategoryDialog(false)}
                 serviceId={selectedServiceId}
-                onSuccess={fetchAllServices}
+                onSuccess={fetchAllagent}
             />
 
             <Alert

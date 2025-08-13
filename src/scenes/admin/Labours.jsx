@@ -46,6 +46,7 @@ export default function CustomerDetails() {
                 role: user.role || "N/A",
                 city: user.city || "N/A",
                 gender: user.gender || "N/A",
+                profilePicture: user.profilePicture || "N/A",
                 createdAt: new Date(user.createdAt).toLocaleDateString(),
             }));
             setAllUsers(formattedData);
@@ -139,7 +140,7 @@ export default function CustomerDetails() {
                 </Box>
             </Box>
 
-            <CustomTable columns={columns} rows={filteredUsers} loading={loading} checkboxSelection />
+            <CustomTable columns={columns} rows={filteredUsers} loading={loading} />
 
             <ShowDetailsDialog open={isDetailsDialogOpen} onClose={() => setIsDetailsDialogOpen(false)} data={selectedUserDetails} />
             <Alert

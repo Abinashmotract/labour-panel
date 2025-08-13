@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import CustomTable from "../../custom/Table";
 import { API_BASE_URL } from "../../utils/apiConfig";
-import EntityDialog from "../../components/EntityDialog";
+import EntityDialog from "../../components/AgentEntityDialog";
 import { tokens } from "../../theme";
 import { showErrorToast, showSuccessToast } from "../../Toast";
 import Cookies from "js-cookie";

@@ -63,10 +63,10 @@ const SideBar = () => {
     admin: [
       { title: "Labours", path: "/labours", icon: <PeopleAltOutlined /> },
       { title: "Contracter", path: "/contracter", icon: <PeopleAltOutlined /> },
+      { title: "Create Agent", path: "/agent", icon: <PeopleAltOutlined /> },
       // { title: "Stylist Reviews", path: "/stylist-reviews", icon: <PersonOutlined /> },
       // { title: "Products", path: "/product", icon: <PersonOutlined /> },
       // { title: "Product Category", path: "/category", icon: <PeopleAltOutlined /> },
-      // { title: "Stylist Services", path: "/service", icon: <PeopleAltOutlined /> },
       // { title: "Order Details", path: "/order-details", icon: <PeopleAltOutlined /> },
       // { title: "Appointment Status", path: "/appointment-status", icon: <PersonOutlined /> },
     ],
