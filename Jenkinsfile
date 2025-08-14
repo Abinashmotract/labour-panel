@@ -2,7 +2,7 @@ pipeline {
     agent any
  
     environment {
-        IMAGE_NAME = "docker.io/kartikeytiwari/hair-stylist-panel"
+        IMAGE_NAME = "docker.io/abinashsinha01/hair-stylist-panel"
         IMAGE_TAG = "${BUILD_NUMBER}"
         CONTAINER_PORT = "2233"
         HOST_PORT = "2233"
