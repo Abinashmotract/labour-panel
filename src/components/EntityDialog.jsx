@@ -46,7 +46,6 @@ const EntityDialog = ({
     } else if (isEdit && editValue) {
       setInputValue(editValue);
     } else if (isView && viewValue) {
-      console.log(viewValue, 'viewValue')
       setInputValue(viewValue);
     }
   }, [open, isEdit, editValue, isView, viewValue]);
@@ -112,7 +111,7 @@ const EntityDialog = ({
   return (
     <Dialog open={open} onClose={handleDialogClose} fullWidth>
       <DialogTitle>
-        <Typography variant="h5" className="fw-bold">
+        <Typography variant="h5" component="span" className="fw-bold">
           {isView ? `View ${inputLabel}` : isEdit ? `Edit ${inputLabel}` : dialogTitle}
         </Typography>
       </DialogTitle>

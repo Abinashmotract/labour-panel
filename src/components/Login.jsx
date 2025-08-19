@@ -181,28 +181,33 @@ const Login = ({ onLoginSuccess }) => {
             </Box>
             <FormControl>
               <RadioGroup row aria-labelledby="panel-selection" name="panel-selection" value={panelType} onChange={(e) => setPanelType(e.target.value)}>
-                <FormControlLabel value="adminpanel" control={<Radio />} label="ADMIN PANEL" />
+                <FormControlLabel value="adminpanel" control={<Radio />} label="ADMIN PANEL " />
                 <FormControlLabel value="vendorpanel" control={<Radio />} label="CONTRACTE PANEL" />
               </RadioGroup>
             </FormControl>
             {panelType === "adminpanel" || panelType === "vendorpanel" ? (
               <>
-                <Input
-                  placeholder="Email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  icon={<Email />}
-                />
-                <Input
-                  placeholder="Password"
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  icon={<Lock />}
-                  endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
-                  onEndIconClick={() => setShowPassword(!showPassword)}
-                />
+                <Box className="mb-2">
+                  <Input
+                    placeholder="Email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    icon={<Email />}
+                    className="mb-2"
+                  />
+                </Box>
+                <Box>
+                  <Input
+                    placeholder="Password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    icon={<Lock />}
+                    endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
+                    onEndIconClick={() => setShowPassword(!showPassword)}
+                  />
+                </Box>
               </>
             ) : null}
 

@@ -59,8 +59,8 @@ const SideBar = () => {
 
   const navSections = {
     admin: [
-      { title: "Labours", path: "/labours", icon: <PeopleAltOutlined /> },
-      { title: "Contracter", path: "/contracter", icon: <PeopleAltOutlined /> },
+      { title: "Labour/Contractors", path: "/labours", icon: <PeopleAltOutlined /> },
+      // { title: "Contracter", path: "/agent", icon: <PeopleAltOutlined /> },
       { title: "Skills", path: "/skills", icon: <PeopleAltOutlined /> },
       // { title: "Stylist Reviews", path: "/stylist-reviews", icon: <PersonOutlined /> },
       // { title: "Products", path: "/product", icon: <PersonOutlined /> },

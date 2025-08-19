@@ -93,6 +93,7 @@ const CustomTable = ({ columns, rows, loading, checkboxSelection = false, noRows
                                     } 
                                 },
                             }}
+                            pageSizeOptions={[5, 10, 25, 50]}
                             checkboxSelection={checkboxSelection}
                             density={isMobile ? "compact" : "standard"}
                             autoHeight={false}

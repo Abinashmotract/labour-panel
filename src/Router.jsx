@@ -20,8 +20,6 @@ import Category from "./scenes/admin/Category";
 import CreateSkill from "./scenes/admin/CreateSkill";
 import LoadingScreen from "./components/LoadingScreen";
 import Services from "./scenes/vendor/Services";
-import AppointmentStatus from "./scenes/admin/AppointmentStatus";
-import AllReviews from "./scenes/admin/AllReviews";
 
 const AppRouter = () => {
   const { isAuthenticated, panelType, token, stylistId, login } = useAuth();
@@ -42,12 +40,10 @@ const AppRouter = () => {
                 <Route path="labours" element={<Labours />} />
                 <Route path="skills" element={<CreateSkill />} />
                 <Route path="contracter" element={<Contracter />} />
-                <Route path="stylist-reviews" element={<AllReviews />} />
                 <Route path="product" element={<Product />} />
                 <Route path="category" element={<Category />} />
                 <Route path="service-management" element={<ServiceManagement />} />
                 <Route path="order-details" element={<OrderDetails />} />
-                <Route path="appointment-status" element={<AppointmentStatus />} />
               </>
             ) : panelType === "vendor" ? (
               <>

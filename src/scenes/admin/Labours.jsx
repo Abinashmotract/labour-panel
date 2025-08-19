@@ -1,6 +1,6 @@
 import { Box, Container, IconButton, InputBase, useTheme } from "@mui/material";
 import { Header } from "../../components";
-import { SearchOutlined } from "@mui/icons-material";
+import { PersonAdd, SearchOutlined } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CustomTable from "../../custom/Table";
@@ -11,6 +11,8 @@ import Cookies from "js-cookie";
 import ShowDetailsDialog from "../../components/ShowDetailsDialog";
 import Alert from "../../custom/Alert";
 import { showSuccessToast, showErrorToast } from "../../Toast";
+import { CustomIconButton } from "../../custom/Button";
+import AgentEntityDialog from "../../components/AgentEntityDialog";
 
 export default function CustomerDetails() {
     const [allUsers, setAllUsers] = useState([]);
@@ -18,6 +20,8 @@ export default function CustomerDetails() {
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchText, setSearchText] = useState("");
+    const [isViewDialog, setIsViewDialog] = useState(false);
+    const [openCategoryDialog, setOpenCategoryDialog] = useState(false);
     const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
     const [selectedUserDetails, setSelectedUserDetails] = useState(null);
     const [deleteId, setDeleteId] = useState(null);
@@ -40,13 +44,19 @@ export default function CustomerDetails() {
             setOriginalUsers(response.data.data);
             const formattedData = response?.data?.data.map((user) => ({
                 id: user._id,
-                fullName: user.fullName || "N/A",
+                fullName: `${user.firstName || ""} ${user.lastName || ""}`.trim() || "N/A",
                 email: user.email || "N/A",
                 mobile: user.phoneNumber || "N/A",
                 role: user.role || "N/A",
-                city: user.city || "N/A",
                 gender: user.gender || "N/A",
+                profilePicture: user.profilePicture || "",
                 createdAt: new Date(user.createdAt).toLocaleDateString(),
+                isPhoneVerified: user.isPhoneVerified ? "Yes" : "No",
+                address: user.addressLine1 || "N/A",
+                workCategory: user.work_category || "N/A",
+                workExperience: user.work_experience || "N/A",
+                latitude: user.location?.coordinates?.[1] || "N/A",
+                longitude: user.location?.coordinates?.[0] || "N/A",
             }));
             setAllUsers(formattedData);
             setFilteredUsers(formattedData);
@@ -125,6 +135,21 @@ export default function CustomerDetails() {
         setIsDetailsDialogOpen(true);
     };
 
+    const handleOpenCategory = () => {
+        setOpenCategoryDialog(true);
+    };
+
+    const handleCloseCategoryDialog = () => {
+        setOpenCategoryDialog(false);
+    };
+
+    const handleCloseViewDialog = () => {
+        setIsViewDialog(false);
+        setViewValue("");
+        setViewStatus(undefined);
+    };
+
+
     const columns = userTableColumns({ handleDelete, handleView });
 
     return (
@@ -137,14 +162,37 @@ export default function CustomerDetails() {
                         <SearchOutlined />
                     </IconButton>
                 </Box>
+                <CustomIconButton icon={<PersonAdd />} text="Create Labour/Contractor" fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenCategory} />
             </Box>
 
-            <CustomTable columns={columns} rows={filteredUsers} loading={loading} checkboxSelection />
+            <CustomTable columns={columns} rows={filteredUsers} loading={loading} />
 
             <ShowDetailsDialog open={isDetailsDialogOpen} onClose={() => setIsDetailsDialogOpen(false)} data={selectedUserDetails} />
+
+            <AgentEntityDialog
+                open={openCategoryDialog}
+                handleClose={handleCloseCategoryDialog}
+                dialogTitle="Create New Labour/Contractor"
+                apiEndpoint="/admin/create-user"  // Make sure this is correct
+                onSuccess={() => {
+                    handleCloseCategoryDialog();
+                    fetchAllUsers();  // Changed from fetchAllagent() to fetchAllUsers()
+                }}
+                inputLabel="Labour/Contractor Name"
+                buttonText="Create Labour/Contractor"
+            />
+
+            <AgentEntityDialog
+                open={isViewDialog}
+                handleClose={handleCloseViewDialog}
+                isView={true}
+                inputLabel="Labour/Contractor Name"
+                showPriceFields={true}
+            />
+
             <Alert
                 open={alertOpen}
-                title="Delete Service"
+                title="Delete Labour/Contractor"
                 description="Are you sure you want to delete this service? This action cannot be undone."
                 onClose={deleting ? undefined : () => setAlertOpen(false)}
                 onConfirm={handleConfirmDelete}

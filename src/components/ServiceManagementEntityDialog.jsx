@@ -90,7 +90,7 @@ export default function ServiceManagementEntityDialog({ open, handleClose, onSuc
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
-      <DialogTitle>{viewMode ? 'View Service Management' : 'Add New Skill Management'}</DialogTitle>
+      <DialogTitle>{viewMode ? 'View Service Management' : 'Create New Agent Management'}</DialogTitle>
       <DialogContent>
         {viewMode ? (
           <Box>

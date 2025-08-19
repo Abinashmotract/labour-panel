@@ -43,6 +43,7 @@ export default function ServiceCategory() {
                     Authorization: `Bearer ${authToken}`,
                 },
             });
+
             if (response?.data?.status === 200) {
                 const skills = response?.data?.data?.skills || [];
                 const formattedData = skills?.map((skill) => ({
@@ -171,56 +172,19 @@ export default function ServiceCategory() {
         setOpenCategoryDialog(true);
     };
 
-    const columns = skillsTableColumns({
-        handleToggleStatus,
-        handleDelete,
-        handleView,
-        togglingIds,
-        handleEdit
-    });
+    const columns = skillsTableColumns({ handleToggleStatus, handleDelete, handleView, togglingIds, handleEdit });
 
     return (
         <Box className="p-1">
             <Header title="Create Service" />
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    mb: 2,
-                    flexDirection: { xs: "column", sm: "row" },
-                    gap: 2,
-                }}
-            >
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    bgcolor={colors.primary[400]}
-                    sx={{
-                        border: "1px solid purple",
-                        borderRadius: "10px",
-                        width: { xs: "100%", sm: "auto" },
-                    }}
-                >
-                    <InputBase
-                        placeholder="Search Skill"
-                        value={searchText}
-                        onChange={handleSearch}
-                        sx={{ ml: 2, flex: 1 }}
-                    />
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2, flexDirection: { xs: "column", sm: "row" }, gap: 2, }}>
+                <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: "1px solid purple", borderRadius: "10px", width: { xs: "100%", sm: "auto" }, }}>
+                    <InputBase placeholder="Search Skill" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
                     <IconButton type="button" sx={{ p: 1 }}>
                         <SearchOutlined />
                     </IconButton>
                 </Box>
-                <CustomIconButton
-                    icon={<PersonAdd />}
-                    text="Add New Skill"
-                    fontWeight="bold"
-                    color="#6d295a"
-                    variant="outlined"
-                    onClick={handleOpenCategory}
-                    sx={{ width: { xs: "100%", sm: "auto" } }}
-                />
+                <CustomIconButton icon={<PersonAdd />} text="Add New Skill" fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenCategory} sx={{ width: { xs: "100%", sm: "auto" } }} />
             </Box>
             <CustomTable columns={columns} rows={filteredUsers} loading={loading} />
 
@@ -229,10 +193,7 @@ export default function ServiceCategory() {
                 handleClose={handleCloseCategoryDialog}
                 dialogTitle="Add New Skill"
                 apiEndpoint="/skill/admin/create"
-                onSuccess={() => {
-                    handleCloseCategoryDialog();
-                    fetchAllServices();
-                }}
+                onSuccess={() => { handleCloseCategoryDialog(); fetchAllServices(); }}
                 inputLabel="Service Name"
                 buttonText="Add Skill"
                 showPriceFields={true}
@@ -240,16 +201,12 @@ export default function ServiceCategory() {
             />
             <EntityDialog
                 open={isViewDialog}
-                handleClose={() => {
-                    setIsViewDialog(false);
-                    setViewValue("");
-                }}
+                handleClose={() => { setIsViewDialog(false); setViewValue(""); }}
                 isView={true}
                 viewValue={viewValue}
                 dialogTitle="View Skill"
                 inputLabel="Skill Name"
             />
-
 
             <EntityDialog
                 open={openCategoryDialog}
@@ -275,11 +232,7 @@ export default function ServiceCategory() {
                 editValue={editValue}
             />
 
-            <CreateSubservices
-                open={openSubCategoryDialog}
-                handleClose={() => setOpenSubCategoryDialog(false)}
-                onSuccess={fetchAllServices}
-            />
+            <CreateSubservices open={openSubCategoryDialog} handleClose={() => setOpenSubCategoryDialog(false)} onSuccess={fetchAllServices} />
 
             <Alert
                 open={alertOpen}

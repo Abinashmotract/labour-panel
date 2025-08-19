@@ -48,7 +48,6 @@ function Dashboard() {
         },
       });
       if (response.data.success) {
-        console.log(response.data.data, 'overview data')
         setOverviewData(response.data.data);
         setRawRecentActivity(response.data.data.recentActivity); // stores raw datetime
         setRecentActivity(response.data.data.recentActivity); // visible activity with time text
