@@ -1,6 +1,6 @@
 import { Trash2, Eye, Pencil, TransgenderIcon, Plus } from "lucide-react";
 import { CustomIconButton } from "./Button";
-import { Box, Chip, CircularProgress, Switch } from "@mui/material";
+import { Box, Chip, CircularProgress, Switch, Typography } from "@mui/material";
 import ImageWithLoader from "./ImageWithLoader";
 import PersonIcon from "@mui/icons-material/Person";
 
@@ -509,146 +509,122 @@ export const serviceManagementTableColumns = ({ handleToggleStatus, handleDelete
     },
 ];
 
-export const packageTableColumns = ({ handleDelete, handleView, handleEdit }) => [
-    {
-        field: "photo",
-        headerName: "Image",
-        width: 80,
-        renderCell: (params) => {
-            const photoUrl = params.row.coverImage;
-            const fallbackUrl = "https://cdn.pixabay.com/photo/2017/02/16/13/42/box-2071537_1280.png";
-
-            return (
-                <img
-                    src={photoUrl || fallbackUrl}
-                    alt="img"
-                    height={40}
-                    width={40}
-                    onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = fallbackUrl;
-                    }}
-                />
-            );
-        },
+export const jobPostTableColumns = ({ handleDelete, handleView, handleEdit }) => [
+  { field: "title", headerName: "Title", flex: 1 },
+  {
+    field: "description",
+    headerName: "Description",
+    flex: 2,
+    renderCell: (params) => (
+      <Typography
+        variant="body2"
+        sx={{
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          display: "-webkit-box",
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: "vertical",
+        }}
+      >
+        {params.row.description}
+      </Typography>
+    ),
+  },
+  { field: "location", headerName: "Location", flex: 1 },
+  {
+    field: "budgetOrWage",
+    headerName: "Budget / Wage",
+    flex: 0.8,
+    renderCell: (params) => {
+      const amount = params.row.budget || params.row.wage || 0;
+      return (
+        <Chip
+          label={`₹${amount}`}
+          size="small"
+          sx={{
+            bgcolor: "success.main",
+            color: "white",
+            fontWeight: "bold",
+          }}
+        />
+      );
     },
-    { field: "title", headerName: "Title", flex: 1 },
-    { field: "about", headerName: "About", flex: 2 },
-    {
-        field: "serviceName",
-        headerName: "Service",
-        flex: 1,
-        renderCell: (params) => params.row.serviceId?.name || "N/A",
-    },
-    {
-        field: "subServiceName",
-        headerName: "Sub Services",
-        flex: 1.5,
-        renderCell: (params) => {
-            const subServices = Array.isArray(params.row.subService) ? params.row.subService : [];
-            return (
-                <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
-                    {subServices.length > 0
-                        ? subServices.map((sub) => (
-                            <Chip
-                                key={sub._id}
-                                label={sub.name}
-                                size="small"
-                                sx={{
-                                    bgcolor: 'info.main',
-                                    color: 'white',
-                                    fontWeight: 'bold',
-                                }}
-                            />
-                        ))
-                        : "N/A"}
-                </Box>
-            );
-        },
-    },
-    {
-        field: "price",
-        headerName: "Price",
-        flex: 0.6,
-        renderCell: (params) => (
-            <Chip
-                label={`₹${params.row.price || 0}`}
-                size="small"
-                sx={{
-                    bgcolor: 'primary.main',
-                    color: 'white',
-                    fontWeight: 'bold',
-                }}
-            />
-        ),
-    },
-    {
-        field: "discount",
-        headerName: "Discount",
-        flex: 0.6,
-        renderCell: (params) => (
-            <Chip
-                label={`${params.row.discount || 0}% OFF`}
-                size="small"
-                sx={{
-                    bgcolor: 'secondary.main',
-                    color: 'white',
-                    fontWeight: 'bold',
-                }}
-            />
-        ),
-    },
-    {
-        field: "date",
-        headerName: "Date",
-        flex: 1,
-        renderCell: (params) =>
-            Array.isArray(params.row.date) && params.row.date[0]
-                ? new Date(params.row.date[0]).toLocaleDateString()
-                : "N/A",
-    },
-    {
-        field: "duration",
-        headerName: "Duration (min)",
-        flex: 0.7,
-        renderCell: (params) => {
-            const duration = Number(params.row.duration || 0);
-            let chipColor = 'success.main';
-            if (duration > 120) chipColor = 'error.main';
-            else if (duration > 60) chipColor = 'warning.main';
-            return (
+  },
+  {
+    field: "skills",
+    headerName: "Skills",
+    flex: 1.5,
+    renderCell: (params) => {
+      const skills = Array.isArray(params.row.skills) ? params.row.skills : [];
+      return (
+        <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
+          {skills.length > 0
+            ? skills.map((skill, index) => (
                 <Chip
-                    label={`${duration} min`}
-                    size="small"
-                    variant="filled"
-                    sx={{
-                        bgcolor: chipColor,
-                        color: 'white',
-                        fontWeight: 'bold',
-                    }}
+                  key={skill._id || index}
+                  label={skill.name}
+                  size="small"
+                  sx={{
+                    bgcolor: "primary.main",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
                 />
-            );
-        },
+              ))
+            : "N/A"}
+        </Box>
+      );
     },
-    {
-        field: "createdAt",
-        headerName: "Created At",
-        flex: 1,
-        renderCell: (params) => params.row.createdAt ? new Date(params.row.createdAt).toLocaleDateString() : 'N/A'
-    },
-    {
-        field: "action",
-        headerName: "Action",
-        width: 180,
-        sortable: false,
-        renderCell: (params) => (
-            <Box sx={{ display: 'flex', gap: 0.5 }}>
-                <CustomIconButton size="small" icon={<Eye size={16} />} color="rgb(77 141 225)" onClick={() => handleView(params.row)} />
-                <CustomIconButton size="small" icon={<Pencil size={16} />} color="green" onClick={() => handleEdit(params.row)} />
-                <CustomIconButton size="small" icon={<Trash2 size={16} />} color="hsl(0 84.2% 60.2%)" onClick={() => handleDelete(params.row.id)} />
-            </Box>
-        ),
-    },
+  },
+  {
+    field: "isActive",
+    headerName: "Status",
+    flex: 0.6,
+    renderCell: (params) => (
+      <Chip
+        label={params.row.isActive ? "ACTIVE" : "INACTIVE"}
+        color={params.row.isActive ? "success" : "default"}
+        size="small"
+      />
+    ),
+  },
+  {
+    field: "createdAt",
+    headerName: "Created At",
+    flex: 1,
+    renderCell: (params) =>
+      params.row.createdAt
+        ? new Date(params.row.createdAt).toLocaleDateString()
+        : "N/A",
+  },
+  {
+    field: "action",
+    headerName: "Action",
+    width: 180,
+    sortable: false,
+    renderCell: (params) => (
+      <Box sx={{ display: "flex", gap: 0.5 }}>
+        <CustomIconButton
+          size="small"
+          icon={<Eye size={16} />}
+          color="rgb(77 141 225)"
+          onClick={() => handleView(params.row)}
+        />
+        <CustomIconButton
+          size="small"
+          icon={<Pencil size={16} />}
+          color="green"
+          onClick={() => handleEdit(params.row)}
+        />
+        <CustomIconButton
+          size="small"
+          icon={<Trash2 size={16} />}
+          color="hsl(0 84.2% 60.2%)"
+          onClick={() => handleDelete(params.row.id)}
+        />
+      </Box>
+    ),
+  },
 ];
 
 export const orderDetailsTableColumns = ({ handleDelete, handleView }) => [

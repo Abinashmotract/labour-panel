@@ -69,7 +69,7 @@ const SideBar = () => {
       // { title: "Appointment Status", path: "/appointment-status", icon: <PersonOutlined /> },
     ],
     vendor: [
-      { title: "Packages", path: "/packages", icon: <InventoryOutlined /> },
+      { title: "Job Post", path: "/job-post", icon: <InventoryOutlined /> },
       { title: "Services", path: "/services", icon: <CalendarMonthOutlined /> },
       { title: "Portfolio", path: "/portfolio", icon: <AddCircleOutline /> },
       {

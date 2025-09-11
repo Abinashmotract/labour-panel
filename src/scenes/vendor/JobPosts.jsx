@@ -15,76 +15,84 @@ import { tokens } from "../../theme";
 import { showErrorToast, showSuccessToast } from "../../Toast";
 import Cookies from "js-cookie";
 import { CustomIconButton } from "../../custom/Button";
-import { packageTableColumns } from "../../custom/TableColumns";
+import { jobPostTableColumns } from "../../custom/TableColumns";
 import Alert from "../../custom/Alert";
-import PackageEntityDialog from '../../components/PackageEntityDialog';
+import JobPostDialog from '../../components/JobPostDialog';
 
-export default function Packages() {
-  const [allServices, setAllServices] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
+export default function JobPosts() {
+  const [allJobPosts, setAllJobPosts] = useState([]);
+  const [filteredJobPosts, setFilteredJobPosts] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [loading, setLoading] = useState(true);
   const [deleteId, setDeleteId] = useState(null);
   const [alertOpen, setAlertOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [isViewDialog, setIsViewDialog] = useState(false);
-  const [openPackageDialog, setOpenPackageDialog] = useState(false);
-  const [viewRow, setViewRow] = useState(null);
-  const [editRow, setEditRow] = useState(null);
-  const [editMode, setEditMode] = useState(false);
+  const [openJobPostDialog, setOpenJobPostDialog] = useState(false);
+const [viewRow, setViewRow] = useState(null);
+const [editRow, setEditRow] = useState(null);
+const [editMode, setEditMode] = useState(false);
+const [isViewDialog, setIsViewDialog] = useState(false);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const authToken = Cookies.get("token");
 
-  const fetchAllPackage = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(`${API_BASE_URL}/package/stylist/get`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-      if (response?.data?.status === 200 && response?.data?.success) {
-        const fullData = (response?.data?.data || []).map((item) => ({ ...item, id: item._id }));
-        setAllServices(fullData);
-      } else {
-        showErrorToast(response?.data?.message || "Failed to fetch packages");
-      }
-    } catch (error) {
-      showErrorToast("Error fetching packages");
-    } finally {
-      setLoading(false);
+  const fetchAllJobPosts = async () => {
+  setLoading(true);
+  try {
+    const response = await axios.get(`${API_BASE_URL}/admin/all-jobs`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    // ✅ API response me status nahi hai, sirf success hai
+    if (response?.data?.success) {
+      const fullData = (response?.data?.data || []).map((item) => ({
+        ...item,
+        id: item._id,
+      }));
+      setAllJobPosts(fullData);
+    } else {
+      showErrorToast(response?.data?.message || "Failed to fetch job posts");
     }
-  };
+  } catch (error) {
+    showErrorToast("Error fetching job posts");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     if (authToken) {
-      fetchAllPackage();
+      fetchAllJobPosts();
     }
   }, [authToken]);
 
   useEffect(() => {
     if (searchText === "") {
-      setFilteredUsers(allServices);
+      setFilteredJobPosts(allJobPosts);
     } else {
-      setFilteredUsers(
-        allServices.filter((pkg) =>
-          (pkg.title || pkg.name || "").toLowerCase().includes(searchText)
+      setFilteredJobPosts(
+        allJobPosts.filter((post) =>
+          (post.title || "").toLowerCase().includes(searchText.toLowerCase()) ||
+          (post.description || "").toLowerCase().includes(searchText.toLowerCase()) ||
+          (post.location || "").toLowerCase().includes(searchText.toLowerCase())
         )
       );
     }
-  }, [allServices, searchText]);
+  }, [allJobPosts, searchText]);
 
-  const handleOpenCategory = () => {
+  const handleOpenJobPost = () => {
     setEditRow(null);
     setEditMode(false);
-    setOpenPackageDialog(true);
+    setOpenJobPostDialog(true);
   };
 
-  const handleCloseCategoryDialog = () => {
-    setOpenPackageDialog(false);
+  const handleCloseJobPostDialog = () => {
+    setOpenJobPostDialog(false);
   };
 
   const handleSearch = (e) => {
@@ -101,19 +109,18 @@ export default function Packages() {
     if (!deleteId) return;
     setDeleting(true);
     try {
-      const response = await axios.delete(`${API_BASE_URL}/package/delete/${deleteId}`, {
+      const response = await axios.delete(`${API_BASE_URL}/jobposts/${deleteId}`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
         },
       });
       if (response?.data?.status === 200) {
-        showSuccessToast(response?.data?.message || "Package deleted successfully");
-        setAllServices((prevServices) => prevServices.filter((service) => service.id !== deleteId));
-        setFilteredUsers((prevUsers) => prevUsers.filter((user) => user.id !== deleteId));
-        await fetchAllPackage();
+        showSuccessToast(response?.data?.message || "Job post deleted successfully");
+        setAllJobPosts((prev) => prev.filter((post) => post.id !== deleteId));
+        await fetchAllJobPosts();
       } else {
-        showErrorToast("Failed to delete package.");
+        showErrorToast("Failed to delete job post.");
       }
     } catch (error) {
       showErrorToast(error?.response?.data?.message || "An error occurred while deleting.");
@@ -127,7 +134,7 @@ export default function Packages() {
   const handleEdit = (row) => {
     setEditRow(row);
     setEditMode(true);
-    setOpenPackageDialog(true);
+    setOpenJobPostDialog(true);
   };
 
   const handleView = (row) => {
@@ -140,50 +147,51 @@ export default function Packages() {
     setViewRow(null);
   };
 
-  const columns = packageTableColumns({ handleDelete, handleView, handleEdit });
+  const columns = jobPostTableColumns({ handleDelete, handleView, handleEdit });
 
   return (
-    <Box className="p-1">
+    <Box>
       <Container maxWidth={false}>
-        <Header title="Create Package" />
+        <Header title="Job Posts" />
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2, flexDirection: { xs: "column", sm: "row" }, gap: 2, }}>
           <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: '1px solid purple', borderRadius: '10px', width: { xs: '100%', sm: 'auto' }, }}>
-            <InputBase placeholder="Search Package" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
+            <InputBase placeholder="Search Job Posts" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
             <IconButton type="button" sx={{ p: 1 }}>
               <SearchOutlined />
             </IconButton>
           </Box>
-          <CustomIconButton icon={<PersonAdd />} text="Add New Package" fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenCategory} sx={{ width: { xs: '100%', sm: 'auto' } }} />
+          <CustomIconButton icon={<PersonAdd />} text="Create Job Post" fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenJobPost} sx={{ width: { xs: '100%', sm: 'auto' } }} />
         </Box>
-        <CustomTable columns={columns} rows={filteredUsers} loading={loading} noRowsMessage="No products found" />
+        <CustomTable columns={columns} rows={filteredJobPosts} loading={loading} noRowsMessage="No job posts found" />
       </Container>
 
-      <PackageEntityDialog
-        open={openPackageDialog}
+      <JobPostDialog
+        open={openJobPostDialog}
         handleClose={() => {
-          setOpenPackageDialog(false);
+          setOpenJobPostDialog(false);
           setEditMode(false);
           setEditRow(null);
         }}
         onSuccess={() => {
-          setOpenPackageDialog(false);
+          setOpenJobPostDialog(false);
           setEditMode(false);
           setEditRow(null);
-          fetchAllPackage();
+          fetchAllJobPosts();
         }}
         editMode={editMode}
         rowData={editRow}
       />
-      <PackageEntityDialog
+      <JobPostDialog
         open={isViewDialog}
         handleClose={handleCloseViewDialog}
         viewMode={true}
         rowData={viewRow}
       />
+      
       <Alert
         open={alertOpen}
-        title="Delete Service"
-        description="Are you sure you want to delete this service? This action cannot be undone."
+        title="Delete Job Post"
+        description="Are you sure you want to delete this job post? This action cannot be undone."
         onClose={() => setAlertOpen(false)}
         onConfirm={handleConfirmDelete}
         loading={deleting}
@@ -191,4 +199,4 @@ export default function Packages() {
       />
     </Box>
   );
-};
+}

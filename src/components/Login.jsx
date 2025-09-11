@@ -1,10 +1,25 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Grid, Box, Button, Typography, FormControl, RadioGroup, FormControlLabel, Radio } from "@mui/material";
-import { Email, Visibility, VisibilityOff, Lock, PersonOutlined } from "@mui/icons-material";
+import {
+  Grid,
+  Box,
+  Button,
+  Typography,
+  FormControl,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from "@mui/material";
+import {
+  Email,
+  Visibility,
+  VisibilityOff,
+  Lock,
+  PersonOutlined,
+} from "@mui/icons-material";
 import logo from "../assets/images/LOGO2.jpeg";
 import watermark from "../assets/images/watermark1.png";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import "../css/login.scss";
 import Input from "../custom/Input";
 import axios from "axios";
@@ -17,6 +32,7 @@ const Login = ({ onLoginSuccess }) => {
   const [panelType, setPanelType] = useState("adminpanel");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const getCurrentLocation = async () => {
     try {
@@ -38,7 +54,6 @@ const Login = ({ onLoginSuccess }) => {
       return {}; // return empty object if location fetching fails
     }
   };
-
 
   const handleLogin = async () => {
     setError("");
@@ -63,19 +78,19 @@ const Login = ({ onLoginSuccess }) => {
         localStorage.setItem("isAuthenticated", "true");
         Cookies.set("token", token, { expires: 1 });
         localStorage.setItem("panelType", "admin");
-        onLoginSuccess(true, 'admin', token, null);
+        onLoginSuccess(true, "admin", token, null);
       } else {
-        if (!email || !password) {
+        if (!phoneNumber || !password) {
           setError("Please fill in all fields");
           return;
         }
         const location = await getCurrentLocation();
         const response = await axios.post(`${API_BASE_URL}/auth/login`, {
-          email,
+          phoneNumber,
           password,
-          role: "stylist",
+          role: "contractor",
           latitude: location.latitude,
-          longitude: location.longitude
+          longitude: location.longitude,
         });
 
         const token = response.data.token;
@@ -89,16 +104,31 @@ const Login = ({ onLoginSuccess }) => {
         onLoginSuccess(true, "vendor", token);
       }
     } catch (error) {
-      setError(error.response?.data?.message || "Login failed. Please try again.");
+      setError(
+        error.response?.data?.message || "Login failed. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Box className="login-container" sx={{ height: "100vh", display: "flex", flexDirection: "column", }}>
+    <Box
+      className="login-container"
+      sx={{ height: "100vh", display: "flex", flexDirection: "column" }}
+    >
       <Grid container spacing={0} sx={{ flex: 1 }}>
-        <Grid item xs={12} md={8} className="left-column" sx={{ position: "relative", overflow: "hidden", minHeight: { xs: "50vh", md: "100%" }, }}>
+        <Grid
+          item
+          xs={12}
+          md={8}
+          className="left-column"
+          sx={{
+            position: "relative",
+            overflow: "hidden",
+            minHeight: { xs: "50vh", md: "100%" },
+          }}
+        >
           {/* <video autoPlay muted loop playsInline style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0, }}>
             <source src={watermark1} type="video/mp4" />
             Your browser does not support the video tag.
@@ -144,10 +174,12 @@ const Login = ({ onLoginSuccess }) => {
                 fontSize: { sm: "1rem" },
               }}
             >
-              Find reliable mistri and labour workers for your home or commercial projects. Whether it’s carpentry, plumbing, electrical, or general repairs — get skilled professionals at your doorstep, quickly and affordably.
+              Find reliable mistri and labour workers for your home or
+              commercial projects. Whether it’s carpentry, plumbing, electrical,
+              or general repairs — get skilled professionals at your doorstep,
+              quickly and affordably.
             </Typography>
           </Box>
-
         </Grid>
         <Grid
           item
@@ -180,12 +212,26 @@ const Login = ({ onLoginSuccess }) => {
               <img src={logo} alt="logo" height="80" />
             </Box>
             <FormControl>
-              <RadioGroup row aria-labelledby="panel-selection" name="panel-selection" value={panelType} onChange={(e) => setPanelType(e.target.value)}>
-                <FormControlLabel value="adminpanel" control={<Radio />} label="ADMIN PANEL " />
-                <FormControlLabel value="vendorpanel" control={<Radio />} label="CONTRACTE PANEL" />
+              <RadioGroup
+                row
+                aria-labelledby="panel-selection"
+                name="panel-selection"
+                value={panelType}
+                onChange={(e) => setPanelType(e.target.value)}
+              >
+                <FormControlLabel
+                  value="adminpanel"
+                  control={<Radio />}
+                  label="ADMIN PANEL "
+                />
+                <FormControlLabel
+                  value="vendorpanel"
+                  control={<Radio />}
+                  label="CONTRACTE PANEL"
+                />
               </RadioGroup>
             </FormControl>
-            {panelType === "adminpanel" || panelType === "vendorpanel" ? (
+            {panelType === "adminpanel" ? (
               <>
                 <Box className="mb-2">
                   <Input
@@ -194,7 +240,6 @@ const Login = ({ onLoginSuccess }) => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     icon={<Email />}
-                    className="mb-2"
                   />
                 </Box>
                 <Box>
@@ -209,7 +254,30 @@ const Login = ({ onLoginSuccess }) => {
                   />
                 </Box>
               </>
-            ) : null}
+            ) : (
+              <>
+                <Box className="mb-2">
+                  <Input
+                    placeholder="Phone Number"
+                    type="text"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    icon={<PersonOutlined />}
+                  />
+                </Box>
+                <Box>
+                  <Input
+                    placeholder="Password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    icon={<Lock />}
+                    endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
+                    onEndIconClick={() => setShowPassword(!showPassword)}
+                  />
+                </Box>
+              </>
+            )}
 
             {error && (
               <Typography color="error" sx={{ mt: 1, mb: 1 }}>
@@ -233,10 +301,8 @@ const Login = ({ onLoginSuccess }) => {
             </Button>
           </Box>
         </Grid>
-
       </Grid>
     </Box>
-
   );
 };
 

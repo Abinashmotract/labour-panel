@@ -8,7 +8,7 @@ import VendorDashboard from "./vendors/VendorDashboard";
 import VendorProfile from "./scenes/vendor/VendorProfile";
 import ServiceManagement from "./scenes/vendor/ServiceManagement";
 import Appointment from "./scenes/vendor/Appointment";
-import Packages from "./scenes/vendor/Packages";
+import JobPosts from "./scenes/vendor/JobPosts";
 import Availability from "./scenes/vendor/Availability";
 import Portfolio from "./scenes/vendor/Portfolio";
 import Product from "./scenes/admin/Product";
@@ -50,7 +50,7 @@ const AppRouter = () => {
                 <Route index element={<VendorDashboard />} />
                 <Route path="services" element={<Services />} />
                 <Route path="appointment" element={<Appointment />} />
-                <Route path="packages" element={<Packages />} />
+                <Route path="job-post" element={<JobPosts />} />
                 <Route path="availability" element={<Availability />} />
                 <Route path="portfolio" element={<Portfolio />} />
                 <Route path="stylist-profile" element={<VendorProfile />} />
@@ -61,6 +61,8 @@ const AppRouter = () => {
           </Route>
         </Route>
       </Routes>
+import AppointmentStatus from "./scenes/admin/AppointmentStatus";
+import AllReviews from "./scenes/admin/AllReviews";
     </Router>
   );
 };
