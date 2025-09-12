@@ -1,6 +1,6 @@
 import { Trash2, Eye, Pencil, TransgenderIcon, Plus } from "lucide-react";
 import { CustomIconButton } from "./Button";
-import { Box, Chip, CircularProgress, Switch, Typography } from "@mui/material";
+import { Box, Chip, CircularProgress, Switch, Typography, MenuItem, Select } from "@mui/material";
 import ImageWithLoader from "./ImageWithLoader";
 import PersonIcon from "@mui/icons-material/Person";
 
@@ -621,6 +621,114 @@ export const jobPostTableColumns = ({ handleDelete, handleView, handleEdit }) =>
           icon={<Trash2 size={16} />}
           color="hsl(0 84.2% 60.2%)"
           onClick={() => handleDelete(params.row.id)}
+        />
+      </Box>
+    ),
+  },
+];
+
+export const jobApplicationTableColumns = ({ 
+  handleDelete, 
+  handleView, 
+  handleStatusUpdate,
+  updatingStatus 
+}) => [
+  { 
+    field: "jobTitle", 
+    headerName: "Job Title", 
+    flex: 1,
+    renderCell: (params) => (
+      <Typography variant="body2" fontWeight="500">
+        {params.row.jobTitle}
+      </Typography>
+    )
+  },
+  { 
+    field: "applicantName", 
+    headerName: "Applicant", 
+    flex: 1,
+    renderCell: (params) => (
+      <Box>
+        <Typography variant="body2" fontWeight="500">
+          {params.row.applicantName}
+        </Typography>
+        <Typography variant="caption" color="text.secondary">
+          {params.row.applicantPhone}
+        </Typography>
+      </Box>
+    )
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    flex: 1,
+    renderCell: (params) => {
+      const status = params.row.status || "pending";
+      const statusColors = {
+        pending: { bg: "#FFF3CD", color: "#856404" },  
+        accepted: { bg: "#D4EDDA", color: "#155724" },
+        rejected: { bg: "#F8D7DA", color: "#721C24" }, 
+        hired: { bg: "#CCE5FF", color: "#004085" },     
+        completed: { bg: "#E2E3E5", color: "#383D41" },
+      };
+      const { bg, color } = statusColors[status] || { bg: "#FFF", color: "#000" };
+
+      return (
+        <Select
+          value={status}
+          onChange={(e) => handleStatusUpdate(params.row.id, e.target.value)}
+          size="small"
+          disabled={updatingStatus === params.row.id}
+          sx={{
+            minWidth: 120,
+            height: 32,
+            bgcolor: bg,
+            color: color,
+            fontWeight: "bold",
+            borderRadius: "6px",
+            "& .MuiSelect-select": {
+              padding: "6px 32px 6px 12px",
+              fontSize: "0.875rem",
+            },
+          }}
+        >
+          <MenuItem value="pending">Pending</MenuItem>
+          <MenuItem value="accepted">Accepted</MenuItem>
+          <MenuItem value="rejected">Rejected</MenuItem>
+          <MenuItem value="hired">Hired</MenuItem>
+          <MenuItem value="completed">Completed</MenuItem>
+        </Select>
+      );
+    },
+  },
+  {
+    field: "appliedDate",
+    headerName: "Applied Date",
+    flex: 1,
+    renderCell: (params) =>
+      params.row.appliedDate
+        ? new Date(params.row.appliedDate).toLocaleDateString()
+        : "N/A",
+  },
+  {
+    field: "action",
+    headerName: "Action",
+    width: 120,
+    sortable: false,
+    renderCell: (params) => (
+      <Box sx={{ display: "flex", gap: 0.5 }}>
+        <CustomIconButton
+          size="small"
+          icon={<Eye size={16} />}
+          color="rgb(77 141 225)"
+          onClick={() => handleView(params.row)}
+        />
+        <CustomIconButton
+          size="small"
+          icon={<Trash2 size={16} />}
+          color="hsl(0 84.2% 60.2%)"
+          onClick={() => handleDelete(params.row.id)}
+          disabled={updatingStatus === params.row.id}
         />
       </Box>
     ),

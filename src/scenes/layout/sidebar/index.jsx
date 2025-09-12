@@ -70,18 +70,19 @@ const SideBar = () => {
     ],
     vendor: [
       { title: "Job Post", path: "/job-post", icon: <InventoryOutlined /> },
-      { title: "Services", path: "/services", icon: <CalendarMonthOutlined /> },
-      { title: "Portfolio", path: "/portfolio", icon: <AddCircleOutline /> },
-      {
-        title: "Availability Management",
-        path: "/availability",
-        icon: <AccessTimeOutlined />,
-      },
-      {
-        title: "Appointment Management",
-        path: "/appointment",
-        icon: <HistoryOutlined />,
-      },
+      { title: "Job Application", path: "/application", icon: <InventoryOutlined /> },
+      // { title: "Services", path: "/services", icon: <CalendarMonthOutlined /> },
+      // { title: "Portfolio", path: "/portfolio", icon: <AddCircleOutline /> },
+      // {
+      //   title: "Availability Management",
+      //   path: "/availability",
+      //   icon: <AccessTimeOutlined />,
+      // },
+      // {
+      //   title: "Appointment Management",
+      //   path: "/appointment",
+      //   icon: <HistoryOutlined />,
+      // },
     ],
   };
 
