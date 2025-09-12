@@ -27,10 +27,13 @@ import {
 } from "@mui/icons-material";
 import Item from "./Item";
 import { ToggledContext } from "../../../App";
+import { useTranslation } from 'react-i18next';
 
 const SideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const { toggled, setToggled } = useContext(ToggledContext);
+
+  const { t } = useTranslation();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const panelType = localStorage.getItem("panelType");
@@ -59,9 +62,9 @@ const SideBar = () => {
 
   const navSections = {
     admin: [
-      { title: "Labour/Contractors", path: "/labours", icon: <PeopleAltOutlined /> },
+      { title: t("nav.labourContractors"), path: "/labours", icon: <PeopleAltOutlined /> },
       // { title: "Contracter", path: "/agent", icon: <PeopleAltOutlined /> },
-      { title: "Skills", path: "/skills", icon: <PeopleAltOutlined /> },
+      { title: t("nav.skills"), path: "/skills", icon: <PeopleAltOutlined /> },
       // { title: "Stylist Reviews", path: "/stylist-reviews", icon: <PersonOutlined /> },
       // { title: "Products", path: "/product", icon: <PersonOutlined /> },
       // { title: "Product Category", path: "/category", icon: <PeopleAltOutlined /> },
@@ -69,8 +72,8 @@ const SideBar = () => {
       // { title: "Appointment Status", path: "/appointment-status", icon: <PersonOutlined /> },
     ],
     vendor: [
-      { title: "Job Post", path: "/job-post", icon: <InventoryOutlined /> },
-      { title: "Job Application", path: "/application", icon: <InventoryOutlined /> },
+      { title: t("nav.jobPost"), path: "/job-post", icon: <InventoryOutlined /> },
+      { title: t("nav.jobApplication"), path: "/application", icon: <InventoryOutlined /> },
       // { title: "Services", path: "/services", icon: <CalendarMonthOutlined /> },
       // { title: "Portfolio", path: "/portfolio", icon: <AddCircleOutline /> },
       // {

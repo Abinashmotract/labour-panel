@@ -29,6 +29,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../utils/context/AuthContext";
 import FlexBetween from "../../../components/FlexBetween";
 import useStylistProfile from "../../../hooks/useStylistProfile";
+import { useTranslation, Trans } from 'react-i18next';
+import { CustomIconButton } from "../../../custom/Button";
 
 const Navbar = () => {
   const theme = useTheme();
@@ -40,6 +42,7 @@ const Navbar = () => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const { i18n, t } = useTranslation();
   const { logout } = useAuth();
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
@@ -90,6 +93,11 @@ const Navbar = () => {
     return date.toLocaleString('en-US', options);
   };
 
+    const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    document.documentElement.lang = lng; // update <html lang="...">
+  };
+
   return (
     <FlexBetween
       padding={{ xs: "0.25rem 0.5rem", sm: "0.5rem 1rem" }}
@@ -118,11 +126,30 @@ const Navbar = () => {
               onClick={() => navigate("/")}
               sx={{ "&:hover": { color: "rgba(255, 255, 255, 0.8)", cursor: "pointer" }, whiteSpace: "nowrap" }}
             >
-              STYLIST
+              {t('title')}
             </Typography>
           </Box>
         )}
       </FlexBetween>
+      <div style={{ display: 'flex', gap: 8 }}>
+        <CustomIconButton
+          icon={null}
+          text="English"
+          fontWeight="bold"
+          color="white"
+          variant="outlined"
+          onClick={() => changeLanguage("en")}
+        />
+
+        <CustomIconButton
+          icon={null}
+          text="हिन्दी"
+          fontWeight="bold"
+          color="white"
+          variant="outlined"
+          onClick={() => changeLanguage("hi")}
+        />
+      </div>
       <FlexBetween gap={{ xs: "0.5rem", sm: "2rem" }}>
         {panelType === "vendor" && !isMobile && (
           <Box display="flex" alignItems="center" gap="0.5rem">

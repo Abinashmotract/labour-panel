@@ -1,0 +1,34 @@
+{
+  "title": "Contractor",
+  "dashboard": {
+    "headerTitle": "CONTRACTOR DASHBOARD",
+    "headerSubtitle": "Manage your jobs and workforce",
+    "activeJobs": "Active Jobs",
+    "availableWorkers": "Available Workers",
+    "pendingApplications": "Pending Applications",
+    "totalEarnings": "Total Earnings",
+    "viewDetails": "View details",
+    "quickActions": "Quick Actions",
+    "postNewJob": "Post New Job",
+    "findWorkers": "Find Workers",
+    "processPayments": "Process Payments",
+    "recentJobPosts": "Recent Job Posts",
+    "viewAll": "View All",
+    "workers": "workers",
+    "earningsOverview": "Earnings Overview",
+    "workerSkillsDistribution": "Worker Skills Distribution",
+    "upcomingTasks": "Upcoming Tasks",
+    "interviewScheduled": "Interview scheduled",
+    "interviewTime": "Tomorrow, 10:00 AM",
+    "payWorkers": "Pay workers",
+    "payWorkersDue": "Due in 3 days",
+    "constructionJobStarts": "Construction job starts",
+    "constructionJobStartsTime": "Next Monday"
+  },
+   "nav": {
+    "labourContractors": "Labour/Contractors",
+    "skills": "Skills",
+    "jobPost": "Job Post",
+    "jobApplication": "Job Application"
+  }
+}
