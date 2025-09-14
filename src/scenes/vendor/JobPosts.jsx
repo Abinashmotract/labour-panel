@@ -42,7 +42,7 @@ const [isViewDialog, setIsViewDialog] = useState(false);
   const fetchAllJobPosts = async () => {
   setLoading(true);
   try {
-    const response = await axios.get(`${API_BASE_URL}/admin/all-jobs`, {
+    const response = await axios.get(`${API_BASE_URL}/contractor/all-jobs`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
@@ -111,7 +111,7 @@ const [isViewDialog, setIsViewDialog] = useState(false);
     if (!deleteId) return;
     setDeleting(true);
     try {
-      const response = await axios.delete(`${API_BASE_URL}/jobposts/${deleteId}`, {
+      const response = await axios.delete(`${API_BASE_URL}/contractor/delete-job-posts/${deleteId}`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",

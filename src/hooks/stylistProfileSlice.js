@@ -8,7 +8,7 @@ export const fetchStylistProfile = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = Cookies.get('token');
-      const response = await axios.get(`${API_BASE_URL}/stylist/get`, {
+      const response = await axios.get(`${API_BASE_URL}/user/me`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,

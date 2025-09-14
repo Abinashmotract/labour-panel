@@ -29,10 +29,10 @@ export default function JobApplicationDialog({ open, onClose, rowData }) {
       </DialogTitle>
 
       <DialogContent dividers>
-        {/* Applicant Info */}
+        {/* Labour Details */}
         <Box mb={3}>
           <Typography variant="h6" gutterBottom>
-            Applicant Information
+            Labour Details
           </Typography>
           <Typography variant="body1" fontWeight="500">
             {rowData?.labourDetails?.firstName} {rowData?.labourDetails?.lastName}
@@ -47,10 +47,10 @@ export default function JobApplicationDialog({ open, onClose, rowData }) {
 
         <Divider />
 
-        {/* Job Info */}
+        {/* Job Details */}
         <Box my={3}>
           <Typography variant="h6" gutterBottom>
-            Job Information
+            Job Details
           </Typography>
           <Typography variant="body1" fontWeight="500">
             {rowData?.jobDetails?.title}
@@ -61,9 +61,11 @@ export default function JobApplicationDialog({ open, onClose, rowData }) {
           <Typography variant="body2" color="text.secondary">
             📍 {rowData?.jobDetails?.location}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            💰 ₹{rowData?.jobDetails?.budget}
-          </Typography>
+          {rowData?.jobDetails?.budget && (
+            <Typography variant="body2" color="text.secondary">
+              💰 ₹{rowData?.jobDetails?.budget}
+            </Typography>
+          )}
         </Box>
 
         <Divider />
@@ -80,7 +82,7 @@ export default function JobApplicationDialog({ open, onClose, rowData }) {
 
         <Divider />
 
-        {/* Status */}
+        {/* Application Status */}
         <Box my={3}>
           <Typography variant="h6" gutterBottom>
             Application Status

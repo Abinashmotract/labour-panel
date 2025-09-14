@@ -530,19 +530,60 @@ export const jobPostTableColumns = ({ handleDelete, handleView, handleEdit }) =>
       </Typography>
     ),
   },
-  { field: "location", headerName: "Location", flex: 1 },
   {
-    field: "budgetOrWage",
-    headerName: "Budget / Wage",
+  field: "location",
+  headerName: "Location",
+  flex: 1,
+  renderCell: (params) => {
+    const coords = params.row.location?.coordinates;
+    if (!coords || coords.length < 2) return "N/A";
+
+    const [lng, lat] = coords;
+    const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+
+    return (
+      <a
+        href={mapUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: "#1976d2", textDecoration: "underline" }}
+      >
+        {lat.toFixed(4)}, {lng.toFixed(4)}
+      </a>
+    );
+  },
+},
+    {
+    field: "labourersFilled",
+    headerName: "Labours Filled",
     flex: 0.8,
     renderCell: (params) => {
-      const amount = params.row.budget || params.row.wage || 0;
+      const labourersFilled = params.row.labourersFilled || 0;
       return (
         <Chip
-          label={`₹${amount}`}
+          label={labourersFilled}
           size="small"
           sx={{
             bgcolor: "success.main",
+            color: "white",
+            fontWeight: "bold",
+          }}
+        />
+      );
+    },
+  },
+  {
+    field: "labourersRequired",
+    headerName: "Labours Required",
+    flex: 0.8,
+    renderCell: (params) => {
+      const labourersRequired = params.row.labourersRequired || 0;
+      return (
+        <Chip
+          label={labourersRequired}
+          size="small"
+          sx={{
+            bgcolor: "error.main",
             color: "white",
             fontWeight: "bold",
           }}
@@ -589,12 +630,12 @@ export const jobPostTableColumns = ({ handleDelete, handleView, handleEdit }) =>
     ),
   },
   {
-    field: "createdAt",
-    headerName: "Created At",
+    field: "validUntil",
+    headerName: "Valid Until",
     flex: 1,
     renderCell: (params) =>
-      params.row.createdAt
-        ? new Date(params.row.createdAt).toLocaleDateString()
+      params.row.validUntil
+        ? new Date(params.row.validUntil).toLocaleDateString()
         : "N/A",
   },
   {

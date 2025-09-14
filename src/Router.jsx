@@ -51,6 +51,7 @@ const AppRouter = () => {
                 <Route index element={<VendorDashboard />} />
                 <Route path="job-post" element={<JobPosts />} />
                 <Route path="application" element={<JobApplication />} />
+                <Route path="stylist-profile" element={<VendorProfile />} />
                 {/* <Route path="services" element={<Services />} />
                 <Route path="appointment" element={<Appointment />} />
                 <Route path="availability" element={<Availability />} />
@@ -63,8 +64,6 @@ const AppRouter = () => {
           </Route>
         </Route>
       </Routes>
-import AppointmentStatus from "./scenes/admin/AppointmentStatus";
-import AllReviews from "./scenes/admin/AllReviews";
     </Router>
   );
 };

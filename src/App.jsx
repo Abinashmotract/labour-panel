@@ -36,7 +36,7 @@ function App({ panelType }) {
             <SideBar />
             <Box data-main-content sx={{ flexGrow: 1, display: "flex", flexDirection: "column", minWidth: 0, position: "relative", marginLeft: { xs: 0, md: "250px" }, transition: "margin-left 300ms ease", width: { xs: "100%", md: "calc(100% - 250px)" }, "@media (max-width: 768px)": { marginLeft: 0, width: "100%" } }}>
               <Navbar />
-              <Box sx={{ overflowY: "auto", flex: 1, width: "100%", position: "relative", mt: 2}}>
+              <Box sx={{ overflowY: "auto", flex: 1, width: "100%", position: "relative", mt: 2,}}>
                 <Outlet />
               </Box>
             </Box>
