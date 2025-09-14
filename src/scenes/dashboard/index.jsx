@@ -17,6 +17,7 @@ import { API_BASE_URL } from "../../utils/apiConfig";
 import Cookies from "js-cookie";
 import PersonIcon from '@mui/icons-material/Person';
 import BookIcon from '@mui/icons-material/Book';
+import { useTranslation } from 'react-i18next';
 
 const timeAgo = (date) => {
   const now = new Date();
@@ -36,6 +37,7 @@ function Dashboard() {
 
 
   const theme = useTheme();
+  const { t } = useTranslation();
   const colors = tokens(theme.palette.mode);
   const authToken = Cookies.get("token");
 

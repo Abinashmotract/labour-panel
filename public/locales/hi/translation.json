@@ -23,10 +23,12 @@
     "payWorkers": "कर्मचारियों को भुगतान करें",
     "payWorkersDue": "3 दिनों में देय",
     "constructionJobStarts": "निर्माण कार्य शुरू",
-    "constructionJobStartsTime": "अगले सोमवार"
+    "constructionJobStartsTime": "अगले सोमवार",
+    "labourjobapplications": "मज़दूर नौकरी आवेदन"
   },
   "nav": {
     "labourContractors": "मज़दूर/ठेकेदार",
+    "labour": "मज़दूर",
     "skills": "कौशल",
     "jobPost": "नौकरी पोस्ट",
     "jobApplication": "नौकरी आवेदन"

@@ -349,7 +349,7 @@ export default function JobPostDialog({
                 />
               </Box>
               <Box mb={1}>
-                <label style={{ fontWeight: 500 }}>Location Address *</label>
+                <label style={{ fontWeight: 500 }}>Work Address *</label>
                 <Input
                   name="location"
                   value={fields.location}

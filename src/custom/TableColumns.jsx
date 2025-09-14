@@ -634,21 +634,21 @@ export const jobPostTableColumns = ({ handleDelete, handleView, handleEdit }) =>
     const coords = params.row.location?.coordinates;
     if (!coords || coords.length < 2) return "N/A";
 
-    const [lng, lat] = coords;
-    const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+        const [lng, lat] = coords;
+        const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
 
-    return (
-      <a
-        href={mapUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ color: "#1976d2", textDecoration: "underline" }}
-      >
-        {lat.toFixed(4)}, {lng.toFixed(4)}
-      </a>
-    );
-  },
-},
+        return (
+        <a
+            href={mapUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#1976d2", textDecoration: "underline" }}
+        >
+            {lat.toFixed(4)}, {lng.toFixed(4)}
+        </a>
+        );
+    },
+    },
     {
     field: "labourersFilled",
     headerName: "Labours Filled",
@@ -764,23 +764,8 @@ export const jobPostTableColumns = ({ handleDelete, handleView, handleEdit }) =>
   },
 ];
 
-export const jobApplicationTableColumns = ({ 
-  handleDelete, 
-  handleView, 
-  handleStatusUpdate,
-  updatingStatus 
-}) => [
-  { 
-    field: "jobTitle", 
-    headerName: "Job Title", 
-    flex: 1,
-    renderCell: (params) => (
-      <Typography variant="body2" fontWeight="500">
-        {params.row.jobTitle}
-      </Typography>
-    )
-  },
-  { 
+export const jobApplicationTableColumns = ({ handleDelete, handleView, handleStatusUpdate,updatingStatus }) => [
+    { 
     field: "applicantName", 
     headerName: "Applicant", 
     flex: 1,
@@ -789,10 +774,20 @@ export const jobApplicationTableColumns = ({
         <Typography variant="body2" fontWeight="500">
           {params.row.applicantName}
         </Typography>
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" color="text.secondary" sx={{fontWeight:"bold", fontSize:"15px"}}>
           {params.row.applicantPhone}
         </Typography>
       </Box>
+    )
+  },
+  { 
+    field: "jobTitle", 
+    headerName: "Job Title", 
+    flex: 1,
+    renderCell: (params) => (
+      <Typography variant="body2" fontWeight="500">
+        {params.row.jobTitle}
+      </Typography>
     )
   },
   {
@@ -809,7 +804,6 @@ export const jobApplicationTableColumns = ({
         completed: { bg: "#E2E3E5", color: "#383D41" },
       };
       const { bg, color } = statusColors[status] || { bg: "#FFF", color: "#000" };
-
       return (
         <Select
           value={status}

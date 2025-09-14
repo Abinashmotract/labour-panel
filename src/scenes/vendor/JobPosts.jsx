@@ -42,7 +42,7 @@ const [isViewDialog, setIsViewDialog] = useState(false);
   const fetchAllJobPosts = async () => {
   setLoading(true);
   try {
-    const response = await axios.get(`${API_BASE_URL}/contractor/all-jobs`, {
+    const response = await axios.get(`${API_BASE_URL}/contractor/all-contractor-jobs`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,

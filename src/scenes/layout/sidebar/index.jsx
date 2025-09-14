@@ -74,7 +74,7 @@ const SideBar = () => {
     vendor: [
       { title: t("nav.jobPost"), path: "/job-post", icon: <InventoryOutlined /> },
       { title: t("nav.jobApplication"), path: "/application", icon: <InventoryOutlined /> },
-      { title: "Labours", path: "/labour", icon: <CalendarMonthOutlined /> },
+      { title: t("nav.labour"), path: "/labour", icon: <CalendarMonthOutlined /> },
       // { title: "Portfolio", path: "/portfolio", icon: <AddCircleOutline /> },
       // {
       //   title: "Availability Management",
@@ -191,7 +191,7 @@ const SideBar = () => {
           }}
         >
           <Item
-            title="Dashboard"
+            title={t("dashboard.headerTitle")}
             path="/"
             colors={colors}
             icon={<DashboardOutlined sx={{ color: "#FFFFFF" }} />}

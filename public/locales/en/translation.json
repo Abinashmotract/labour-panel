@@ -1,7 +1,7 @@
 {
   "title": "Contractor",
   "dashboard": {
-    "headerTitle": "CONTRACTOR DASHBOARD",
+    "headerTitle": "DASHBOARD",
     "headerSubtitle": "Manage your jobs and workforce",
     "activeJobs": "Active Jobs",
     "availableWorkers": "Available Workers",
@@ -23,10 +23,12 @@
     "payWorkers": "Pay workers",
     "payWorkersDue": "Due in 3 days",
     "constructionJobStarts": "Construction job starts",
-    "constructionJobStartsTime": "Next Monday"
+    "constructionJobStartsTime": "Next Monday",
+    "labourjobapplications": "Labour Job Applications"
   },
    "nav": {
     "labourContractors": "Labour/Contractors",
+    "labour": "Labour",
     "skills": "Skills",
     "jobPost": "Job Post",
     "jobApplication": "Job Application"

@@ -12,6 +12,7 @@ import { CustomIconButton } from "../../custom/Button";
 import { jobApplicationTableColumns } from "../../custom/TableColumns";
 import JobApplicationDialog from "../../components/JobApplicationDialog";
 import Alert from "../../custom/Alert";
+import { useTranslation } from 'react-i18next';
 
 export default function JobApplication() {
   const [allApplications, setAllApplications] = useState([]);
@@ -27,6 +28,7 @@ export default function JobApplication() {
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { t } = useTranslation();
   const authToken = Cookies.get("token");
 
   const fetchAllApplications = async () => {
@@ -203,7 +205,7 @@ export default function JobApplication() {
   return (
     <Box>
       <Container maxWidth={false}>
-        <Header title="Labour Job Applications" />
+        <Header title={t("dashboard.labourjobapplications")} />
         <Box
           sx={{
             display: "flex",
