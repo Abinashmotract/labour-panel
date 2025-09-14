@@ -24,9 +24,28 @@ import { showSuccessToast, showErrorToast } from "../Toast";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { getCoordinatesFromAddress } from "../utils/geocode";
 
 const GOOGLE_API_KEY = "AIzaSyByeL4973jLw5-DqyPtVl79I3eDN4uAuAQ"; 
+
+// 🔹 Google Geocoding API helper
+const getCoordinatesFromAddress = async (address) => {
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+    address
+  )}&key=${GOOGLE_API_KEY}`;
+
+  const response = await axios.get(url);
+
+  if (response.data.status === "OK" && response.data.results.length > 0) {
+    const result = response.data.results[0];
+    return {
+      latitude: result.geometry.location.lat,
+      longitude: result.geometry.location.lng,
+      formattedAddress: result.formatted_address,
+    };
+  } else {
+    throw new Error("Address not found, please try again");
+  }
+};
 
 export default function JobPostDialog({
   open,
@@ -43,8 +62,6 @@ export default function JobPostDialog({
     jobTiming: "",
     labourersRequired: 1,
     validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    latitude: "",
-    longitude: "",
     skills: [],
   });
   const [loading, setLoading] = useState(false);
@@ -72,18 +89,15 @@ export default function JobPostDialog({
         setFields({
           title: rowData?.title || "",
           description: rowData?.description || "",
-          location: rowData?.location || "",
+          location: rowData?.location?.address || "",
           jobTiming: rowData?.jobTiming || "",
           labourersRequired: rowData?.labourersRequired || 1,
           validUntil: rowData?.validUntil
             ? new Date(rowData.validUntil)
             : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-          latitude: rowData?.location?.coordinates?.[1] || "",
-          longitude: rowData?.location?.coordinates?.[0] || "",
           skills: rowData?.skills?.map((skill) => skill._id) || [],
         });
       } else {
-        // Set default coordinates if available from profile or use empty
         setFields({
           title: "",
           description: "",
@@ -91,8 +105,6 @@ export default function JobPostDialog({
           jobTiming: "",
           labourersRequired: 1,
           validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-          latitude: "",
-          longitude: "",
           skills: [],
         });
       }
@@ -133,9 +145,7 @@ export default function JobPostDialog({
       !fields.location ||
       !fields.jobTiming ||
       !fields.labourersRequired ||
-      !fields.validUntil ||
-      !fields.latitude ||
-      !fields.longitude
+      !fields.validUntil
     ) {
       setError("Please fill in all required fields.");
       return;
@@ -151,63 +161,39 @@ export default function JobPostDialog({
       return;
     }
 
-    // Validate coordinates
-    const lat = parseFloat(fields.latitude);
-    const lng = parseFloat(fields.longitude);
-
-    if (isNaN(lat) || isNaN(lng)) {
-      setError("Please enter valid latitude and longitude values");
-      return;
-    }
-
-    if (lat < -90 || lat > 90) {
-      setError("Latitude must be between -90 and 90");
-      return;
-    }
-
-    if (lng < -180 || lng > 180) {
-      setError("Longitude must be between -180 and 180");
-      return;
-    }
-
     setLoading(true);
     setError(null);
 
-   const geo = await getCoordinatesFromAddress(fields.location, GOOGLE_API_KEY);
-
-    const payload = {
-      title: fields.title,
-      description: fields.description,
-      location: {
-        type: "Point",
-        coordinates: [geo.longitude, geo.latitude],
-        address: geo.formattedAddress,
-      },
-      jobTiming: fields.jobTiming,
-      labourersRequired: Number(fields.labourersRequired),
-      validUntil: fields.validUntil.toISOString(),
-      latitude: lat,
-      longitude: lng,
-      skills: fields.skills,
-    };
-
     try {
+      // 🔹 Get lat/lng from Google API
+      const geo = await getCoordinatesFromAddress(fields.location);
+
+      const payload = {
+        title: fields.title,
+        description: fields.description,
+        location: {
+          type: "Point",
+          coordinates: [geo.longitude, geo.latitude],
+          address: geo.formattedAddress,
+        },
+        jobTiming: fields.jobTiming,
+        labourersRequired: Number(fields.labourersRequired),
+        validUntil: fields.validUntil.toISOString(),
+        skills: fields.skills,
+      };
+
       let response;
       if (editMode && rowData && rowData._id) {
         response = await axios.put(
           `${API_BASE_URL}/contractor/update-job-posts/${rowData._id}`,
           payload,
-          {
-            headers: { Authorization: `Bearer ${authToken}` },
-          }
+          { headers: { Authorization: `Bearer ${authToken}` } }
         );
       } else {
         response = await axios.post(
           `${API_BASE_URL}/contractor/job-posts`,
           payload,
-          {
-            headers: { Authorization: `Bearer ${authToken}` },
-          }
+          { headers: { Authorization: `Bearer ${authToken}` } }
         );
       }
 
@@ -222,9 +208,7 @@ export default function JobPostDialog({
         setError(response.data?.message || "Failed to save job post");
       }
     } catch (err) {
-      setError(
-        err.response?.data?.message || "An error occurred while saving job post"
-      );
+      setError(err.message || "Error fetching location");
     } finally {
       setLoading(false);
     }
@@ -264,7 +248,7 @@ export default function JobPostDialog({
                   Location
                 </Typography>
                 <Typography variant="body1">
-                  {rowData?.location || "N/A"}
+                  {rowData?.location?.address || "N/A"}
                 </Typography>
               </Box>
               <Box mb={2}>
@@ -375,19 +359,6 @@ export default function JobPostDialog({
                   required
                 />
               </Box>
-
-              {/* <Box mb={1}>
-                <label style={{ fontWeight: 500 }}>Location Address *</label>
-                <Input
-                  name="location"
-                  value={fields.location}
-                  onChange={handleChange}
-                  placeholder="e.g. Hazratganj, Lucknow"
-                  fullWidth
-                  required
-                />
-              </Box> */}
-
               <Box mb={1}>
                 <label style={{ fontWeight: 500 }}>Job Timing *</label>
                 <FormControl fullWidth required>

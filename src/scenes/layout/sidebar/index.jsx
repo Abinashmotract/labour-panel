@@ -74,7 +74,7 @@ const SideBar = () => {
     vendor: [
       { title: t("nav.jobPost"), path: "/job-post", icon: <InventoryOutlined /> },
       { title: t("nav.jobApplication"), path: "/application", icon: <InventoryOutlined /> },
-      // { title: "Services", path: "/services", icon: <CalendarMonthOutlined /> },
+      { title: "Labours", path: "/labour", icon: <CalendarMonthOutlined /> },
       // { title: "Portfolio", path: "/portfolio", icon: <AddCircleOutline /> },
       // {
       //   title: "Availability Management",

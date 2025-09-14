@@ -52,8 +52,8 @@ const AppRouter = () => {
                 <Route path="job-post" element={<JobPosts />} />
                 <Route path="application" element={<JobApplication />} />
                 <Route path="stylist-profile" element={<VendorProfile />} />
-                {/* <Route path="services" element={<Services />} />
-                <Route path="appointment" element={<Appointment />} />
+                <Route path="labour" element={<Services />} />
+                {/* <Route path="appointment" element={<Appointment />} />
                 <Route path="availability" element={<Availability />} />
                 <Route path="portfolio" element={<Portfolio />} />
                 <Route path="stylist-profile" element={<VendorProfile />} /> */}

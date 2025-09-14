@@ -100,7 +100,7 @@ function Dashboard() {
   ];
 
   return (
-    <Box sx={{ width: "100%", maxWidth: "100%" }}>
+    <Box sx={{ width: "100%", maxWidth: "100%", p:2 }}>
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
           <CircularProgress />

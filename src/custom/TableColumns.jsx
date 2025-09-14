@@ -101,6 +101,102 @@ export const userTableColumns = ({ handleDelete, handleView }) => [
     },
 ];
 
+export const labourTableColumns = ({ handleView }) => [
+  {
+    field: "photo",
+    headerName: "Profile Picture",
+    flex: 0.5,
+    renderCell: (params) => {
+      const photoUrl =
+        params.row.profilePicture && params.row.profilePicture.length > 0
+          ? params.row.profilePicture
+          : null;
+
+      const fallbackUrl =
+        "https://w7.pngwing.com/pngs/406/861/png-transparent-default-facebook-user-profile-blue-silhouette-neck-symbol-sky-folder-users-blue-silhouette-application-thumbnail.png";
+
+      return (
+        <ImageWithLoader
+          src={photoUrl || fallbackUrl}
+          alt={params.row.fullName || "Profile"}
+        />
+      );
+    },
+  },
+  { field: "fullName", headerName: "Full Name", flex: 1 },
+  { field: "email", headerName: "Email", flex: 1 },
+  { field: "mobile", headerName: "Mobile", flex: 1 },
+  {
+    field: "role",
+    headerName: "Role",
+    flex: 1,
+    renderCell: (params) => {
+      const role = params.row.role || "N/A";
+      return (
+        <Chip
+          icon={<PersonIcon sx={{ color: "white" }} />}
+          label={role}
+          size="small"
+          variant="filled"
+          sx={{
+            bgcolor: role !== "N/A" ? "primary.main" : "grey.500",
+            color: "white",
+            fontWeight: "bold",
+            textTransform: "capitalize",
+          }}
+        />
+      );
+    },
+  },
+  {
+    field: "gender",
+    headerName: "Gender",
+    flex: 0.6,
+    renderCell: (params) => {
+      const gender = params.row.gender?.toLowerCase() || "n/a";
+      let chipColor = "grey.500";
+      if (gender === "male") chipColor = "info.main";
+      else if (gender === "female") chipColor = "pink";
+      else if (gender === "other") chipColor = "warning.main";
+
+      return (
+        <Chip
+          icon={<TransgenderIcon sx={{ color: "white" }} />}
+          label={params.row.gender || "N/A"}
+          size="small"
+          variant="filled"
+          sx={{
+            bgcolor: chipColor,
+            color: "white",
+            fontWeight: "bold",
+            textTransform: "capitalize",
+          }}
+        />
+      );
+    },
+  },
+  { field: "isPhoneVerified", headerName: "Phone Verified", flex: 0.7 },
+  { field: "address", headerName: "Address", flex: 1 },
+  { field: "workCategory", headerName: "Work Category", flex: 1 },
+  { field: "workExperience", headerName: "Work Experience", flex: 1 },
+  {
+    field: "action",
+    headerName: "Action",
+    width: 180,
+    sortable: false,
+    renderCell: (params) => (
+      <Box sx={{ display: "flex", gap: 0.5 }}>
+        <CustomIconButton
+          size="small"
+          icon={<Eye size={16} />}
+          color="rgb(77 141 225)"
+          onClick={() => handleView(params.row)}
+        />
+      </Box>
+    ),
+  },
+];
+
 export const productCategoryTableColumns = ({ handleToggleStatus, handleDelete, handleView, togglingIds, handleEdit }) => [
     { field: "productName", headerName: "Category Name", flex: 1 },
     {

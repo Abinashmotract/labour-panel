@@ -205,7 +205,7 @@ const Navbar = () => {
               {profile?.name ? profile.name[0] : "S"}
             </Avatar>
             <Typography variant="subtitle1" fontWeight="bold" sx={{ color: "#222", mb: 0.2 }}>
-              {profile?.fullName || "Stylist Name"}
+              {profile?.fullName || "Contractor Name"}
             </Typography>
             <Typography variant="body2" sx={{ color: "#7b7b7b", mb: 1 }}>
               {profile?.role || "Urban Braids"}
