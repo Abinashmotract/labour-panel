@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from "react";
 import {
   Avatar,
@@ -18,12 +17,9 @@ import {
   MenuOutlined,
   PeopleAltOutlined,
   PersonOutlined,
-  CalendarMonthOutlined,
   InventoryOutlined,
-  AccessTimeOutlined,
-  AddCircleOutline,
   Close,
-  HistoryOutlined,
+  CalendarMonthOutlined,
 } from "@mui/icons-material";
 import Item from "./Item";
 import { ToggledContext } from "../../../App";
@@ -65,6 +61,7 @@ const SideBar = () => {
       { title: t("nav.labourContractors"), path: "/labours", icon: <PeopleAltOutlined /> },
       // { title: "Contracter", path: "/agent", icon: <PeopleAltOutlined /> },
       { title: t("nav.skills"), path: "/skills", icon: <PeopleAltOutlined /> },
+      { title: t("nav.nearbyjobs"), path: "/nearbyjobs", icon: <PeopleAltOutlined /> },
       // { title: "Stylist Reviews", path: "/stylist-reviews", icon: <PersonOutlined /> },
       // { title: "Products", path: "/product", icon: <PersonOutlined /> },
       // { title: "Product Category", path: "/category", icon: <PeopleAltOutlined /> },

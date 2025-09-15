@@ -23,7 +23,7 @@ import {
 } from "@mui/icons-material";
 import { tokens } from "../../theme";
 import { Header } from '../../components';
-import bannerImage from '../../assets/images/banner.jpg';
+import bannerImage from '../../assets/images/AH-12.webp';
 import useStylistProfile from '../../hooks/useStylistProfile';
 import { showErrorToast, showSuccessToast } from '../../Toast';
 import { CustomIconButton } from '../../custom/Button';
@@ -33,15 +33,18 @@ import { fetchStylistProfile } from '../../hooks/stylistProfileSlice';
 import profileimage from '../../assets/images/profileimage.png';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const ContractorProfile = () => {
   const [uploading, setUploading] = React.useState(false);
+
   const { profile, loading, error } = useStylistProfile();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const fileInputRef = React.useRef();
   const authToken = Cookies.get("token");
   const dispatch = useDispatch();
+  const { t } = useTranslation()
 
   const handleUploadClick = () => {
     if (fileInputRef.current) fileInputRef.current.click();
@@ -85,9 +88,9 @@ const ContractorProfile = () => {
   if (!profile) return null;
 
   return (
-    <Box m={{ xs: 1, md: 4 }}>
-      <Header title="Contractor Profile" subtitle="View and manage your profile information" />
-      
+    <Box>
+      <Header title={t("dashboard.contractorprofile")} subtitle="View and manage your profile information" />
+
       {/* Profile Banner */}
       <Box sx={{ position: 'relative', width: '100%', mb: 6, borderRadius: '24px', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.18)', overflow: 'hidden' }}>
         <Box
@@ -188,7 +191,7 @@ const ContractorProfile = () => {
               <Typography variant="h4" fontWeight={600} color={theme.palette.mode === 'dark' ? colors.primary[200] : colors.primary[600]} gutterBottom>
                 Personal Information
               </Typography>
-              
+
               <Grid container spacing={3} sx={{ mt: 1 }}>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">First Name</Typography>
@@ -212,9 +215,9 @@ const ContractorProfile = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">Role</Typography>
-                  <Chip 
-                    label={profile?.role?.toUpperCase()} 
-                    color="primary" 
+                  <Chip
+                    label={profile?.role?.toUpperCase()}
+                    color="primary"
                     variant="filled"
                     sx={{ fontWeight: 'bold' }}
                   />
@@ -243,7 +246,7 @@ const ContractorProfile = () => {
                 <Grid item xs={12}>
                   <Typography variant="subtitle2" color="text.secondary">Location Coordinates</Typography>
                   <Typography variant="body1" fontWeight="500">
-                    {profile?.location?.coordinates 
+                    {profile?.location?.coordinates
                       ? `Longitude: ${profile.location.coordinates[0]}, Latitude: ${profile.location.coordinates[1]}`
                       : 'N/A'
                     }
@@ -261,24 +264,24 @@ const ContractorProfile = () => {
               <Typography variant="h4" fontWeight={600} color={theme.palette.mode === 'dark' ? colors.primary[200] : colors.primary[600]} gutterBottom>
                 Account Status
               </Typography>
-              
+
               <Stack spacing={2} sx={{ mt: 2 }}>
                 <Box>
                   <Typography variant="subtitle2" color="text.secondary">Phone Verification</Typography>
-                  <Chip 
-                    label={profile?.isPhoneVerified ? 'VERIFIED' : 'NOT VERIFIED'} 
-                    color={profile?.isPhoneVerified ? 'success' : 'error'} 
+                  <Chip
+                    label={profile?.isPhoneVerified ? 'VERIFIED' : 'NOT VERIFIED'}
+                    color={profile?.isPhoneVerified ? 'success' : 'error'}
                     size="small"
                   />
                 </Box>
-                
+
                 <Box>
                   <Typography variant="subtitle2" color="text.secondary">Member Since</Typography>
                   <Typography variant="body1" fontWeight="500">
                     {profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : 'N/A'}
                   </Typography>
                 </Box>
-                
+
                 <Box>
                   <Typography variant="subtitle2" color="text.secondary">Last Updated</Typography>
                   <Typography variant="body1" fontWeight="500">
@@ -294,27 +297,27 @@ const ContractorProfile = () => {
               <Typography variant="h4" fontWeight={600} color={theme.palette.mode === 'dark' ? colors.primary[200] : colors.primary[600]} gutterBottom>
                 Quick Actions
               </Typography>
-              
+
               <Stack spacing={2} sx={{ mt: 2 }}>
-                <CustomIconButton 
-                  icon={<Edit />} 
-                  text="Edit Profile" 
-                  color="#6d295a" 
-                  variant="contained" 
+                <CustomIconButton
+                  icon={<Edit />}
+                  text="Edit Profile"
+                  color="#6d295a"
+                  variant="contained"
                   fullWidth
                 />
-                <CustomIconButton 
-                  icon={<Work />} 
-                  text="View Job Posts" 
-                  color="#2d5a78" 
-                  variant="outlined" 
+                <CustomIconButton
+                  icon={<Work />}
+                  text="View Job Posts"
+                  color="#2d5a78"
+                  variant="outlined"
                   fullWidth
                 />
-                <CustomIconButton 
-                  icon={<LocationOn />} 
-                  text="Update Location" 
-                  color="#4caf50" 
-                  variant="outlined" 
+                <CustomIconButton
+                  icon={<LocationOn />}
+                  text="Update Location"
+                  color="#4caf50"
+                  variant="outlined"
                   fullWidth
                 />
               </Stack>

@@ -1,6 +1,6 @@
-import { Box, Container, IconButton, InputBase, useTheme } from "@mui/material";
+import { Box, IconButton, InputBase, useTheme } from "@mui/material";
 import { Header } from "../../components";
-import { PersonAdd, SearchOutlined } from "@mui/icons-material";
+import { PersonAdd, Refresh, SearchOutlined } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CustomTable from "../../custom/Table";
@@ -13,6 +13,8 @@ import Alert from "../../custom/Alert";
 import { showSuccessToast, showErrorToast } from "../../Toast";
 import { CustomIconButton } from "../../custom/Button";
 import AgentEntityDialog from "../../components/AgentEntityDialog";
+import SelectInput from "../../custom/Select";
+import { useTranslation } from 'react-i18next';
 
 export default function CustomerDetails() {
     const [allUsers, setAllUsers] = useState([]);
@@ -27,8 +29,10 @@ export default function CustomerDetails() {
     const [deleteId, setDeleteId] = useState(null);
     const [alertOpen, setAlertOpen] = useState(false);
     const [deleting, setDeleting] = useState(false);
+    const [roleFilter, setRoleFilter] = useState("");
 
     const theme = useTheme();
+     const { t } = useTranslation();
     const colors = tokens(theme.palette.mode);
     const authToken = Cookies.get("token");
 
@@ -71,19 +75,39 @@ export default function CustomerDetails() {
         fetchAllUsers();
     }, []);
 
+    const applyFilters = (users, search = searchText, role = roleFilter) => {
+        let result = users;
+        if (search) {
+            const value = search.toLowerCase();
+            result = result.filter(
+                user =>
+                    user.fullName.toLowerCase().includes(value) ||
+                    user.email.toLowerCase().includes(value) ||
+                    user.mobile.toLowerCase().includes(value)
+            );
+        }
+        if (role) {
+            result = result.filter(user => user.role.toLowerCase() === role.toLowerCase());
+        }
+        setFilteredUsers(result);
+    };
+
     const handleSearch = (e) => {
         const value = e.target.value.toLowerCase();
         setSearchText(value);
-        if (value === "") {
-            setFilteredUsers(allUsers);
-        } else {
-            const filtered = allUsers.filter(user =>
-                user.fullName.toLowerCase().includes(value) ||
-                user.email.toLowerCase().includes(value) ||
-                user.mobile.toLowerCase().includes(value)
-            );
-            setFilteredUsers(filtered);
-        }
+        applyFilters(allUsers, value, roleFilter);
+    };
+
+    const handleRoleFilterChange = (e) => {
+        const value = e.target.value;
+        setRoleFilter(value);
+        applyFilters(allUsers, searchText, value);
+    };
+
+    const handleResetSearch = () => {
+        setSearchText("");
+        setRoleFilter("");
+        fetchAllUsers();
     };
 
     const handleDelete = (id) => {
@@ -154,29 +178,35 @@ export default function CustomerDetails() {
 
     return (
         <Box>
-            <Header title="All Labours" />
+            <Header title={t("dashboard.alllaours")} />
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-                <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: '1px solid purple', borderRadius: '10px' }}>
-                    <InputBase placeholder="Search user" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
-                    <IconButton type="button" sx={{ p: 1 }}>
-                        <SearchOutlined />
-                    </IconButton>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2, flex: 1, maxWidth: "600px" }}>
+                    <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: "1px solid purple", borderRadius: "10px", flex: 1, }}>
+                        <InputBase placeholder="Search user" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
+                        <IconButton type="button" sx={{ p: 1 }}>
+                            <SearchOutlined />
+                        </IconButton>
+                    </Box>
+                    <Box sx={{ flex: 1 }}>
+                        <SelectInput value={roleFilter} onChange={handleRoleFilterChange} options={[{ value: "labour", label: "Labour" }, { value: "contractor", label: "Contractor" },]} placeholder="Filter by Role" fullWidth />
+                    </Box>
+                    <Box sx={{ flex: 1 }}>
+                        <CustomIconButton icon={<Refresh />} onClick={handleResetSearch} text="Reset Search" fontWeight="bold" color="#ff4d4d" variant="outlined" />
+                    </Box>
                 </Box>
                 <CustomIconButton icon={<PersonAdd />} text="Create Labour/Contractor" fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenCategory} />
             </Box>
 
             <CustomTable columns={columns} rows={filteredUsers} loading={loading} />
-
             <ShowDetailsDialog open={isDetailsDialogOpen} onClose={() => setIsDetailsDialogOpen(false)} data={selectedUserDetails} />
-
             <AgentEntityDialog
                 open={openCategoryDialog}
                 handleClose={handleCloseCategoryDialog}
                 dialogTitle="Create New Labour/Contractor"
-                apiEndpoint="/admin/create-user"  // Make sure this is correct
+                apiEndpoint="/admin/create-user"
                 onSuccess={() => {
                     handleCloseCategoryDialog();
-                    fetchAllUsers();  // Changed from fetchAllagent() to fetchAllUsers()
+                    fetchAllUsers();
                 }}
                 inputLabel="Labour/Contractor Name"
                 buttonText="Create Labour/Contractor"

@@ -93,7 +93,7 @@ const Navbar = () => {
     return date.toLocaleString('en-US', options);
   };
 
-    const changeLanguage = (lng) => {
+  const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
     document.documentElement.lang = lng; // update <html lang="...">
   };
@@ -205,37 +205,12 @@ const Navbar = () => {
               {profile?.name ? profile.name[0] : "S"}
             </Avatar>
             <Typography variant="subtitle1" fontWeight="bold" sx={{ color: "#222", mb: 0.2 }}>
-              {profile?.fullName || "Contractor Name"}
+              {profile?.firstName || profile?.lastName
+                ? `${profile?.firstName || ""} ${profile?.lastName || ""}`.trim()
+                : "Contractor Name"}
             </Typography>
             <Typography variant="body2" sx={{ color: "#7b7b7b", mb: 1 }}>
               {profile?.role || "Urban Braids"}
-            </Typography>
-            {Array.isArray(profile?.reviews) && profile?.reviews.length > 0 && (() => {
-              const totalRatings = profile?.reviews.reduce((acc, r) => acc + (r.ratings || 0), 0);
-              const avgRating = totalRatings / profile?.reviews.length;
-
-              return (
-                <Box sx={{ display: "flex", alignItems: "center", mb: 0.5 }}>
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <span
-                      key={i}
-                      style={{
-                        color: i <= Math.round(avgRating) ? "#FFD700" : "#FFD70099",
-                        fontSize: 20,
-                        marginRight: 1
-                      }}
-                    >
-                      {i <= Math.round(avgRating) ? "★" : "☆"}
-                    </span>
-                  ))}
-                  <Typography variant="caption" sx={{ color: "#7b7b7b", ml: 1 }}>
-                    ({profile?.reviews.length} Review{profile?.reviews.length > 1 ? "s" : ""})
-                  </Typography>
-                </Box>
-              );
-            })()}
-            <Typography variant="subtitle2" sx={{ color: "#6D295A", fontWeight: 700, mb: 1 }}>
-              09:00 - 18:00
             </Typography>
           </Box>,
           <Divider key="profile-divider" sx={{ my: 0, borderColor: "#eee" }} />
@@ -243,7 +218,7 @@ const Navbar = () => {
         {/* Menu Options */}
         <Box sx={{ p: 1 }}>
           {panelType === "vendor" && (
-            <Link to="/stylist-profile" style={{ textDecoration: "none", color: "inherit" }}>
+            <Link to="/contractor-profile" style={{ textDecoration: "none", color: "inherit" }}>
               <MenuItem onClick={handleClose} sx={{ fontSize: 15, py: 1.2, borderRadius: 2 }}>
                 <PersonOutlined fontSize="small" sx={{ mr: 1, color: "#6D295A" }} />
                 Profile

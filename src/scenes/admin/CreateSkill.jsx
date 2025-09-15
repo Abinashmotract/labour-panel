@@ -13,6 +13,7 @@ import Cookies from "js-cookie";
 import { CustomIconButton } from "../../custom/Button";
 import { skillsTableColumns } from "../../custom/TableColumns";
 import Alert from "../../custom/Alert";
+import { useTranslation } from "react-i18next";
 
 export default function ServiceCategory() {
     const [allServices, setAllServices] = useState([]);
@@ -34,6 +35,7 @@ export default function ServiceCategory() {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const authToken = Cookies.get("token");
+    const { t } = useTranslation();
 
     const fetchAllServices = async () => {
         try {
@@ -176,15 +178,15 @@ export default function ServiceCategory() {
 
     return (
         <Box className="p-1">
-            <Header title="Create Service" />
+            <Header title={t("dashboard.allSkills")} />
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2, flexDirection: { xs: "column", sm: "row" }, gap: 2, }}>
                 <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: "1px solid purple", borderRadius: "10px", width: { xs: "100%", sm: "auto" }, }}>
-                    <InputBase placeholder="Search Skill" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
+                    <InputBase placeholder={t("dashboard.searchSkill")} value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
                     <IconButton type="button" sx={{ p: 1 }}>
                         <SearchOutlined />
                     </IconButton>
                 </Box>
-                <CustomIconButton icon={<PersonAdd />} text="Add New Skill" fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenCategory} sx={{ width: { xs: "100%", sm: "auto" } }} />
+                <CustomIconButton icon={<PersonAdd />} text={t("dashboard.addNewSkill")} fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenCategory} sx={{ width: { xs: "100%", sm: "auto" } }} />
             </Box>
             <CustomTable columns={columns} rows={filteredUsers} loading={loading} />
 

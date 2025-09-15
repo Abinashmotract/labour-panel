@@ -82,13 +82,13 @@ function Dashboard() {
 
   const overviewStats = [
     {
-      title: "Total Labours",
+      title: t("dashboard.totalLabours"),
       value: overviewData.totalLabour || 0,
       color: "white",
       icon: <PersonIcon />,
     },
     {
-      title: "Total Contractor",
+      title:  t("dashboard.totalContractors"),
       value: overviewData.totalContractors || 0,
       color: "white",
       icon: <BookIcon />,
@@ -109,7 +109,7 @@ function Dashboard() {
         </Box>
       ) : (
         <>
-          <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
+          <Header title={t("dashboard.headerTitle")} subtitle="Welcome to your dashboard" />
 
           <Grid container spacing={2} sx={{ mb: 3 }}>
             {overviewStats?.map((stat) => (

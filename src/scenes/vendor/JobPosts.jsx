@@ -29,42 +29,42 @@ export default function JobPosts() {
   const [alertOpen, setAlertOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [openJobPostDialog, setOpenJobPostDialog] = useState(false);
-const [viewRow, setViewRow] = useState(null);
-const [editRow, setEditRow] = useState(null);
-const [editMode, setEditMode] = useState(false);
-const [isViewDialog, setIsViewDialog] = useState(false);
+  const [viewRow, setViewRow] = useState(null);
+  const [editRow, setEditRow] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [isViewDialog, setIsViewDialog] = useState(false);
 
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const authToken = Cookies.get("token");
 
   const fetchAllJobPosts = async () => {
-  setLoading(true);
-  try {
-    const response = await axios.get(`${API_BASE_URL}/contractor/all-contractor-jobs`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
-
-    // ✅ API response me status nahi hai, sirf success hai
-    if (response?.data?.success) {
-      const fullData = (response?.data?.data || []).map((item) => ({
-        ...item,
-        id: item._id,
-      }));
-      setAllJobPosts(fullData);
-    } else {
-      showErrorToast(response?.data?.message || "Failed to fetch job posts");
+    setLoading(true);
+    try {
+      const response = await axios.get(`${API_BASE_URL}/contractor/all-jobs`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      console.log(response?.data?.data, 'dfsdfdsf')
+      // ✅ API response me status nahi hai, sirf success hai
+      if (response?.data?.success) {
+        const fullData = (response?.data?.data || []).map((item) => ({
+          ...item,
+          id: item._id,
+        }));
+        setAllJobPosts(fullData);
+      } else {
+        showErrorToast(response?.data?.message || "Failed to fetch job posts");
+      }
+    } catch (error) {
+      showErrorToast("Error fetching job posts");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    showErrorToast("Error fetching job posts");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
 
   useEffect(() => {
@@ -189,7 +189,7 @@ const [isViewDialog, setIsViewDialog] = useState(false);
         viewMode={true}
         rowData={viewRow}
       />
-      
+
       <Alert
         open={alertOpen}
         title="Delete Job Post"

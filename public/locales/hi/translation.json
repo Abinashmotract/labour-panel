@@ -1,7 +1,7 @@
 {
   "title": "ठेकेदार",
   "dashboard": {
-    "headerTitle": "ठेकेदार डैशबोर्ड",
+    "headerTitle": "डैशबोर्ड",
     "headerSubtitle": "अपनी नौकरियों और कार्यबल का प्रबंधन करें",
     "activeJobs": "सक्रिय नौकरियां",
     "availableWorkers": "उपलब्ध कर्मचारी",
@@ -24,13 +24,21 @@
     "payWorkersDue": "3 दिनों में देय",
     "constructionJobStarts": "निर्माण कार्य शुरू",
     "constructionJobStartsTime": "अगले सोमवार",
-    "labourjobapplications": "मज़दूर नौकरी आवेदन"
+    "alllaours": "सभी मज़दूर",
+    "resetsearch": "खोज रीसेट करें",
+    "totalLabours": "कुल मज़दूर",
+    "totalContractors": "कुल ठेकेदार",
+    "allSkills": "सभी कौशल",
+    "addNewSkill": "नया कौशल जोड़ें",
+    "searchSkill": "कौशल खोजें",
+    "contractorprofile": "ठेकेदार प्रोफ़ाइल"
   },
   "nav": {
     "labourContractors": "मज़दूर/ठेकेदार",
     "labour": "मज़दूर",
     "skills": "कौशल",
     "jobPost": "नौकरी पोस्ट",
-    "jobApplication": "नौकरी आवेदन"
+    "jobApplication": "नौकरी आवेदन",
+    "nearbyjobs": "पास के जॉब्स"
   }
 }

@@ -18,6 +18,7 @@ import Cookies from "js-cookie";
 import { CustomIconButton } from "../../custom/Button";
 import { productCategoryTableColumns } from "../../custom/TableColumns";
 import Alert from "../../custom/Alert";
+import { useTranslation } from "react-i18next";
 
 export default function Category() {
     const [allUsers, setAllUsers] = useState([]);
@@ -39,6 +40,7 @@ export default function Category() {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const authToken = Cookies.get("token");
+    const { t } = useTranslation();
 
     const fetchAllProductCategories = async () => {
         try {
@@ -174,18 +176,9 @@ export default function Category() {
     const columns = productCategoryTableColumns({ handleToggleStatus, handleDelete, handleView, togglingIds, handleEdit });
 
     return (
-        <Box className="p-1 mt-4">
+        <Box>
             <Container maxWidth={false}>
-                <Header title="Category" />
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-                    <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: '1px solid purple', borderRadius: '10px' }}>
-                        <InputBase placeholder="Search Category" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
-                        <IconButton type="button" sx={{ p: 1 }}>
-                            <SearchOutlined />
-                        </IconButton>
-                    </Box>
-                    <CustomIconButton icon={<PersonAdd />} text="Add Category" fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenCategory} />
-                </Box>
+                <Header title={t("nav.nearbyjobs")} />
                 <CustomTable columns={columns} rows={filteredUsers} loading={loading} />
             </Container>
             <EntityDialog

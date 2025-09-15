@@ -24,13 +24,22 @@
     "payWorkersDue": "Due in 3 days",
     "constructionJobStarts": "Construction job starts",
     "constructionJobStartsTime": "Next Monday",
-    "labourjobapplications": "Labour Job Applications"
+    "alllaours": "All Labours",
+    "resetsearch": "Reset Search",
+    "totalLabours": "Total Labours",
+    "totalContractors": "Total Contractors",
+    "allSkills": "All Skills",
+    "addNewSkill": "Add New Skill",
+    "searchSkill": "Search Skill",
+    "contractorprofile": "Contractor Profile"
+    
   },
-   "nav": {
+  "nav": {
     "labourContractors": "Labour/Contractors",
     "labour": "Labour",
     "skills": "Skills",
     "jobPost": "Job Post",
-    "jobApplication": "Job Application"
+    "jobApplication": "Job Application",
+    "nearbyjobs": "Nearby Jobs"
   }
 }
