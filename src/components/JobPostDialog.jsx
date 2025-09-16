@@ -24,28 +24,7 @@ import { showSuccessToast, showErrorToast } from "../Toast";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-
-const GOOGLE_API_KEY = "AIzaSyByeL4973jLw5-DqyPtVl79I3eDN4uAuAQ"; 
-
-// 🔹 Google Geocoding API helper
-const getCoordinatesFromAddress = async (address) => {
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-    address
-  )}&key=${GOOGLE_API_KEY}`;
-
-  const response = await axios.get(url);
-
-  if (response.data.status === "OK" && response.data.results.length > 0) {
-    const result = response.data.results[0];
-    return {
-      latitude: result.geometry.location.lat,
-      longitude: result.geometry.location.lng,
-      formattedAddress: result.formatted_address,
-    };
-  } else {
-    throw new Error("Address not found, please try again");
-  }
-};
+import { getCoordinatesFromAddress } from "../utils/geocode";
 
 export default function JobPostDialog({
   open,
@@ -84,7 +63,6 @@ export default function JobPostDialog({
     if (open) {
       setError(null);
       fetchAllSkills();
-
       if (viewMode || editMode) {
         setFields({
           title: rowData?.title || "",
@@ -165,9 +143,7 @@ export default function JobPostDialog({
     setError(null);
 
     try {
-      // 🔹 Get lat/lng from Google API
       const geo = await getCoordinatesFromAddress(fields.location);
-
       const payload = {
         title: fields.title,
         description: fields.description,

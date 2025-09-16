@@ -39,6 +39,8 @@
     "skills": "कौशल",
     "jobPost": "नौकरी पोस्ट",
     "jobApplication": "नौकरी आवेदन",
-    "nearbyjobs": "पास के जॉब्स"
+    "nearbyjobs": "पास के जॉब्स",
+    "createJobPost": "नौकरी पोस्ट बनाएँ",
+    "searchJobPosts": "नौकरी पोस्ट खोजें"
   }
 }

@@ -102,99 +102,99 @@ export const userTableColumns = ({ handleDelete, handleView }) => [
 ];
 
 export const labourTableColumns = ({ handleView }) => [
-  {
-    field: "photo",
-    headerName: "Profile Picture",
-    flex: 0.5,
-    renderCell: (params) => {
-      const photoUrl =
-        params.row.profilePicture && params.row.profilePicture.length > 0
-          ? params.row.profilePicture
-          : null;
+    {
+        field: "photo",
+        headerName: "Profile Picture",
+        flex: 0.5,
+        renderCell: (params) => {
+            const photoUrl =
+                params.row.profilePicture && params.row.profilePicture.length > 0
+                    ? params.row.profilePicture
+                    : null;
 
-      const fallbackUrl =
-        "https://w7.pngwing.com/pngs/406/861/png-transparent-default-facebook-user-profile-blue-silhouette-neck-symbol-sky-folder-users-blue-silhouette-application-thumbnail.png";
+            const fallbackUrl =
+                "https://w7.pngwing.com/pngs/406/861/png-transparent-default-facebook-user-profile-blue-silhouette-neck-symbol-sky-folder-users-blue-silhouette-application-thumbnail.png";
 
-      return (
-        <ImageWithLoader
-          src={photoUrl || fallbackUrl}
-          alt={params.row.fullName || "Profile"}
-        />
-      );
+            return (
+                <ImageWithLoader
+                    src={photoUrl || fallbackUrl}
+                    alt={params.row.fullName || "Profile"}
+                />
+            );
+        },
     },
-  },
-  { field: "fullName", headerName: "Full Name", flex: 1 },
-  { field: "email", headerName: "Email", flex: 1 },
-  { field: "mobile", headerName: "Mobile", flex: 1 },
-  {
-    field: "role",
-    headerName: "Role",
-    flex: 1,
-    renderCell: (params) => {
-      const role = params.row.role || "N/A";
-      return (
-        <Chip
-          icon={<PersonIcon sx={{ color: "white" }} />}
-          label={role}
-          size="small"
-          variant="filled"
-          sx={{
-            bgcolor: role !== "N/A" ? "primary.main" : "grey.500",
-            color: "white",
-            fontWeight: "bold",
-            textTransform: "capitalize",
-          }}
-        />
-      );
+    { field: "fullName", headerName: "Full Name", flex: 1 },
+    { field: "email", headerName: "Email", flex: 1 },
+    { field: "mobile", headerName: "Mobile", flex: 1 },
+    {
+        field: "role",
+        headerName: "Role",
+        flex: 1,
+        renderCell: (params) => {
+            const role = params.row.role || "N/A";
+            return (
+                <Chip
+                    icon={<PersonIcon sx={{ color: "white" }} />}
+                    label={role}
+                    size="small"
+                    variant="filled"
+                    sx={{
+                        bgcolor: role !== "N/A" ? "primary.main" : "grey.500",
+                        color: "white",
+                        fontWeight: "bold",
+                        textTransform: "capitalize",
+                    }}
+                />
+            );
+        },
     },
-  },
-  {
-    field: "gender",
-    headerName: "Gender",
-    flex: 0.6,
-    renderCell: (params) => {
-      const gender = params.row.gender?.toLowerCase() || "n/a";
-      let chipColor = "grey.500";
-      if (gender === "male") chipColor = "info.main";
-      else if (gender === "female") chipColor = "pink";
-      else if (gender === "other") chipColor = "warning.main";
+    {
+        field: "gender",
+        headerName: "Gender",
+        flex: 0.6,
+        renderCell: (params) => {
+            const gender = params.row.gender?.toLowerCase() || "n/a";
+            let chipColor = "grey.500";
+            if (gender === "male") chipColor = "info.main";
+            else if (gender === "female") chipColor = "pink";
+            else if (gender === "other") chipColor = "warning.main";
 
-      return (
-        <Chip
-          icon={<TransgenderIcon sx={{ color: "white" }} />}
-          label={params.row.gender || "N/A"}
-          size="small"
-          variant="filled"
-          sx={{
-            bgcolor: chipColor,
-            color: "white",
-            fontWeight: "bold",
-            textTransform: "capitalize",
-          }}
-        />
-      );
+            return (
+                <Chip
+                    icon={<TransgenderIcon sx={{ color: "white" }} />}
+                    label={params.row.gender || "N/A"}
+                    size="small"
+                    variant="filled"
+                    sx={{
+                        bgcolor: chipColor,
+                        color: "white",
+                        fontWeight: "bold",
+                        textTransform: "capitalize",
+                    }}
+                />
+            );
+        },
     },
-  },
-  { field: "isPhoneVerified", headerName: "Phone Verified", flex: 0.7 },
-  { field: "address", headerName: "Address", flex: 1 },
-  { field: "workCategory", headerName: "Work Category", flex: 1 },
-  { field: "workExperience", headerName: "Work Experience", flex: 1 },
-  {
-    field: "action",
-    headerName: "Action",
-    width: 180,
-    sortable: false,
-    renderCell: (params) => (
-      <Box sx={{ display: "flex", gap: 0.5 }}>
-        <CustomIconButton
-          size="small"
-          icon={<Eye size={16} />}
-          color="rgb(77 141 225)"
-          onClick={() => handleView(params.row)}
-        />
-      </Box>
-    ),
-  },
+    { field: "isPhoneVerified", headerName: "Phone Verified", flex: 0.7 },
+    { field: "address", headerName: "Address", flex: 1 },
+    { field: "workCategory", headerName: "Work Category", flex: 1 },
+    { field: "workExperience", headerName: "Work Experience", flex: 1 },
+    {
+        field: "action",
+        headerName: "Action",
+        width: 180,
+        sortable: false,
+        renderCell: (params) => (
+            <Box sx={{ display: "flex", gap: 0.5 }}>
+                <CustomIconButton
+                    size="small"
+                    icon={<Eye size={16} />}
+                    color="rgb(77 141 225)"
+                    onClick={() => handleView(params.row)}
+                />
+            </Box>
+        ),
+    },
 ];
 
 export const productCategoryTableColumns = ({ handleToggleStatus, handleDelete, handleView, togglingIds, handleEdit }) => [
@@ -606,264 +606,270 @@ export const serviceManagementTableColumns = ({ handleToggleStatus, handleDelete
 ];
 
 export const jobPostTableColumns = ({ handleDelete, handleView, handleEdit }) => [
-  { field: "title", headerName: "Title", flex: 1 },
-  {
-    field: "description",
-    headerName: "Description",
-    flex: 2,
-    renderCell: (params) => (
-      <Typography
-        variant="body2"
-        sx={{
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          display: "-webkit-box",
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: "vertical",
-        }}
-      >
-        {params.row.description}
-      </Typography>
-    ),
-  },
-  {
-  field: "location",
-  headerName: "Location",
-  flex: 1,
-  renderCell: (params) => {
-    const coords = params.row.location?.coordinates;
-    if (!coords || coords.length < 2) return "N/A";
-
-        const [lng, lat] = coords;
-        const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
-
-        return (
-        <a
-            href={mapUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "#1976d2", textDecoration: "underline" }}
-        >
-            {lat.toFixed(4)}, {lng.toFixed(4)}
-        </a>
-        );
-    },
+    { field: "title", headerName: "Title", flex: 1 },
+    {
+        field: "description",
+        headerName: "Description",
+        flex: 2,
+        renderCell: (params) => (
+            <Typography
+                variant="body2"
+                sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                }}
+            >
+                {params.row.description}
+            </Typography>
+        ),
     },
     {
-    field: "labourersFilled",
-    headerName: "Labours Filled",
-    flex: 0.8,
-    renderCell: (params) => {
-      const labourersFilled = params.row.labourersFilled || 0;
-      return (
-        <Chip
-          label={labourersFilled}
-          size="small"
-          sx={{
-            bgcolor: "success.main",
-            color: "white",
-            fontWeight: "bold",
-          }}
-        />
-      );
+        field: "location",
+        headerName: "Location",
+        flex: 1.5,
+        renderCell: (params) => {
+            const address = params.row.location?.address;
+            const coords = params.row.location?.coordinates;
+            if (address) {
+                return (
+                    <Typography variant="body2" sx={{ color: "#1976d2", fontWeight: 500 }}>
+                        {address}
+                    </Typography>
+                );
+            }
+            if (coords && coords.length >= 2) {
+                const [lng, lat] = coords;
+                const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+                return (
+                    <a href={mapUrl} target="_blank" rel="noopener noreferrer"
+                        style={{ color: "#1976d2", textDecoration: "underline" }}
+                    >
+                        {lat.toFixed(4)}, {lng.toFixed(4)}
+                    </a>
+                );
+            }
+
+            return "N/A";
+        },
     },
-  },
-  {
-    field: "labourersRequired",
-    headerName: "Labours Required",
-    flex: 0.8,
-    renderCell: (params) => {
-      const labourersRequired = params.row.labourersRequired || 0;
-      return (
-        <Chip
-          label={labourersRequired}
-          size="small"
-          sx={{
-            bgcolor: "error.main",
-            color: "white",
-            fontWeight: "bold",
-          }}
-        />
-      );
-    },
-  },
-  {
-    field: "skills",
-    headerName: "Skills",
-    flex: 1.5,
-    renderCell: (params) => {
-      const skills = Array.isArray(params.row.skills) ? params.row.skills : [];
-      return (
-        <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
-          {skills.length > 0
-            ? skills.map((skill, index) => (
+    {
+        field: "labourersFilled",
+        headerName: "Labours Filled",
+        flex: 0.8,
+        renderCell: (params) => {
+            const labourersFilled = params.row.labourersFilled || 0;
+            return (
                 <Chip
-                  key={skill._id || index}
-                  label={skill.name}
-                  size="small"
-                  sx={{
-                    bgcolor: "primary.main",
-                    color: "white",
-                    fontWeight: "bold",
-                  }}
+                    label={labourersFilled}
+                    size="small"
+                    sx={{
+                        bgcolor: "success.main",
+                        color: "white",
+                        fontWeight: "bold",
+                    }}
                 />
-              ))
-            : "N/A"}
-        </Box>
-      );
+            );
+        },
     },
-  },
-  {
-    field: "isActive",
-    headerName: "Status",
-    flex: 0.6,
-    renderCell: (params) => (
-      <Chip
-        label={params.row.isActive ? "ACTIVE" : "INACTIVE"}
-        color={params.row.isActive ? "success" : "default"}
-        size="small"
-      />
-    ),
-  },
-  {
-    field: "validUntil",
-    headerName: "Valid Until",
-    flex: 1,
-    renderCell: (params) =>
-      params.row.validUntil
-        ? new Date(params.row.validUntil).toLocaleDateString()
-        : "N/A",
-  },
-  {
-    field: "action",
-    headerName: "Action",
-    width: 180,
-    sortable: false,
-    renderCell: (params) => (
-      <Box sx={{ display: "flex", gap: 0.5 }}>
-        <CustomIconButton
-          size="small"
-          icon={<Eye size={16} />}
-          color="rgb(77 141 225)"
-          onClick={() => handleView(params.row)}
-        />
-        <CustomIconButton
-          size="small"
-          icon={<Pencil size={16} />}
-          color="green"
-          onClick={() => handleEdit(params.row)}
-        />
-        <CustomIconButton
-          size="small"
-          icon={<Trash2 size={16} />}
-          color="hsl(0 84.2% 60.2%)"
-          onClick={() => handleDelete(params.row.id)}
-        />
-      </Box>
-    ),
-  },
+    {
+        field: "labourersRequired",
+        headerName: "Labours Required",
+        flex: 0.8,
+        renderCell: (params) => {
+            const labourersRequired = params.row.labourersRequired || 0;
+            return (
+                <Chip
+                    label={labourersRequired}
+                    size="small"
+                    sx={{
+                        bgcolor: "error.main",
+                        color: "white",
+                        fontWeight: "bold",
+                    }}
+                />
+            );
+        },
+    },
+    {
+        field: "skills",
+        headerName: "Skills",
+        flex: 1.5,
+        renderCell: (params) => {
+            const skills = Array.isArray(params.row.skills) ? params.row.skills : [];
+            return (
+                <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
+                    {skills.length > 0
+                        ? skills.map((skill, index) => (
+                            <Chip
+                                key={skill._id || index}
+                                label={skill.name}
+                                size="small"
+                                sx={{
+                                    bgcolor: "primary.main",
+                                    color: "white",
+                                    fontWeight: "bold",
+                                }}
+                            />
+                        ))
+                        : "N/A"}
+                </Box>
+            );
+        },
+    },
+    {
+        field: "isActive",
+        headerName: "Status",
+        flex: 0.6,
+        renderCell: (params) => (
+            <Chip
+                label={params.row.isActive ? "ACTIVE" : "INACTIVE"}
+                color={params.row.isActive ? "success" : "default"}
+                size="small"
+            />
+        ),
+    },
+    {
+        field: "validUntil",
+        headerName: "Valid Until",
+        flex: 1,
+        renderCell: (params) =>
+            params.row.validUntil
+                ? new Date(params.row.validUntil).toLocaleDateString()
+                : "N/A",
+    },
+    {
+        field: "action",
+        headerName: "Action",
+        width: 180,
+        sortable: false,
+        renderCell: (params) => (
+            <Box sx={{ display: "flex", gap: 0.5 }}>
+                <CustomIconButton
+                    size="small"
+                    icon={<Eye size={16} />}
+                    color="rgb(77 141 225)"
+                    onClick={() => handleView(params.row)}
+                />
+                <CustomIconButton
+                    size="small"
+                    icon={<Pencil size={16} />}
+                    color="green"
+                    onClick={() => handleEdit(params.row)}
+                />
+                <CustomIconButton
+                    size="small"
+                    icon={<Trash2 size={16} />}
+                    color="hsl(0 84.2% 60.2%)"
+                    onClick={() => handleDelete(params.row.id)}
+                />
+            </Box>
+        ),
+    },
 ];
 
-export const jobApplicationTableColumns = ({ handleDelete, handleView, handleStatusUpdate,updatingStatus }) => [
-    { 
-    field: "applicantName", 
-    headerName: "Applicant", 
-    flex: 1,
-    renderCell: (params) => (
-      <Box>
-        <Typography variant="body2" fontWeight="500">
-          {params.row.applicantName}
-        </Typography>
-        <Typography variant="caption" color="text.secondary" sx={{fontWeight:"bold", fontSize:"15px"}}>
-          {params.row.applicantPhone}
-        </Typography>
-      </Box>
-    )
-  },
-  { 
-    field: "jobTitle", 
-    headerName: "Job Title", 
-    flex: 1,
-    renderCell: (params) => (
-      <Typography variant="body2" fontWeight="500">
-        {params.row.jobTitle}
-      </Typography>
-    )
-  },
-  {
-    field: "status",
-    headerName: "Status",
-    flex: 1,
-    renderCell: (params) => {
-      const status = params.row.status || "pending";
-      const statusColors = {
-        pending: { bg: "#FFF3CD", color: "#856404" },  
-        accepted: { bg: "#D4EDDA", color: "#155724" },
-        rejected: { bg: "#F8D7DA", color: "#721C24" }, 
-        hired: { bg: "#CCE5FF", color: "#004085" },     
-        completed: { bg: "#E2E3E5", color: "#383D41" },
-      };
-      const { bg, color } = statusColors[status] || { bg: "#FFF", color: "#000" };
-      return (
-        <Select
-          value={status}
-          onChange={(e) => handleStatusUpdate(params.row.id, e.target.value)}
-          size="small"
-          disabled={updatingStatus === params.row.id}
-          sx={{
-            minWidth: 120,
-            height: 32,
-            bgcolor: bg,
-            color: color,
-            fontWeight: "bold",
-            borderRadius: "6px",
-            "& .MuiSelect-select": {
-              padding: "6px 32px 6px 12px",
-              fontSize: "0.875rem",
-            },
-          }}
-        >
-          <MenuItem value="pending">Pending</MenuItem>
-          <MenuItem value="accepted">Accepted</MenuItem>
-          <MenuItem value="rejected">Rejected</MenuItem>
-          <MenuItem value="hired">Hired</MenuItem>
-          <MenuItem value="completed">Completed</MenuItem>
-        </Select>
-      );
+export const jobApplicationTableColumns = ({ handleDelete, handleView, handleStatusUpdate, updatingStatus }) => [
+    {
+        field: "applicantName",
+        headerName: "Applicant",
+        flex: 1,
+        renderCell: (params) => (
+            <Box>
+                <Typography variant="body2" fontWeight="500">
+                    {params.row.applicantName}
+                </Typography>
+                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: "bold", fontSize: "15px" }}>
+                    {params.row.applicantPhone}
+                </Typography>
+            </Box>
+        )
     },
-  },
-  {
-    field: "appliedDate",
-    headerName: "Applied Date",
-    flex: 1,
-    renderCell: (params) =>
-      params.row.appliedDate
-        ? new Date(params.row.appliedDate).toLocaleDateString()
-        : "N/A",
-  },
-  {
-    field: "action",
-    headerName: "Action",
-    width: 120,
-    sortable: false,
-    renderCell: (params) => (
-      <Box sx={{ display: "flex", gap: 0.5 }}>
-        <CustomIconButton
-          size="small"
-          icon={<Eye size={16} />}
-          color="rgb(77 141 225)"
-          onClick={() => handleView(params.row)}
-        />
-        <CustomIconButton
-          size="small"
-          icon={<Trash2 size={16} />}
-          color="hsl(0 84.2% 60.2%)"
-          onClick={() => handleDelete(params.row.id)}
-          disabled={updatingStatus === params.row.id}
-        />
-      </Box>
-    ),
-  },
+    {
+        field: "jobTitle",
+        headerName: "Job Title",
+        flex: 1,
+        renderCell: (params) => (
+            <Typography variant="body2" fontWeight="500">
+                {params.row.jobTitle}
+            </Typography>
+        )
+    },
+    {
+        field: "status",
+        headerName: "Status",
+        flex: 1,
+        renderCell: (params) => {
+            const status = params.row.status || "pending";
+            const statusColors = {
+                pending: { bg: "#FFF3CD", color: "#856404" },
+                accepted: { bg: "#D4EDDA", color: "#155724" },
+                rejected: { bg: "#F8D7DA", color: "#721C24" },
+                hired: { bg: "#CCE5FF", color: "#004085" },
+                completed: { bg: "#E2E3E5", color: "#383D41" },
+            };
+            const { bg, color } = statusColors[status] || { bg: "#FFF", color: "#000" };
+            return (
+                <Select
+                    value={status}
+                    onChange={(e) => handleStatusUpdate(params.row.id, e.target.value)}
+                    size="small"
+                    disabled={updatingStatus === params.row.id}
+                    sx={{
+                        minWidth: 120,
+                        height: 32,
+                        bgcolor: bg,
+                        color: color,
+                        fontWeight: "bold",
+                        borderRadius: "6px",
+                        "& .MuiSelect-select": {
+                            padding: "6px 32px 6px 12px",
+                            fontSize: "0.875rem",
+                        },
+                    }}
+                >
+                    <MenuItem value="pending">Pending</MenuItem>
+                    <MenuItem value="accepted">Accepted</MenuItem>
+                    <MenuItem value="rejected">Rejected</MenuItem>
+                    <MenuItem value="hired">Hired</MenuItem>
+                    <MenuItem value="completed">Completed</MenuItem>
+                </Select>
+            );
+        },
+    },
+    {
+        field: "appliedDate",
+        headerName: "Applied Date",
+        flex: 1,
+        renderCell: (params) =>
+            params.row.appliedDate
+                ? new Date(params.row.appliedDate).toLocaleDateString()
+                : "N/A",
+    },
+    {
+        field: "action",
+        headerName: "Action",
+        width: 120,
+        sortable: false,
+        renderCell: (params) => (
+            <Box sx={{ display: "flex", gap: 0.5 }}>
+                <CustomIconButton
+                    size="small"
+                    icon={<Eye size={16} />}
+                    color="rgb(77 141 225)"
+                    onClick={() => handleView(params.row)}
+                />
+                <CustomIconButton
+                    size="small"
+                    icon={<Trash2 size={16} />}
+                    color="hsl(0 84.2% 60.2%)"
+                    onClick={() => handleDelete(params.row.id)}
+                    disabled={updatingStatus === params.row.id}
+                />
+            </Box>
+        ),
+    },
 ];
 
 export const orderDetailsTableColumns = ({ handleDelete, handleView }) => [

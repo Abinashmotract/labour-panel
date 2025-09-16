@@ -31,8 +31,7 @@
     "allSkills": "All Skills",
     "addNewSkill": "Add New Skill",
     "searchSkill": "Search Skill",
-    "contractorprofile": "Contractor Profile"
-    
+    "contractorprofile": "Contractor Profile"    
   },
   "nav": {
     "labourContractors": "Labour/Contractors",
@@ -40,6 +39,8 @@
     "skills": "Skills",
     "jobPost": "Job Post",
     "jobApplication": "Job Application",
-    "nearbyjobs": "Nearby Jobs"
+    "nearbyjobs": "Nearby Jobs",
+    "createJobPost": "Create Job Post",
+    "searchJobPosts": "Search Job Posts"
   }
 }

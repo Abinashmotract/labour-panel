@@ -6,14 +6,8 @@ import Login from "./components/Login";
 import PrivateRoute from "./utils/PrivateRoute";
 import VendorDashboard from "./vendors/VendorDashboard";
 import VendorProfile from "./scenes/vendor/VendorProfile";
-import ServiceManagement from "./scenes/vendor/ServiceManagement";
-import Appointment from "./scenes/vendor/Appointment";
 import JobPosts from "./scenes/vendor/JobPosts";
-import Availability from "./scenes/vendor/Availability";
-import Portfolio from "./scenes/vendor/Portfolio";
-import Product from "./scenes/admin/Product";
 import { useAuth } from "./utils/context/AuthContext";
-import OrderDetails from "./scenes/admin/OrderDetails";
 import Labours from "./scenes/admin/Labours";
 import Contracter from "./scenes/admin/Contracter";
 import Category from "./scenes/admin/Category";
@@ -41,10 +35,6 @@ const AppRouter = () => {
                 <Route path="labours" element={<Labours />} />
                 <Route path="skills" element={<CreateSkill />} />
                 <Route path="contracter" element={<Contracter />} />
-                <Route path="nearbyjobs" element={<Category />} />
-                {/* <Route path="product" element={<Product />} />
-                <Route path="service-management" element={<ServiceManagement />} />
-                <Route path="order-details" element={<OrderDetails />} /> */}
               </>
             ) : panelType === "vendor" ? (
               <>
@@ -53,10 +43,6 @@ const AppRouter = () => {
                 <Route path="application" element={<JobApplication />} />
                 <Route path="contractor-profile" element={<VendorProfile />} />
                 <Route path="labour" element={<Services />} />
-                {/* <Route path="appointment" element={<Appointment />} />
-                <Route path="availability" element={<Availability />} />
-                <Route path="portfolio" element={<Portfolio />} />
-                <Route path="stylist-profile" element={<VendorProfile />} /> */}
               </>
             ) : (
               <Route index element={<Navigate to="/login" replace />} />

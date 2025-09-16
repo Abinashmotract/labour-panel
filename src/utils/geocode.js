@@ -1,25 +1,46 @@
+// src/utils/googleMaps.js
 import axios from "axios";
 
 const GOOGLE_API_KEY = "AIzaSyByeL4973jLw5-DqyPtVl79I3eDN4uAuAQ"; 
 
-/**
- * Convert coordinates → address using Google Geocoding API
- * @param {number} lat - Latitude
- * @param {number} lng - Longitude
- * @returns {Promise<string>} formatted address
- */
-export const getAddressFromCoordinates = async (lat, lng) => {
-  try {
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_API_KEY}`;
-    const response = await axios.get(url);
+// 🔹 Google Geocoding API helper
+export const getCoordinatesFromAddress = async (address) => {
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+    address
+  )}&key=${GOOGLE_API_KEY}`;
 
-    if (response.data.status === "OK" && response.data.results.length > 0) {
-      return response.data.results[0].formatted_address;
-    } else {
-      throw new Error("Address not found for coordinates");
-    }
-  } catch (error) {
-    console.error("Reverse Geocoding Error:", error.message);
-    return "N/A";
+  const response = await axios.get(url);
+
+  if (response.data.status === "OK" && response.data.results.length > 0) {
+    const result = response.data.results[0];
+    return {
+      latitude: result.geometry.location.lat,
+      longitude: result.geometry.location.lng,
+      formattedAddress: result.formatted_address,
+    };
+  } else {
+    throw new Error("Address not found, please try again");
   }
 };
+
+
+// const GOOGLE_API_KEY = "AIzaSyByeL4973jLw5-DqyPtVl79I3eDN4uAuAQ"; 
+
+// const getCoordinatesFromAddress = async (address) => {
+//   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+//     address
+//   )}&key=${GOOGLE_API_KEY}`;
+
+//   const response = await axios.get(url);
+
+//   if (response.data.status === "OK" && response.data.results.length > 0) {
+//     const result = response.data.results[0];
+//     return {
+//       latitude: result.geometry.location.lat,
+//       longitude: result.geometry.location.lng,
+//       formattedAddress: result.formatted_address,
+//     };
+//   } else {
+//     throw new Error("Address not found, please try again");
+//   }
+// };

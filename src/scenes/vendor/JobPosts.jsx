@@ -48,8 +48,6 @@ export default function JobPosts() {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      console.log(response?.data?.data, 'dfsdfdsf')
-      // ✅ API response me status nahi hai, sirf success hai
       if (response?.data?.success) {
         const fullData = (response?.data?.data || []).map((item) => ({
           ...item,
@@ -66,7 +64,6 @@ export default function JobPosts() {
     }
   };
 
-
   useEffect(() => {
     if (authToken) {
       fetchAllJobPosts();
@@ -81,7 +78,7 @@ export default function JobPosts() {
         allJobPosts.filter((post) =>
           (post.title || "").toLowerCase().includes(searchText.toLowerCase()) ||
           (post.description || "").toLowerCase().includes(searchText.toLowerCase()) ||
-          (post.location || "").toLowerCase().includes(searchText.toLowerCase())
+          ((post.location?.address || "").toLowerCase().includes(searchText.toLowerCase()))
         )
       );
     }
@@ -91,10 +88,6 @@ export default function JobPosts() {
     setEditRow(null);
     setEditMode(false);
     setOpenJobPostDialog(true);
-  };
-
-  const handleCloseJobPostDialog = () => {
-    setOpenJobPostDialog(false);
   };
 
   const handleSearch = (e) => {
@@ -157,12 +150,12 @@ export default function JobPosts() {
         <Header title={t("nav.jobPost")} />
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2, flexDirection: { xs: "column", sm: "row" }, gap: 2, }}>
           <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: '1px solid purple', borderRadius: '10px', width: { xs: '100%', sm: 'auto' }, }}>
-            <InputBase placeholder="Search Job Posts" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
+            <InputBase placeholder={t("nav.searchJobPosts")} value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
             <IconButton type="button" sx={{ p: 1 }}>
               <SearchOutlined />
             </IconButton>
           </Box>
-          <CustomIconButton icon={<PersonAdd />} text="Create Job Post" fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenJobPost} sx={{ width: { xs: '100%', sm: 'auto' } }} />
+          <CustomIconButton icon={<PersonAdd />} text={t("nav.createJobPost")} fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenJobPost} sx={{ width: { xs: '100%', sm: 'auto' } }} />
         </Box>
         <CustomTable columns={columns} rows={filteredJobPosts} loading={loading} noRowsMessage="No job posts found" />
       </Container>
@@ -183,12 +176,7 @@ export default function JobPosts() {
         editMode={editMode}
         rowData={editRow}
       />
-      <JobPostDialog
-        open={isViewDialog}
-        handleClose={handleCloseViewDialog}
-        viewMode={true}
-        rowData={viewRow}
-      />
+      <JobPostDialog open={isViewDialog} handleClose={handleCloseViewDialog} viewMode={true} rowData={viewRow} />
 
       <Alert
         open={alertOpen}

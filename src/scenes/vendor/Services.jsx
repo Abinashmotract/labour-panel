@@ -10,6 +10,7 @@ import { API_BASE_URL } from "../../utils/apiConfig";
 import { tokens } from "../../theme";
 import Cookies from "js-cookie";
 import ShowDetailsDialog from "../../components/ShowDetailsDialog";
+import { useTranslation } from "react-i18next";
 
 export default function Services() {
   const [allUsers, setAllUsers] = useState([]);
@@ -23,6 +24,7 @@ export default function Services() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const authToken = Cookies.get("token");
+  const {t} = useTranslation();
 
   const fetchAllUsers = async () => {
     try {
@@ -122,7 +124,7 @@ export default function Services() {
           sx={{ border: "1px solid purple", borderRadius: "10px" }}
         >
           <InputBase
-            placeholder="Search user"
+            placeholder={t("nav.searchJobPosts")}
             value={searchText}
             onChange={handleSearch}
             sx={{ ml: 2, flex: 1 }}

@@ -205,7 +205,7 @@ export default function JobApplication() {
   return (
     <Box>
       <Container maxWidth={false}>
-        <Header title={t("dashboard.labourjobapplications")} />
+        <Header title={t("nav.jobApplication")} />
         <Box
           sx={{
             display: "flex",

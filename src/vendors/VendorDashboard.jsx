@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, useTheme, Button, useMediaQuery, Select, MenuItem, Card, Chip } from "@mui/material";
+import { Box, Typography, Button, Select, MenuItem, Card, Chip } from "@mui/material";
 import {
   WorkOutline,
   PeopleOutline,
@@ -7,11 +7,10 @@ import {
   AssignmentOutlined,
   HistoryOutlined,
   AddOutlined,
-  TrendingUpOutlined,
   LocationOnOutlined,
 } from "@mui/icons-material";
 import Header from "../components/Header";
-import { Banknote, Briefcase, UserPlus, Calendar } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { Bar, Doughnut } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -41,8 +40,6 @@ const ContractorDashboard = () => {
 
   const { t } = useTranslation();
   const authToken = Cookies.get("token");
-  const theme = useTheme();
-  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const fetchJobs = async () => {
     try {
@@ -86,7 +83,7 @@ const ContractorDashboard = () => {
 
   const statData = [
     { title: t("dashboard.activeJobs"), value: activeJobs, path: "/jobs", icon: <WorkOutline />, color: "#2E7D32" },
-    { title: t("dashboard.availableWorkers"), value: availableWorkers, path: "/workers", icon: <PeopleOutline />, color: "#1565C0" },
+    { title: t("dashboard.availableWorkers"), value: availableWorkers, path: "/labour", icon: <PeopleOutline />, color: "#1565C0" },
     { title: t("dashboard.pendingApplications"), value: pendingApplications, path: "/applications", icon: <AssignmentOutlined />, color: "#ED6C02" },
     { title: t("dashboard.totalEarnings"), value: `$${earningsData.total || '0'}`, path: "/earnings", icon: <PaymentOutlined />, color: "#9C27B0" }
   ];
@@ -123,20 +120,10 @@ const ContractorDashboard = () => {
 
   return (
     <Box sx={{ width: "100%", maxWidth: "100%", p: { xs: 1, sm: 2, md: 3 } }}>
-      <Header title={t("dashboard.headerTitle")}  subtitle={t("dashboard.headerSubtitle")} />
-      
+      <Header title={t("dashboard.headerTitle")} subtitle={t("dashboard.headerSubtitle")} />
+
       {/* Stats Overview */}
-      <Box
-        mt="20px"
-        display="grid"
-        gridTemplateColumns={{
-          xs: "repeat(1, 1fr)",
-          sm: "repeat(2, 1fr)",
-          md: "repeat(4, 1fr)",
-        }}
-        gap={{ xs: "15px", sm: "20px" }}
-        sx={{ width: "100%" }}
-      >
+      <Box mt="20px" display="grid" gridTemplateColumns={{ xs: "repeat(1, 1fr)", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)", }} gap={{ xs: "15px", sm: "20px" }} sx={{ width: "100%" }}>
         {statData?.map((stat, index) => (
           <Card
             key={index}
@@ -177,63 +164,20 @@ const ContractorDashboard = () => {
           Quick Actions
         </Typography>
         <Box display="flex" flexWrap="wrap" gap={2}>
-          <Button
-            variant="contained"
-            startIcon={<AddOutlined />}
-            component={Link}
-            to="/job-post"
-            sx={{ 
-              bgcolor: 'primary.main', 
-              px: 3, 
-              py: 1.5,
-              borderRadius: 2
-            }}
-          >
+          <Button variant="contained" startIcon={<AddOutlined />} component={Link} to="/job-post" sx={{ bgcolor: 'primary.main', px: 3, py: 1.5, borderRadius: 2 }}>
             Post New Job
           </Button>
-          <Button
-            variant="outlined"
-            startIcon={<PeopleOutline />}
-            component={Link}
-            to="/workers"
-            sx={{ 
-              borderColor: 'primary.main', 
-              color: 'primary.main',
-              px: 3, 
-              py: 1.5,
-              borderRadius: 2
-            }}
-          >
+          <Button variant="outlined" startIcon={<PeopleOutline />} component={Link} to="/labour" sx={{ borderColor: 'primary.main', color: 'primary.main', px: 3, py: 1.5, borderRadius: 2 }}>
             Find Workers
           </Button>
-          <Button
-            variant="outlined"
-            startIcon={<PaymentOutlined />}
-            component={Link}
-            to="/payments"
-            sx={{ 
-              borderColor: 'primary.main', 
-              color: 'primary.main',
-              px: 3, 
-              py: 1.5,
-              borderRadius: 2
-            }}
-          >
+          <Button variant="outlined" startIcon={<PaymentOutlined />} component={Link} to="/payments" sx={{ borderColor: 'primary.main', color: 'primary.main', px: 3, py: 1.5, borderRadius: 2 }}>
             Process Payments
           </Button>
         </Box>
       </Box>
 
       {/* Main Content Grid */}
-      <Box sx={{
-        display: "grid",
-        gridTemplateColumns: {
-          xs: "1fr",
-          lg: "2fr 1fr"
-        },
-        gap: { xs: 2, md: 4 },
-        mt: 4
-      }}>
+      <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "2fr 1fr" }, gap: { xs: 2, md: 4 }, mt: 4 }}>
         {/* Left Column - Jobs and Earnings */}
         <Box>
           {/* Recent Jobs */}
@@ -246,7 +190,7 @@ const ContractorDashboard = () => {
                 View All
               </Button>
             </Box>
-            
+
             <Box display="flex" flexDirection="column" gap={2}>
               {recentJobs.map((job) => (
                 <Card key={job.id} sx={{ p: 2, borderRadius: 2 }}>
@@ -260,16 +204,8 @@ const ContractorDashboard = () => {
                         </Typography>
                       </Box>
                       <Box display="flex" gap={1}>
-                        <Chip 
-                          label={`${job.workers} workers`} 
-                          size="small" 
-                          variant="outlined" 
-                        />
-                        <Chip 
-                          label={job.status} 
-                          size="small" 
-                          color={job.status === 'active' ? 'success' : 'default'} 
-                        />
+                        <Chip label={`${job.workers} workers`} size="small" variant="outlined" />
+                        <Chip label={job.status} size="small" color={job.status === 'active' ? 'success' : 'default'} />
                       </Box>
                     </Box>
                     <Typography variant="h6" fontWeight="bold">
@@ -282,12 +218,7 @@ const ContractorDashboard = () => {
           </Box>
 
           {/* Earnings Chart */}
-          <Box className="p-4" sx={{
-            background: "white",
-            borderRadius: 2,
-            boxShadow: 2,
-            p: 3
-          }}>
+          <Box className="p-4" sx={{ background: "white", borderRadius: 2, boxShadow: 2, p: 3 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
               <Typography variant="h6" fontWeight="bold">Earnings Overview</Typography>
               <Select defaultValue={"2023"} size="small" sx={{ backgroundColor: "white", borderRadius: 1 }}>
@@ -321,7 +252,7 @@ const ContractorDashboard = () => {
                     y: {
                       beginAtZero: true,
                       ticks: {
-                        callback: function(value) {
+                        callback: function (value) {
                           return '$' + value;
                         }
                       }
@@ -335,17 +266,10 @@ const ContractorDashboard = () => {
 
         {/* Right Column - Stats and Workers */}
         <Box>
-          {/* Worker Distribution */}
-          <Box className="p-4" sx={{
-            background: "white",
-            borderRadius: 2,
-            boxShadow: 2,
-            p: 3,
-            mb: 4
-          }}>
+          <Box className="p-4" sx={{ background: "white", borderRadius: 2, boxShadow: 2, p: 3, mb: 4 }}>
             <Typography variant="h6" fontWeight="bold" mb={2}>Worker Skills Distribution</Typography>
             <Box sx={{ height: 250, position: 'relative' }}>
-              <Doughnut 
+              <Doughnut
                 data={skillDistributionData}
                 options={{
                   maintainAspectRatio: false,
@@ -366,12 +290,7 @@ const ContractorDashboard = () => {
           </Box>
 
           {/* Upcoming Tasks */}
-          <Box className="p-4" sx={{
-            background: "white",
-            borderRadius: 2,
-            boxShadow: 2,
-            p: 3
-          }}>
+          <Box className="p-4" sx={{ background: "white", borderRadius: 2, boxShadow: 2, p: 3 }}>
             <Typography variant="h6" fontWeight="bold" mb={2}>Upcoming Tasks</Typography>
             <Box display="flex" flexDirection="column" gap={2}>
               <Box display="flex" alignItems="center" gap={1.5}>

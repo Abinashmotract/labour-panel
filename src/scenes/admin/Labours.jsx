@@ -182,7 +182,7 @@ export default function CustomerDetails() {
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2, flex: 1, maxWidth: "600px" }}>
                     <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} sx={{ border: "1px solid purple", borderRadius: "10px", flex: 1, }}>
-                        <InputBase placeholder="Search user" value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
+                        <InputBase placeholder={t("nav.searchJobPosts")} value={searchText} onChange={handleSearch} sx={{ ml: 2, flex: 1 }} />
                         <IconButton type="button" sx={{ p: 1 }}>
                             <SearchOutlined />
                         </IconButton>

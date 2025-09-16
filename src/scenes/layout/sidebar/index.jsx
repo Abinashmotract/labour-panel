@@ -1,10 +1,8 @@
 import React from "react";
 import {
-  Avatar,
   Box,
   Divider,
   IconButton,
-  Typography,
   useTheme,
   useMediaQuery,
 } from "@mui/material";
@@ -16,7 +14,6 @@ import {
   DashboardOutlined,
   MenuOutlined,
   PeopleAltOutlined,
-  PersonOutlined,
   InventoryOutlined,
   Close,
   CalendarMonthOutlined,
@@ -59,30 +56,12 @@ const SideBar = () => {
   const navSections = {
     admin: [
       { title: t("nav.labourContractors"), path: "/labours", icon: <PeopleAltOutlined /> },
-      // { title: "Contracter", path: "/agent", icon: <PeopleAltOutlined /> },
       { title: t("nav.skills"), path: "/skills", icon: <PeopleAltOutlined /> },
-      { title: t("nav.nearbyjobs"), path: "/nearbyjobs", icon: <PeopleAltOutlined /> },
-      // { title: "Stylist Reviews", path: "/stylist-reviews", icon: <PersonOutlined /> },
-      // { title: "Products", path: "/product", icon: <PersonOutlined /> },
-      // { title: "Product Category", path: "/category", icon: <PeopleAltOutlined /> },
-      // { title: "Order Details", path: "/order-details", icon: <PeopleAltOutlined /> },
-      // { title: "Appointment Status", path: "/appointment-status", icon: <PersonOutlined /> },
     ],
     vendor: [
       { title: t("nav.jobPost"), path: "/job-post", icon: <InventoryOutlined /> },
       { title: t("nav.jobApplication"), path: "/application", icon: <InventoryOutlined /> },
       { title: t("nav.labour"), path: "/labour", icon: <CalendarMonthOutlined /> },
-      // { title: "Portfolio", path: "/portfolio", icon: <AddCircleOutline /> },
-      // {
-      //   title: "Availability Management",
-      //   path: "/availability",
-      //   icon: <AccessTimeOutlined />,
-      // },
-      // {
-      //   title: "Appointment Management",
-      //   path: "/appointment",
-      //   icon: <HistoryOutlined />,
-      // },
     ],
   };
 

@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 import { stylistUserTableColumns } from "../../custom/StylistUserTableColumns";
 import ShowDetailsDialog from "../../components/ShowDetailsDialog";
 import Alert from "../../custom/Alert";
+import { useTranslation } from "react-i18next";
 
 export default function RegisteredStylist() {
   const [allUsers, setAllUsers] = useState([]);
@@ -30,6 +31,7 @@ export default function RegisteredStylist() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const authToken = Cookies.get("token");
+  const {t} = useTranslation();
 
   const formatAddress = (address) => {
     if (!address) return "N/A";
@@ -221,7 +223,7 @@ export default function RegisteredStylist() {
           sx={{ border: "1px solid purple", borderRadius: "10px" }}
         >
           <InputBase
-            placeholder="Search user"
+            placeholder={t("nav.searchJobPosts")}
             value={searchText}
             onChange={handleSearch}
             sx={{ ml: 2, flex: 1 }}
