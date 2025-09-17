@@ -1,4 +1,3 @@
-// src/scenes/vendor/Services.jsx
 import { Box, IconButton, InputBase, useTheme } from "@mui/material";
 import { Header } from "../../components";
 import { SearchOutlined } from "@mui/icons-material";

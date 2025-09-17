@@ -10,6 +10,7 @@ import {
   Avatar,
   Typography,
   Divider,
+  Badge,
 } from "@mui/material";
 
 import { tokens, ColorModeContext } from "../../../theme";
@@ -29,8 +30,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../utils/context/AuthContext";
 import FlexBetween from "../../../components/FlexBetween";
 import useStylistProfile from "../../../hooks/useStylistProfile";
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { CustomIconButton } from "../../../custom/Button";
+import { requestNotificationPermission } from "../../../firebase";
 
 const Navbar = () => {
   const theme = useTheme();
@@ -41,6 +43,9 @@ const Navbar = () => {
   const isNonMobile = useMediaQuery("(min-width: 768px)");
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [anchorEl, setAnchorEl] = useState(null);
+  const [notifications, setNotifications] = useState([]);
+  const [notifAnchor, setNotifAnchor] = useState(null);
+
 
   const { i18n, t } = useTranslation();
   const { logout } = useAuth();
@@ -95,8 +100,12 @@ const Navbar = () => {
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-    document.documentElement.lang = lng; // update <html lang="...">
+    document.documentElement.lang = lng;
   };
+
+useEffect(() => {
+  requestNotificationPermission();
+}, []);
 
   return (
     <FlexBetween
@@ -107,7 +116,7 @@ const Navbar = () => {
         top: 0,
         zIndex: 100,
         background: "#2B3990",
-        minHeight: { xs: "48px", sm: "56px" } // Reduce height
+        minHeight: { xs: "48px", sm: "56px" }
       }}
     >
 
@@ -132,23 +141,9 @@ const Navbar = () => {
         )}
       </FlexBetween>
       <div style={{ display: 'flex', gap: 8 }}>
-        <CustomIconButton
-          icon={null}
-          text="English"
-          fontWeight="bold"
-          color="white"
-          variant="outlined"
-          onClick={() => changeLanguage("en")}
-        />
+        <CustomIconButton icon={null} text="English" fontWeight="bold" color="white" variant="outlined" onClick={() => changeLanguage("en")} />
 
-        <CustomIconButton
-          icon={null}
-          text="हिन्दी"
-          fontWeight="bold"
-          color="white"
-          variant="outlined"
-          onClick={() => changeLanguage("hi")}
-        />
+        <CustomIconButton icon={null} text="हिन्दी" fontWeight="bold" color="white" variant="outlined" onClick={() => changeLanguage("hi")} />
       </div>
       <FlexBetween gap={{ xs: "0.5rem", sm: "2rem" }}>
         {panelType === "vendor" && !isMobile && (
@@ -157,6 +152,16 @@ const Navbar = () => {
             <Typography variant="body2" sx={{ color: "#FFFFFF", fontSize: { xs: "0.7rem", sm: "0.9rem" }, whiteSpace: "nowrap", display: { xs: "none", sm: "block" } }}>
               {formatDateTime(currentDateTime)}
             </Typography>
+            <Tooltip title="Notifications">
+              <IconButton
+                sx={{ color: "#FFFFFF", padding: { xs: "8px", sm: "12px" } }}
+                onClick={(e) => setNotifAnchor(e.currentTarget)}
+              >
+                <Badge badgeContent={notifications.length} color="error">
+                  <Notifications sx={{ fontSize: { xs: "20px", sm: "25px" } }} />
+                </Badge>
+              </IconButton>
+            </Tooltip>
           </Box>
         )}
 
@@ -183,10 +188,7 @@ const Navbar = () => {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right", }}
         sx={{
           "& .MuiPaper-root": {
             width: 300,
@@ -215,7 +217,6 @@ const Navbar = () => {
           </Box>,
           <Divider key="profile-divider" sx={{ my: 0, borderColor: "#eee" }} />
         ]}
-        {/* Menu Options */}
         <Box sx={{ p: 1 }}>
           {panelType === "vendor" && (
             <Link to="/contractor-profile" style={{ textDecoration: "none", color: "inherit" }}>

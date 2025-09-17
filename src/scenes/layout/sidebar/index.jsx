@@ -73,7 +73,6 @@ const SideBar = () => {
         top: 0,
         left: 0,
         height: "100vh",
-        zIndex: 1000,
         borderRightWidth: "1px",
         borderRightStyle: "solid",
         borderColor: "#2B3990",

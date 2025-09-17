@@ -41,45 +41,45 @@ const ContractorDashboard = () => {
   const { t } = useTranslation();
   const authToken = Cookies.get("token");
 
-  const fetchJobs = async () => {
-    try {
-      const res = await axios.get(`${API_BASE_URL}/contractor/jobs`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-      });
-      if (res.data && res.data.success) {
-        setJobsData(res.data.data || []);
-        setActiveJobs(res.data.data.filter(job => job.status === 'active').length);
-      }
-    } catch (err) {
-      console.error('Failed to fetch jobs data');
-    }
-  };
+  // const fetchJobs = async () => {
+  //   try {
+  //     const res = await axios.get(`${API_BASE_URL}/contractor/jobs`, {
+  //       headers: {
+  //         Authorization: `Bearer ${authToken}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //       withCredentials: true,
+  //     });
+  //     if (res.data && res.data.success) {
+  //       setJobsData(res.data.data || []);
+  //       setActiveJobs(res.data.data.filter(job => job.status === 'active').length);
+  //     }
+  //   } catch (err) {
+  //     console.error('Failed to fetch jobs data');
+  //   }
+  // };
 
-  const fetchEarnings = async () => {
-    try {
-      const res = await axios.get(`${API_BASE_URL}/contractor/earnings`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-      });
-      if (res.data && res.data.success) {
-        setEarningsData(res.data.data || {});
-      }
-    } catch (err) {
-      console.error('Failed to fetch earnings data');
-    }
-  };
+  // const fetchEarnings = async () => {
+  //   try {
+  //     const res = await axios.get(`${API_BASE_URL}/admin/overview`, {
+  //       headers: {
+  //         Authorization: `Bearer ${authToken}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //       withCredentials: true,
+  //     });
+  //     if (res.data && res.data.success) {
+  //       setEarningsData(res.data.data || {});
+  //     }
+  //   } catch (err) {
+  //     console.error('Failed to fetch earnings data');
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchJobs();
-    fetchEarnings();
-  }, [authToken]);
+  // useEffect(() => {
+  //   fetchJobs();
+  //   fetchEarnings();
+  // }, [authToken]);
 
   const statData = [
     { title: t("dashboard.activeJobs"), value: activeJobs, path: "/jobs", icon: <WorkOutline />, color: "#2E7D32" },
