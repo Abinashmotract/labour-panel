@@ -4,7 +4,7 @@ import { Box, Chip, CircularProgress, Switch, Typography, MenuItem, Select } fro
 import ImageWithLoader from "./ImageWithLoader";
 import PersonIcon from "@mui/icons-material/Person";
 
-export const userTableColumns = ({ handleDelete, handleView }) => [
+export const userTableColumns = ({ handleDelete, handleView, handleToggleAgent }) => [
     {
         field: "photo",
         headerName: "Profile Picture",
@@ -46,6 +46,21 @@ export const userTableColumns = ({ handleDelete, handleView }) => [
                 }}
             />
         ),
+    },
+     {
+        field: "isAgent",
+        headerName: "Agent",
+        flex: 0.6,
+        renderCell: (params) => {
+            if (params.row.role !== "contractor") return null;
+            return (
+                <Switch
+                    checked={params.row.isAgent}
+                    onChange={() => handleToggleAgent(params.row)} // callback pass
+                    color="primary"
+                />
+            );
+        },
     },
     {
         field: "gender",

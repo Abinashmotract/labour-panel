@@ -32,7 +32,7 @@ export default function CustomerDetails() {
     const [roleFilter, setRoleFilter] = useState("");
 
     const theme = useTheme();
-     const { t } = useTranslation();
+    const { t } = useTranslation();
     const colors = tokens(theme.palette.mode);
     const authToken = Cookies.get("token");
 
@@ -47,20 +47,21 @@ export default function CustomerDetails() {
             });
             setOriginalUsers(response.data.data);
             const formattedData = response?.data?.data.map((user) => ({
-                id: user._id,
-                fullName: `${user.firstName || ""} ${user.lastName || ""}`.trim() || "N/A",
-                email: user.email || "N/A",
-                mobile: user.phoneNumber || "N/A",
-                role: user.role || "N/A",
-                gender: user.gender || "N/A",
-                profilePicture: user.profilePicture || "",
-                createdAt: new Date(user.createdAt).toLocaleDateString(),
-                isPhoneVerified: user.isPhoneVerified ? "Yes" : "No",
-                address: user.addressLine1 || "N/A",
-                workCategory: user.work_category || "N/A",
-                workExperience: user.work_experience || "N/A",
-                latitude: user.location?.coordinates?.[1] || "N/A",
-                longitude: user.location?.coordinates?.[0] || "N/A",
+                id: user?._id,
+                fullName: `${user?.firstName || ""} ${user?.lastName || ""}`.trim() || "N/A",
+                email: user?.email || "N/A",
+                mobile: user?.phoneNumber || "N/A",
+                role: user?.role || "N/A",
+                isAgent: user?.isAgent || false,
+                gender: user?.gender || "N/A",
+                profilePicture: user?.profilePicture || "",
+                createdAt: new Date(user?.createdAt).toLocaleDateString(),
+                isPhoneVerified: user?.isPhoneVerified ? "Yes" : "No",
+                address: user?.addressLine1 || "N/A",
+                workCategory: user?.work_category || "N/A",
+                workExperience: user?.work_experience || "N/A",
+                latitude: user?.location?.coordinates?.[1] || "N/A",
+                longitude: user?.location?.coordinates?.[0] || "N/A",
             }));
             setAllUsers(formattedData);
             setFilteredUsers(formattedData);
@@ -73,7 +74,7 @@ export default function CustomerDetails() {
 
     useEffect(() => {
         fetchAllUsers();
-    }, []);
+    }, [authToken]);
 
     const applyFilters = (users, search = searchText, role = roleFilter) => {
         let result = users;
@@ -173,8 +174,40 @@ export default function CustomerDetails() {
         setViewStatus(undefined);
     };
 
+    const handleToggleAgent = async (user) => {
+        try {
+            const response = await axios.put(
+                `${API_BASE_URL}/user/admin/contractor/${user.id}/toggle-agent`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            if (response.data.success) {
+                showSuccessToast("Agent status updated successfully!");
+                setAllUsers((prev) =>
+                    prev.map((u) =>
+                        u.id === user.id ? { ...u, isAgent: !u.isAgent } : u
+                    )
+                );
+                setFilteredUsers((prev) =>
+                    prev.map((u) =>
+                        u.id === user.id ? { ...u, isAgent: !u.isAgent } : u
+                    )
+                );
+            } else {
+                showErrorToast("Failed to update agent status");
+            }
+            fetchAllUsers();
+        } catch (error) {
+            showErrorToast(error?.response?.data?.message || "Something went wrong");
+        }
+    };
 
-    const columns = userTableColumns({ handleDelete, handleView });
+    const columns = userTableColumns({ handleDelete, handleView, handleToggleAgent });
 
     return (
         <Box>
