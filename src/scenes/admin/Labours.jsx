@@ -53,6 +53,8 @@ export default function CustomerDetails() {
                 mobile: user?.phoneNumber || "N/A",
                 role: user?.role || "N/A",
                 isAgent: user?.isAgent || false,
+                referralCode: user?.referralCode || "",
+                referralsCount: user?.referralsCount || 0,
                 gender: user?.gender || "N/A",
                 profilePicture: user?.profilePicture || "",
                 createdAt: new Date(user?.createdAt).toLocaleDateString(),

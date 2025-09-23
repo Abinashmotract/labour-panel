@@ -216,52 +216,6 @@ const ContractorDashboard = () => {
               ))}
             </Box>
           </Box>
-
-          {/* Earnings Chart */}
-          <Box className="p-4" sx={{ background: "white", borderRadius: 2, boxShadow: 2, p: 3 }}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-              <Typography variant="h6" fontWeight="bold">Earnings Overview</Typography>
-              <Select defaultValue={"2023"} size="small" sx={{ backgroundColor: "white", borderRadius: 1 }}>
-                <MenuItem value="2023">2023</MenuItem>
-                <MenuItem value="2022">2022</MenuItem>
-              </Select>
-            </Box>
-            <Box sx={{ height: 300 }}>
-              <Bar
-                data={{
-                  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                  datasets: [
-                    {
-                      label: 'Earnings ($)',
-                      data: [4200, 5100, 6800, 7200, 8900, 9500, 10200, 11000, 9800, 11500, 12200, 12700],
-                      backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                      borderColor: 'rgba(54, 162, 235, 1)',
-                      borderWidth: 1,
-                    },
-                  ],
-                }}
-                options={{
-                  maintainAspectRatio: false,
-                  responsive: true,
-                  plugins: {
-                    legend: {
-                      display: false
-                    },
-                  },
-                  scales: {
-                    y: {
-                      beginAtZero: true,
-                      ticks: {
-                        callback: function (value) {
-                          return '$' + value;
-                        }
-                      }
-                    }
-                  }
-                }}
-              />
-            </Box>
-          </Box>
         </Box>
 
         {/* Right Column - Stats and Workers */}

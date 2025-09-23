@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -26,6 +26,7 @@ import {
   Edit,
   Work,
   PhotoCamera,
+  ContentCopy,
 } from "@mui/icons-material";
 import { tokens } from "../../theme";
 import { Header } from '../../components';
@@ -42,21 +43,24 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { getCoordinatesFromAddress } from '../../utils/geocode';
 import { Link } from 'react-router-dom';
+import { CheckIcon } from 'lucide-react';
 
 const ContractorProfile = () => {
-  const [openEditDialog, setOpenEditDialog] = React.useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const { profile, loading, error } = useStylistProfile();
+  console.log(profile, 'profile')
 
-const [formData, setFormData] = React.useState({
-  firstName: profile?.firstName || "",
-  lastName: profile?.lastName || "",
-  email: profile?.email || "",
-  addressLine1: profile?.addressLine1 || "",
-  work_category: profile?.work_category || "",
-  work_experience: profile?.work_experience || "",
-  gender: profile?.gender || "",
-});
+  const [formData, setFormData] = useState({
+    firstName: profile?.firstName || "",
+    lastName: profile?.lastName || "",
+    email: profile?.email || "",
+    addressLine1: profile?.addressLine1 || "",
+    work_category: profile?.work_category || "",
+    work_experience: profile?.work_experience || "",
+    gender: profile?.gender || "",
+  });
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -84,48 +88,39 @@ const [formData, setFormData] = React.useState({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-const handleUpdateProfile = async () => {
-  try {
-    const updatedFormData = { ...formData, userId: profile?._id };
-    const response = await axios.put(
-      `${API_BASE_URL}/user/role/update-user-details`,
-      updatedFormData,
-      { headers: { Authorization: `Bearer ${authToken}` } }
-    );
+  const handleUpdateProfile = async () => {
+    try {
+      const updatedFormData = { ...formData, userId: profile?._id };
+      const response = await axios.put(
+        `${API_BASE_URL}/user/role/update-user-details`,
+        updatedFormData,
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
 
-    if (response.data.success) {
-      showSuccessToast("Profile updated successfully!");
-      dispatch(fetchStylistProfile()); // Refresh profile
-      handleCloseDialog();
+      if (response.data.success) {
+        showSuccessToast("Profile updated successfully!");
+        dispatch(fetchStylistProfile()); // Refresh profile
+        handleCloseDialog();
+      }
+    } catch (err) {
+      console.error(err);
+      showErrorToast(err.response?.data?.message || "Failed to update profile");
     }
-  } catch (err) {
-    console.error(err);
-    showErrorToast(err.response?.data?.message || "Failed to update profile");
-  }
-};
+  };
 
-
-
-  const handleAddressChange = async (e) => {
-  const address = e.target.value;
-  setFormData(prev => ({ ...prev, addressLine1: address }));
-
-  if (address.length > 5) { // optional debounce
-    const coords = await getCoordinatesFromAddress(address);
-    if (coords) {
-      setFormData(prev => ({
-        ...prev,
-        lat: coords.lat,
-        lng: coords.lng,
-        addressLine1: coords.formattedAddress
-      }));
-    }
-  }
-};
+  const handleCopy = () => {
+    if (!profile?.referralCode) return;
+    navigator.clipboard.writeText(profile.referralCode)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000); // reset after 2 seconds
+      })
+      .catch(() => {});
+  };
 
   const handleCloseDialog = () => setOpenEditDialog(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (error) {
       showErrorToast(error);
     }
@@ -137,6 +132,59 @@ const handleUpdateProfile = async () => {
   return (
     <Box>
       <Header title={t("dashboard.contractorprofile")} subtitle="View and manage your profile information" />
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2, mb: 2 }}>
+        <Box>
+      <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+        Referral Code
+      </Typography>
+      {profile?.isAgent && profile?.referralCode ? (
+        <Chip
+          label={copied ? "Copied" : profile.referralCode.toUpperCase()}
+          size="small"
+          variant="filled"
+          onClick={handleCopy}
+          sx={{
+            bgcolor: "black",
+            color: "white",
+            fontWeight: "bold",
+            textTransform: "uppercase",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+          icon={!copied ? <ContentCopy style={{ color: "white", fontSize: 16 }} /> : undefined}
+          deleteIcon={copied ? <CheckIcon style={{ color: "white", fontSize: 16 }} /> : undefined}
+          onDelete={copied ? () => {} : undefined} 
+        />
+      ) : (
+        <Typography variant="body2" fontWeight={500}>N/A</Typography>
+      )}
+    </Box>
+        {/* Referrals Count */}
+        <Box>
+          <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+            Referrals Count
+          </Typography>
+          {profile?.isAgent ? (
+            <Chip
+              label={profile.referralsCount || 0}
+              size="small"
+              variant="filled"
+              sx={{
+                bgcolor: "black",
+                color: "white",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+                cursor: "default",
+              }}
+            />
+          ) : (
+            <Typography variant="body2" fontWeight={500}>0</Typography>
+          )}
+        </Box>
+      </Box>
+
       <Box sx={{ position: 'relative', width: '100%', mb: 6, borderRadius: '24px', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.18)', overflow: 'hidden' }}>
         <Box
           sx={{
@@ -299,7 +347,7 @@ const handleUpdateProfile = async () => {
               <Stack spacing={2} sx={{ mt: 2 }}>
                 <CustomIconButton icon={<Edit />} onClick={handleOpenDialog} text="Edit Profile" color="#6d295a" variant="contained" fullWidth />
                 <Link to="/job-post" className='text-decoration-none'>
-                <CustomIconButton icon={<Work />} text="View Job Posts" color="#2d5a78" variant="outlined" fullWidth /></Link>
+                  <CustomIconButton icon={<Work />} text="View Job Posts" color="#2d5a78" variant="outlined" fullWidth /></Link>
               </Stack>
             </CardContent>
           </Card>
@@ -319,13 +367,13 @@ const handleUpdateProfile = async () => {
               <TextField label="Email" name="email" fullWidth value={formData.email} onChange={handleInputChange} />
             </Grid>
             <Grid item xs={12}>
-<TextField
-  label="Address"
-  name="addressLine1"
-  fullWidth
-  value={formData.addressLine1}
-  onChange={handleInputChange}
-/>            </Grid>
+              <TextField
+                label="Address"
+                name="addressLine1"
+                fullWidth
+                value={formData.addressLine1}
+                onChange={handleInputChange}
+              />            </Grid>
             <Grid item xs={12} sm={6}>
               <TextField label="Work Category" name="work_category" fullWidth value={formData.work_category} onChange={handleInputChange} />
             </Grid>

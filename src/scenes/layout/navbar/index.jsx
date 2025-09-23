@@ -11,6 +11,7 @@ import {
   Typography,
   Divider,
   Badge,
+  Chip
 } from "@mui/material";
 
 import { tokens, ColorModeContext } from "../../../theme";

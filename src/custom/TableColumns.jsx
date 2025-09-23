@@ -47,7 +47,7 @@ export const userTableColumns = ({ handleDelete, handleView, handleToggleAgent }
             />
         ),
     },
-     {
+    {
         field: "isAgent",
         headerName: "Agent",
         flex: 0.6,
@@ -89,7 +89,30 @@ export const userTableColumns = ({ handleDelete, handleView, handleToggleAgent }
         },
     },
     { field: "isPhoneVerified", headerName: "Phone Verified", flex: 0.7 },
-    { field: "address", headerName: "Address", flex: 1 },
+    {
+        field: "referralsCount",
+        headerName: "Referrals Count",
+        flex: 1,
+        renderCell: (params) => {
+            if (params.row.role !== "contractor" || !params.row.isAgent) return null;
+            const count = params.row.referralsCount || 0;
+            return (
+                <Chip
+                    label={count}
+                    size="small"
+                    variant="filled"
+                    sx={{
+                        bgcolor: "black",
+                        color: "white",
+                        fontWeight: "bold",
+                        textTransform: "uppercase",
+                        cursor: "default",
+                        transition: "0.2s ease-in-out",
+                    }}
+                />
+            );
+        },
+    },
     { field: "workCategory", headerName: "Work Category", flex: 1 },
     { field: "workExperience", headerName: "Work Experience", flex: 1 },
     {
