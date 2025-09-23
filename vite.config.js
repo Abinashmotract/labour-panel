@@ -8,5 +8,9 @@ export default defineConfig({
     hmr: {
       overlay: false,
     },
+    build: {
+    outDir: "dist",   // Netlify expects dist
+    sourcemap: true,  // useful for debugging
+  },
   },
 })
