@@ -1181,4 +1181,53 @@ export const reviewsTableColumns = ({ handleToggleStatus, handleDelete, handleVi
     },
 ];
 
+export const referalTableColumns = ({ handleView }) => [
+  {
+    field: "photo",
+    headerName: "Profile Picture",
+    flex: 0.5,
+    renderCell: (params) => {
+      const photoUrl =
+        params.row.profilePicture && params.row.profilePicture.length > 0
+          ? params.row.profilePicture
+          : null;
 
+      const fallbackUrl =
+        "https://w7.pngwing.com/pngs/406/861/png-transparent-default-facebook-user-profile-blue-silhouette-neck-symbol-sky-folder-users-blue-silhouette-application-thumbnail.png";
+
+      return (
+        <ImageWithLoader
+          src={photoUrl || fallbackUrl}
+          alt={params.row.fullName || "Profile"}
+        />
+      );
+    },
+  },
+  { field: "fullName", headerName: "Full Name", flex: 1 },
+  { field: "email", headerName: "Email", flex: 1 },
+  { field: "mobile", headerName: "Mobile", flex: 1 },
+  { field: "role", headerName: "Role", flex: 0.7 },
+  { field: "gender", headerName: "Gender", flex: 0.6 },
+  { field: "isPhoneVerified", headerName: "Phone Verified", flex: 0.7 },
+  { field: "address", headerName: "Address", flex: 1 },
+  { field: "workCategory", headerName: "Work Category", flex: 1 },
+  { field: "workExperience", headerName: "Work Experience", flex: 1 },
+  { field: "referralsCount", headerName: "Referrals Count", flex: 0.8 },
+  { field: "createdAt", headerName: "Created At", flex: 0.8 },
+  {
+    field: "action",
+    headerName: "Action",
+    width: 180,
+    sortable: false,
+    renderCell: (params) => (
+      <Box sx={{ display: "flex", gap: 0.5 }}>
+        <CustomIconButton
+          size="small"
+          icon={<Eye size={16} />}
+          color="rgb(77 141 225)"
+          onClick={() => handleView(params.row)}
+        />
+      </Box>
+    ),
+  },
+];

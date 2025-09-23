@@ -15,6 +15,7 @@ import CreateSkill from "./scenes/admin/CreateSkill";
 import LoadingScreen from "./components/LoadingScreen";
 import Services from "./scenes/vendor/Services";
 import JobApplication from "./scenes/vendor/JobApplication";
+import ReferalByAgent from "./scenes/vendor/ReferalByAgent";
 
 const AppRouter = () => {
   const { isAuthenticated, panelType, token, stylistId, login } = useAuth();
@@ -43,6 +44,7 @@ const AppRouter = () => {
                 <Route path="application" element={<JobApplication />} />
                 <Route path="contractor-profile" element={<VendorProfile />} />
                 <Route path="labour" element={<Services />} />
+                 {/* <Route path="referal" element={<ReferalByAgent />} /> */}
               </>
             ) : (
               <Route index element={<Navigate to="/login" replace />} />

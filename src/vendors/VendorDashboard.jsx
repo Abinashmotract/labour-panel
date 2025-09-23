@@ -8,6 +8,7 @@ import {
   HistoryOutlined,
   AddOutlined,
   LocationOnOutlined,
+  ContentCopy,
 } from "@mui/icons-material";
 import Header from "../components/Header";
 import { Calendar } from "lucide-react";
@@ -28,6 +29,8 @@ import "../vendors/customscss/Dashboard.scss";
 import axios from "axios";
 import { API_BASE_URL } from "../utils/apiConfig";
 import { useTranslation, Trans } from 'react-i18next';
+import useStylistProfile from "../hooks/useStylistProfile";
+import { CheckIcon } from 'lucide-react';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -37,9 +40,11 @@ const ContractorDashboard = () => {
   const [pendingApplications, setPendingApplications] = useState(8);
   const [jobsData, setJobsData] = useState([]);
   const [earningsData, setEarningsData] = useState({});
+  const [copied, setCopied] = useState(false);
 
   const { t } = useTranslation();
   const authToken = Cookies.get("token");
+  const { profile, loading, error } = useStylistProfile();
 
   // const fetchJobs = async () => {
   //   try {
@@ -80,7 +85,15 @@ const ContractorDashboard = () => {
   //   fetchJobs();
   //   fetchEarnings();
   // }, [authToken]);
-
+  const handleCopy = () => {
+    if (!profile?.referralCode) return;
+    navigator.clipboard.writeText(profile.referralCode)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000); // reset after 2 seconds
+      })
+      .catch(() => { });
+  };
   const statData = [
     { title: t("dashboard.activeJobs"), value: activeJobs, path: "/jobs", icon: <WorkOutline />, color: "#2E7D32" },
     { title: t("dashboard.availableWorkers"), value: availableWorkers, path: "/labour", icon: <PeopleOutline />, color: "#1565C0" },
@@ -119,9 +132,60 @@ const ContractorDashboard = () => {
   };
 
   return (
-    <Box sx={{ width: "100%", maxWidth: "100%", p: { xs: 1, sm: 2, md: 3 } }}>
+    <Box sx={{ width: "100%", maxWidth: "100%" }}>
       <Header title={t("dashboard.headerTitle")} subtitle={t("dashboard.headerSubtitle")} />
-
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2, mb: 2, border: '1px solid black', p: 2, borderRadius: 3 }}>
+        <Box>
+          <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+            Referral Code
+          </Typography>
+          {profile?.isAgent && profile?.referralCode ? (
+            <Chip
+              label={copied ? "Copied" : profile.referralCode.toUpperCase()}
+              size="small"
+              variant="filled"
+              onClick={handleCopy}
+              sx={{
+                bgcolor: "black",
+                color: "white",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+              icon={!copied ? <ContentCopy style={{ color: "white", fontSize: 16 }} /> : undefined}
+              deleteIcon={copied ? <CheckIcon style={{ color: "white", fontSize: 16 }} /> : undefined}
+              onDelete={copied ? () => { } : undefined}
+            />
+          ) : (
+            <Typography variant="body2" fontWeight={500}>N/A</Typography>
+          )}
+        </Box>
+        {/* Referrals Count */}
+        <Box>
+          <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+            Referrals Count
+          </Typography>
+          {profile?.isAgent ? (
+            <Chip
+              label={profile.referralsCount || 0}
+              size="small"
+              variant="filled"
+              sx={{
+                bgcolor: "black",
+                color: "white",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+                cursor: "default",
+              }}
+            />
+          ) : (
+            <Typography variant="body2" fontWeight={500}>0</Typography>
+          )}
+        </Box>
+      </Box>
       {/* Stats Overview */}
       <Box mt="20px" display="grid" gridTemplateColumns={{ xs: "repeat(1, 1fr)", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)", }} gap={{ xs: "15px", sm: "20px" }} sx={{ width: "100%" }}>
         {statData?.map((stat, index) => (

@@ -50,7 +50,6 @@ const ContractorProfile = () => {
   const [copied, setCopied] = useState(false);
 
   const { profile, loading, error } = useStylistProfile();
-  console.log(profile, 'profile')
 
   const [formData, setFormData] = useState({
     firstName: profile?.firstName || "",
@@ -115,7 +114,7 @@ const ContractorProfile = () => {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000); // reset after 2 seconds
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const handleCloseDialog = () => setOpenEditDialog(false);
@@ -132,35 +131,35 @@ const ContractorProfile = () => {
   return (
     <Box>
       <Header title={t("dashboard.contractorprofile")} subtitle="View and manage your profile information" />
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2, mb: 2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2, mb: 2, border: '1px solid black', p: 2, borderRadius: 3 }}>
         <Box>
-      <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-        Referral Code
-      </Typography>
-      {profile?.isAgent && profile?.referralCode ? (
-        <Chip
-          label={copied ? "Copied" : profile.referralCode.toUpperCase()}
-          size="small"
-          variant="filled"
-          onClick={handleCopy}
-          sx={{
-            bgcolor: "black",
-            color: "white",
-            fontWeight: "bold",
-            textTransform: "uppercase",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-          icon={!copied ? <ContentCopy style={{ color: "white", fontSize: 16 }} /> : undefined}
-          deleteIcon={copied ? <CheckIcon style={{ color: "white", fontSize: 16 }} /> : undefined}
-          onDelete={copied ? () => {} : undefined} 
-        />
-      ) : (
-        <Typography variant="body2" fontWeight={500}>N/A</Typography>
-      )}
-    </Box>
+          <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+            Referral Code
+          </Typography>
+          {profile?.isAgent && profile?.referralCode ? (
+            <Chip
+              label={copied ? "Copied" : profile.referralCode.toUpperCase()}
+              size="small"
+              variant="filled"
+              onClick={handleCopy}
+              sx={{
+                bgcolor: "black",
+                color: "white",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+              icon={!copied ? <ContentCopy style={{ color: "white", fontSize: 16 }} /> : undefined}
+              deleteIcon={copied ? <CheckIcon style={{ color: "white", fontSize: 16 }} /> : undefined}
+              onDelete={copied ? () => { } : undefined}
+            />
+          ) : (
+            <Typography variant="body2" fontWeight={500}>N/A</Typography>
+          )}
+        </Box>
         {/* Referrals Count */}
         <Box>
           <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
