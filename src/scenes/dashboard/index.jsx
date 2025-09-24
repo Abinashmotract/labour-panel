@@ -7,17 +7,16 @@ import {
   Grid,
   CircularProgress,
 } from "@mui/material";
-import {
-  Header,
-} from "../../components";
+import { Header } from "../../components";
 import { tokens } from "../../theme";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../../utils/apiConfig";
 import Cookies from "js-cookie";
-import PersonIcon from '@mui/icons-material/Person';
-import BookIcon from '@mui/icons-material/Book';
-import { useTranslation } from 'react-i18next';
+import PersonIcon from "@mui/icons-material/Person";
+import BusinessIcon from "@mui/icons-material/Business";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
+import { useTranslation } from "react-i18next";
 
 const timeAgo = (date) => {
   const now = new Date();
@@ -34,7 +33,6 @@ function Dashboard() {
   const [recentActivity, setRecentActivity] = useState([]);
   const [rawRecentActivity, setRawRecentActivity] = useState([]);
   const [loading, setLoading] = useState(true);
-
 
   const theme = useTheme();
   const { t } = useTranslation();
@@ -84,43 +82,71 @@ function Dashboard() {
     {
       title: t("dashboard.totalLabours"),
       value: overviewData.totalLabour || 0,
-      color: "white",
-      icon: <PersonIcon />,
+      icon: <PersonIcon sx={{ fontSize: 36, color: "#1E3A8A" }} />,
     },
     {
-      title:  t("dashboard.totalContractors"),
+      title: t("dashboard.totalContractors"),
       value: overviewData.totalContractors || 0,
-      color: "white",
-      icon: <BookIcon />,
+      icon: <BusinessIcon sx={{ fontSize: 36, color: "#1E3A8A" }} />,
     },
-     {
+    {
       title: "Total Pending",
       value: overviewData.totalPendingContractors || 0,
-      color: "white",
-      icon: <BookIcon />,
+      icon: <PendingActionsIcon sx={{ fontSize: 36, color: "#1E3A8A" }} />,
     },
   ];
 
   return (
-    <Box sx={{ width: "100%", maxWidth: "100%", p:2 }}>
+    <Box sx={{ width: "100%", maxWidth: "100%", p: 2 }}>
       {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "50vh",
+          }}
+        >
           <CircularProgress />
         </Box>
       ) : (
         <>
-          <Header title={t("dashboard.headerTitle")} subtitle="Welcome to your dashboard" />
+          <Header
+            title={t("dashboard.headerTitle")}
+            subtitle="Welcome to your dashboard"
+          />
 
-          <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid container spacing={3} sx={{ mt: 2 }}>
             {overviewStats?.map((stat) => (
-              <Grid item xs={12} sm={6} md={4} lg={2.4} key={stat.title}>
-                <Card sx={{ background: stat.color, borderRadius: 2, boxShadow: 4, border: '0.5px solid #2B3990' }}>
-                  <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
+              <Grid item xs={12} sm={6} md={4} key={stat.title}>
+                <Card
+                  sx={{
+                    borderRadius: "16px",
+                    boxShadow: 3,
+                    border: "0.5px solid #2B3990",
+                    textAlign: "center",
+                    p: 2,
+                  }}
+                >
+                  <CardContent
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 1,
+                    }}
+                  >
                     {stat.icon}
-                    <Typography variant="subtitle2" sx={{ mt: 1, color: '#000', fontWeight: 700 }}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ fontWeight: 700, color: "#000" }}
+                    >
                       {stat.title}
                     </Typography>
-                    <Typography variant="h5" sx={{ fontWeight: 900, color: '#000' }}>
+                    <Typography
+                      variant="h5"
+                      sx={{ fontWeight: 900, color: "#000" }}
+                    >
                       {stat.value}
                     </Typography>
                   </CardContent>
@@ -133,6 +159,5 @@ function Dashboard() {
     </Box>
   );
 }
-
 
 export default Dashboard;
