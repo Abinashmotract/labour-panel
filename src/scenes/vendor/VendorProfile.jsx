@@ -18,6 +18,10 @@ import {
   TextField,
   DialogActions,
   Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import {
   LocationOn,
@@ -41,13 +45,13 @@ import profileimage from '../../assets/images/profileimage.png';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { getCoordinatesFromAddress } from '../../utils/geocode';
 import { Link } from 'react-router-dom';
 import { CheckIcon } from 'lucide-react';
 
 const ContractorProfile = () => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [allSkills, setAllSkills] = useState([]);
 
   const { profile, loading, error } = useStylistProfile();
 
@@ -66,6 +70,24 @@ const ContractorProfile = () => {
   const authToken = Cookies.get("token");
   const dispatch = useDispatch();
   const { t } = useTranslation()
+
+  useEffect(() => {
+    fetchAllSkills();
+  }, []);
+
+  const fetchAllSkills = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/skill/admin/skills`);
+      console.log(response, 'sfsdfd')
+      if (response.data?.status === 200 && response.data?.success) {
+        setAllSkills(response.data.data?.skills || []);
+      }
+    } catch (err) {
+      console.error("Error fetching skills:", err);
+    }
+  };
+
+  console.log(allSkills, 'allSkills')
 
   const handleOpenDialog = () => {
     setFormData({
@@ -112,7 +134,7 @@ const ContractorProfile = () => {
     navigator.clipboard.writeText(profile.referralCode)
       .then(() => {
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000); // reset after 2 seconds
+        setTimeout(() => setCopied(false), 2000);
       })
       .catch(() => { });
   };
@@ -355,7 +377,7 @@ const ContractorProfile = () => {
       <Dialog open={openEditDialog} onClose={handleCloseDialog} fullWidth maxWidth="sm">
         <DialogTitle>Edit Profile</DialogTitle>
         <DialogContent>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} sx={{ mt: 3 }}>
             <Grid item xs={12} sm={6}>
               <TextField label="First Name" name="firstName" fullWidth value={formData.firstName} onChange={handleInputChange} />
             </Grid>
@@ -366,15 +388,18 @@ const ContractorProfile = () => {
               <TextField label="Email" name="email" fullWidth value={formData.email} onChange={handleInputChange} />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                label="Address"
-                name="addressLine1"
-                fullWidth
-                value={formData.addressLine1}
-                onChange={handleInputChange}
-              />            </Grid>
+              <TextField label="Address" name="addressLine1" fullWidth value={formData.addressLine1} onChange={handleInputChange} />            </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField label="Work Category" name="work_category" fullWidth value={formData.work_category} onChange={handleInputChange} />
+              <FormControl fullWidth>
+                <InputLabel id="work-category-label">Work Category</InputLabel>
+                <Select labelId="work-category-label" name="work_category" value={formData?.work_category} onChange={handleInputChange}>
+                  {allSkills?.map((skill) => (
+                    <MenuItem key={skill?._id} value={skill?.name}>
+                      {skill?.name.replace(/-/g, " ").toUpperCase()}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField label="Experience" name="work_experience" fullWidth value={formData.work_experience} onChange={handleInputChange} />
