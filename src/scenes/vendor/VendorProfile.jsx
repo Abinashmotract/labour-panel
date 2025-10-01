@@ -46,12 +46,13 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { CheckIcon } from 'lucide-react';
+import { CheckIcon, CloudUpload } from 'lucide-react';
 
 const ContractorProfile = () => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [copied, setCopied] = useState(false);
   const [allSkills, setAllSkills] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   const { profile, loading, error } = useStylistProfile();
 
@@ -63,6 +64,7 @@ const ContractorProfile = () => {
     work_category: profile?.work_category || "",
     work_experience: profile?.work_experience || "",
     gender: profile?.gender || "",
+    profilePicture: null, // For file upload
   });
 
   const theme = useTheme();
@@ -78,7 +80,6 @@ const ContractorProfile = () => {
   const fetchAllSkills = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/skill/admin/skills`);
-      console.log(response, 'sfsdfd')
       if (response.data?.status === 200 && response.data?.success) {
         setAllSkills(response.data.data?.skills || []);
       }
@@ -86,8 +87,6 @@ const ContractorProfile = () => {
       console.error("Error fetching skills:", err);
     }
   };
-
-  console.log(allSkills, 'allSkills')
 
   const handleOpenDialog = () => {
     setFormData({
@@ -100,6 +99,7 @@ const ContractorProfile = () => {
       gender: profile?.gender || "",
       lat: profile?.location?.coordinates?.[1] || "",
       lng: profile?.location?.coordinates?.[0] || "",
+      profilePicture: null, // Reset file on dialog open
     });
     setOpenEditDialog(true);
   };
@@ -109,13 +109,54 @@ const ContractorProfile = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+      if (!validTypes.includes(file.type)) {
+        showErrorToast("Please select a valid image file (JPEG, PNG, GIF)");
+        return;
+      }
+
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        showErrorToast("File size should be less than 5MB");
+        return;
+      }
+
+      setFormData((prev) => ({ ...prev, profilePicture: file }));
+    }
+  };
+
   const handleUpdateProfile = async () => {
     try {
-      const updatedFormData = { ...formData, userId: profile?._id };
+      setUploading(true);
+
+      const formDataToSend = new FormData();
+      formDataToSend.append('userId', profile?._id);
+      formDataToSend.append('firstName', formData.firstName);
+      formDataToSend.append('lastName', formData.lastName);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('work_category', formData.work_category);
+      formDataToSend.append('addressLine1', formData.addressLine1);
+      formDataToSend.append('work_experience', formData.work_experience);
+      formDataToSend.append('gender', formData.gender);
+
+      // Append profile picture if selected
+      if (formData.profilePicture) {
+        formDataToSend.append('profilePicture', formData.profilePicture);
+      }
+
       const response = await axios.put(
         `${API_BASE_URL}/user/role/update-user-details`,
-        updatedFormData,
-        { headers: { Authorization: `Bearer ${authToken}` } }
+        formDataToSend,
+        {
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        }
       );
 
       if (response.data.success) {
@@ -126,6 +167,8 @@ const ContractorProfile = () => {
     } catch (err) {
       console.error(err);
       showErrorToast(err.response?.data?.message || "Failed to update profile");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -139,7 +182,10 @@ const ContractorProfile = () => {
       .catch(() => { });
   };
 
-  const handleCloseDialog = () => setOpenEditDialog(false);
+  const handleCloseDialog = () => {
+    setOpenEditDialog(false);
+    setFormData(prev => ({ ...prev, profilePicture: null })); // Reset file on close
+  };
 
   useEffect(() => {
     if (error) {
@@ -153,6 +199,8 @@ const ContractorProfile = () => {
   return (
     <Box>
       <Header title={t("dashboard.contractorprofile")} subtitle="View and manage your profile information" />
+
+      {/* Referral Code Section */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2, mb: 2, border: '1px solid black', p: 2, borderRadius: 3 }}>
         <Box>
           <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
@@ -182,6 +230,7 @@ const ContractorProfile = () => {
             <Typography variant="body2" fontWeight={500}>N/A</Typography>
           )}
         </Box>
+
         {/* Referrals Count */}
         <Box>
           <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
@@ -206,65 +255,119 @@ const ContractorProfile = () => {
         </Box>
       </Box>
 
-      <Box sx={{ position: 'relative', width: '100%', mb: 6, borderRadius: '24px', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.18)', overflow: 'hidden' }}>
+      {/* Profile Banner Section */}
+      <Box
+        sx={{
+          position: "relative",
+          width: "100%",
+          mb: 6,
+          borderRadius: "24px",
+          boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.18)",
+          overflow: "hidden",
+        }}
+      >
+        {/* Background banner */}
         <Box
           sx={{
-            position: 'absolute',
+            position: "absolute",
             height: 200,
-            width: '100%',
+            width: "100%",
             backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.4), transparent), url(${bannerImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            top: 0, left: 0,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            top: 0,
+            left: 0,
           }}
         />
-        <Box sx={{
-          position: 'relative',
-          zIndex: 2,
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'space-between',
-          gap: 4,
-          px: { xs: 2, md: 6 },
-          pt: 6,
-          pb: 3,
-          '@supports (backdrop-filter: blur(8px))': {
-            backdropFilter: 'blur(8px)',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-          },
-        }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 4, position: 'relative' }}>
+
+        {/* Content */}
+        <Box
+          sx={{
+            position: "relative",
+            zIndex: 2,
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            gap: 4,
+            px: { xs: 2, md: 6 },
+            pt: 6,
+            pb: 3,
+            "@supports (backdrop-filter: blur(8px))": {
+              backdropFilter: "blur(8px)",
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+            },
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              position: "relative",
+            }}
+          >
+            {/* Profile Image */}
+            <Avatar
+              src={profile?.profilePicture}
+              alt={`${profile?.firstName} ${profile?.lastName}`}
+              sx={{
+                width: 100,
+                height: 100,
+                border: "4px solid white",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+              }}
+            />
+
+            {/* Profile Info */}
             <Box>
               <Typography variant="h3" fontWeight={700} color="#fff">
                 {profile?.firstName} {profile?.lastName}
               </Typography>
-              <Typography variant="h5" color="#fff" fontWeight={500} sx={{ mb: 1 }}>
-                {profile?.work_category || 'Contractor'}
+              <Typography
+                variant="h5"
+                color="#fff"
+                fontWeight={500}
+                sx={{ mb: 1 }}
+              >
+                {profile?.work_category || "Contractor"}
               </Typography>
               <Stack direction="row" spacing={1} alignItems="center" mb={1}>
-                <LocationOn sx={{ color: theme.palette.mode === 'dark' ? colors.greenAccent[400] : colors.greenAccent[500] }} />
+                <LocationOn sx={{ color: "#4CAF50" }} />
                 <Typography color="#fff">
-                  {profile?.addressLine1 || 'Address not specified'}
+                  {profile?.addressLine1 || "Address not specified"}
                 </Typography>
               </Stack>
               <Stack direction="row" spacing={1} alignItems="center" mb={1}>
-                <Email sx={{ color: theme.palette.mode === 'dark' ? colors.blueAccent[400] : colors.blueAccent[500] }} />
-                <Typography color="#fff">{profile?.email || 'Email not provided'}</Typography>
+                <Email sx={{ color: "#2196F3" }} />
+                <Typography color="#fff">
+                  {profile?.email || "Email not provided"}
+                </Typography>
               </Stack>
               <Stack direction="row" spacing={1} alignItems="center" mb={1}>
-                <Phone sx={{ color: theme.palette.mode === 'dark' ? colors.redAccent[400] : colors.redAccent[500] }} />
-                <Typography color="#fff">{profile?.phoneNumber}</Typography>
+                <Phone sx={{ color: "#F44336" }} />
+                <Typography color="#fff">
+                  {profile?.phoneNumber}
+                </Typography>
               </Stack>
             </Box>
           </Box>
+
+          {/* Edit Button */}
           <Box>
-            <IconButton sx={{ background: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
-              <Edit sx={{ color: '#6D295A' }} />
+            <IconButton
+              sx={{
+                background: "#fff",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+              }}
+              onClick={handleOpenDialog}
+            >
+              <Edit sx={{ color: "#6D295A" }} />
             </IconButton>
           </Box>
         </Box>
       </Box>
 
+      {/* Main Content Grid */}
       <Grid container spacing={4}>
         {/* Left Column - Personal Info */}
         <Grid item xs={12} md={8}>
@@ -366,33 +469,93 @@ const ContractorProfile = () => {
               </Typography>
 
               <Stack spacing={2} sx={{ mt: 2 }}>
-                <CustomIconButton icon={<Edit />} onClick={handleOpenDialog} text="Edit Profile" color="#6d295a" variant="contained" fullWidth />
                 <Link to="/job-post" className='text-decoration-none'>
-                  <CustomIconButton icon={<Work />} text="View Job Posts" color="#2d5a78" variant="outlined" fullWidth /></Link>
+                  <CustomIconButton icon={<Work />} text="View Job Posts" color="#2d5a78" variant="outlined" fullWidth />
+                </Link>
               </Stack>
             </CardContent>
           </Card>
         </Grid>
       </Grid>
+
+      {/* Edit Profile Dialog */}
       <Dialog open={openEditDialog} onClose={handleCloseDialog} fullWidth maxWidth="sm">
         <DialogTitle>Edit Profile</DialogTitle>
         <DialogContent>
-          <Grid container spacing={2} sx={{ mt: 3 }}>
+          <Grid container spacing={2} sx={{ mt: 1 }}>
+            {/* Profile Picture Upload */}
+            <Grid item xs={12}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
+                <Avatar
+                  src={formData.profilePicture ? URL.createObjectURL(formData.profilePicture) : profile?.profilePicture}
+                  sx={{ width: 80, height: 80, mb: 2 }}
+                />
+                <input
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  id="profile-picture-upload"
+                  type="file"
+                  onChange={handleFileChange}
+                />
+                <label htmlFor="profile-picture-upload">
+                  <Button variant="outlined" component="span" startIcon={<CloudUpload />}>
+                    Upload Profile Picture
+                  </Button>
+                </label>
+                {formData.profilePicture && (
+                  <Typography variant="caption" color="text.secondary" sx={{ mt: 1 }}>
+                    {formData.profilePicture.name}
+                  </Typography>
+                )}
+              </Box>
+            </Grid>
+
             <Grid item xs={12} sm={6}>
-              <TextField label="First Name" name="firstName" fullWidth value={formData.firstName} onChange={handleInputChange} />
+              <TextField
+                label="First Name"
+                name="firstName"
+                fullWidth
+                value={formData.firstName}
+                onChange={handleInputChange}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField label="Last Name" name="lastName" fullWidth value={formData.lastName} onChange={handleInputChange} />
+              <TextField
+                label="Last Name"
+                name="lastName"
+                fullWidth
+                value={formData.lastName}
+                onChange={handleInputChange}
+              />
             </Grid>
             <Grid item xs={12}>
-              <TextField label="Email" name="email" fullWidth value={formData.email} onChange={handleInputChange} />
+              <TextField
+                label="Email"
+                name="email"
+                fullWidth
+                value={formData.email}
+                onChange={handleInputChange}
+              />
             </Grid>
             <Grid item xs={12}>
-              <TextField label="Address" name="addressLine1" fullWidth value={formData.addressLine1} onChange={handleInputChange} />            </Grid>
+              <TextField
+                label="Address"
+                name="addressLine1"
+                fullWidth
+                value={formData.addressLine1}
+                onChange={handleInputChange}
+              />
+            </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
                 <InputLabel id="work-category-label">Work Category</InputLabel>
-                <Select labelId="work-category-label" name="work_category" value={formData?.work_category} onChange={handleInputChange}>
+                <Select
+                  labelId="work-category-label"
+                  name="work_category"
+                  value={formData?.work_category}
+                  onChange={handleInputChange}
+                  label="Work Category"
+                >
                   {allSkills?.map((skill) => (
                     <MenuItem key={skill?._id} value={skill?.name}>
                       {skill?.name.replace(/-/g, " ").toUpperCase()}
@@ -402,21 +565,40 @@ const ContractorProfile = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField label="Experience" name="work_experience" fullWidth value={formData.work_experience} onChange={handleInputChange} />
+              <TextField
+                label="Experience"
+                name="work_experience"
+                fullWidth
+                value={formData.work_experience}
+                onChange={handleInputChange}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField label="Gender" name="gender" fullWidth value={formData.gender} onChange={handleInputChange} />
+              <TextField
+                label="Gender"
+                name="gender"
+                fullWidth
+                value={formData.gender}
+                onChange={handleInputChange}
+              />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={handleUpdateProfile} variant="contained" color="primary">
-            Update
+          <Button onClick={handleCloseDialog} disabled={uploading}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleUpdateProfile}
+            variant="contained"
+            color="primary"
+            disabled={uploading}
+            startIcon={uploading ? <CircularProgress size={16} /> : null}
+          >
+            {uploading ? 'Updating...' : 'Update'}
           </Button>
         </DialogActions>
       </Dialog>
-
     </Box>
   );
 };
