@@ -107,7 +107,7 @@ export default function JobPostDialog({
   };
 
   const skillOptions = allSkills.map((skill) => ({
-    label: skill.name,
+    label: `${skill.name} (${skill.nameHindi || skill.name})`,
     value: skill._id,
   }));
 

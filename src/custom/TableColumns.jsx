@@ -378,8 +378,137 @@ export const agentTableColumns = ({ handleToggleStatus, handleDelete, handleView
     },
 ];
 
+export const labourAvailabilityTableColumns = ({ handleView, handleDelete, deletingIds }) => [
+    {
+        field: "labour",
+        headerName: "Labour Name",
+        flex: 1.5,
+        renderCell: (params) => {
+            const labour = params.row.labour;
+            return labour ? `${labour.firstName} ${labour.lastName}` : "N/A";
+        },
+    },
+    {
+        field: "phoneNumber",
+        headerName: "Phone Number",
+        flex: 1,
+        renderCell: (params) => {
+            const labour = params.row.labour;
+            return labour?.phoneNumber || "N/A";
+        },
+    },
+    {
+        field: "skills",
+        headerName: "Skills",
+        flex: 2,
+        renderCell: (params) => {
+            const skills = params.row.skills || [];
+            return skills.map(skill => skill.name).join(", ") || "N/A";
+        },
+    },
+    {
+        field: "availabilityDate",
+        headerName: "Available Date",
+        flex: 1,
+        valueGetter: (params) => {
+            return params.row.availabilityDate
+                ? new Date(params.row.availabilityDate).toLocaleDateString()
+                : "N/A";
+        },
+    },
+    {
+        field: "location",
+        headerName: "Location",
+        flex: 1.5,
+        renderCell: (params) => {
+            const location = params.row.location;
+            return location?.address || "N/A";
+        },
+    },
+    {
+        field: "status",
+        headerName: "Status",
+        flex: 1,
+        renderCell: (params) => {
+            const status = params.row.status;
+            const statusColor = status === 'active' ? 'green' : status === 'cancelled' ? 'red' : 'orange';
+            return (
+                <Chip
+                    label={status?.charAt(0).toUpperCase() + status?.slice(1) || "N/A"}
+                    sx={{
+                        backgroundColor: statusColor === 'green' ? '#4caf50' : statusColor === 'red' ? '#f44336' : '#ff9800',
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: '0.75rem',
+                    }}
+                />
+            );
+        },
+    },
+    {
+        field: "createdAt",
+        headerName: "Requested At",
+        flex: 1,
+        valueGetter: (params) => {
+            return params.row.createdAt
+                ? new Date(params.row.createdAt).toLocaleDateString()
+                : "N/A";
+        },
+    },
+    {
+        field: "actions",
+        headerName: "Actions",
+        flex: 1,
+        sortable: false,
+        renderCell: (params) => (
+            <Box sx={{ display: 'flex', gap: 0.5 }}>
+                <CustomIconButton 
+                    size="small" 
+                    icon={<Eye size={16} />} 
+                    color="rgb(77 141 225)" 
+                    onClick={() => handleView(params.row)} 
+                />
+                <CustomIconButton 
+                    size="small" 
+                    icon={<Trash2 size={16} />} 
+                    color="hsl(0 84.2% 60.2%)" 
+                    onClick={() => handleDelete(params.row._id)}
+                    disabled={deletingIds?.includes(params.row._id)}
+                />
+            </Box>
+        ),
+    },
+];
+
 export const skillsTableColumns = ({ handleToggleStatus, handleDelete, handleView, togglingIds, handleEdit }) => [
-    { field: "name", headerName: "Skill Name", flex: 1 },
+    {
+        field: "name",
+        headerName: "Skill Name (English)",
+        flex: 1,
+        renderCell: (params) => {
+            const formattedName = params.row.name
+                .split("-")
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ");
+            return formattedName;
+        },
+    },
+    {
+        field: "nameHindi",
+        headerName: "Skill Name (Hindi)",
+        flex: 1,
+        renderCell: (params) => {
+            return params.row.nameHindi || "N/A";
+        },
+    },
+    {
+        field: "category",
+        headerName: "Category",
+        flex: 1,
+        renderCell: (params) => {
+            return params.row.category || "N/A";
+        },
+    },
     {
         field: "statusLabel",
         headerName: "Status",
@@ -387,13 +516,7 @@ export const skillsTableColumns = ({ handleToggleStatus, handleDelete, handleVie
         renderCell: (params) => {
             const isLoading = togglingIds?.[params.row.id];
             return (
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    width="100%"
-                    gap={1}
-                >
+                <Box display="flex" alignItems="center" justifyContent="space-between" width="100%" gap={1}>
                     {isLoading ? (
                         <CircularProgress size={20} color="success" />
                     ) : (
@@ -1182,52 +1305,52 @@ export const reviewsTableColumns = ({ handleToggleStatus, handleDelete, handleVi
 ];
 
 export const referalTableColumns = ({ handleView }) => [
-  {
-    field: "photo",
-    headerName: "Profile Picture",
-    flex: 0.5,
-    renderCell: (params) => {
-      const photoUrl =
-        params.row.profilePicture && params.row.profilePicture.length > 0
-          ? params.row.profilePicture
-          : null;
+    {
+        field: "photo",
+        headerName: "Profile Picture",
+        flex: 0.5,
+        renderCell: (params) => {
+            const photoUrl =
+                params.row.profilePicture && params.row.profilePicture.length > 0
+                    ? params.row.profilePicture
+                    : null;
 
-      const fallbackUrl =
-        "https://w7.pngwing.com/pngs/406/861/png-transparent-default-facebook-user-profile-blue-silhouette-neck-symbol-sky-folder-users-blue-silhouette-application-thumbnail.png";
+            const fallbackUrl =
+                "https://w7.pngwing.com/pngs/406/861/png-transparent-default-facebook-user-profile-blue-silhouette-neck-symbol-sky-folder-users-blue-silhouette-application-thumbnail.png";
 
-      return (
-        <ImageWithLoader
-          src={photoUrl || fallbackUrl}
-          alt={params.row.fullName || "Profile"}
-        />
-      );
+            return (
+                <ImageWithLoader
+                    src={photoUrl || fallbackUrl}
+                    alt={params.row.fullName || "Profile"}
+                />
+            );
+        },
     },
-  },
-  { field: "fullName", headerName: "Full Name", flex: 1 },
-  { field: "email", headerName: "Email", flex: 1 },
-  { field: "mobile", headerName: "Mobile", flex: 1 },
-  { field: "role", headerName: "Role", flex: 0.7 },
-  { field: "gender", headerName: "Gender", flex: 0.6 },
-  { field: "isPhoneVerified", headerName: "Phone Verified", flex: 0.7 },
-  { field: "address", headerName: "Address", flex: 1 },
-  { field: "workCategory", headerName: "Work Category", flex: 1 },
-  { field: "workExperience", headerName: "Work Experience", flex: 1 },
-  { field: "referralsCount", headerName: "Referrals Count", flex: 0.8 },
-  { field: "createdAt", headerName: "Created At", flex: 0.8 },
-  {
-    field: "action",
-    headerName: "Action",
-    width: 180,
-    sortable: false,
-    renderCell: (params) => (
-      <Box sx={{ display: "flex", gap: 0.5 }}>
-        <CustomIconButton
-          size="small"
-          icon={<Eye size={16} />}
-          color="rgb(77 141 225)"
-          onClick={() => handleView(params.row)}
-        />
-      </Box>
-    ),
-  },
+    { field: "fullName", headerName: "Full Name", flex: 1 },
+    { field: "email", headerName: "Email", flex: 1 },
+    { field: "mobile", headerName: "Mobile", flex: 1 },
+    { field: "role", headerName: "Role", flex: 0.7 },
+    { field: "gender", headerName: "Gender", flex: 0.6 },
+    { field: "isPhoneVerified", headerName: "Phone Verified", flex: 0.7 },
+    { field: "address", headerName: "Address", flex: 1 },
+    { field: "workCategory", headerName: "Work Category", flex: 1 },
+    { field: "workExperience", headerName: "Work Experience", flex: 1 },
+    { field: "referralsCount", headerName: "Referrals Count", flex: 0.8 },
+    { field: "createdAt", headerName: "Created At", flex: 0.8 },
+    {
+        field: "action",
+        headerName: "Action",
+        width: 180,
+        sortable: false,
+        renderCell: (params) => (
+            <Box sx={{ display: "flex", gap: 0.5 }}>
+                <CustomIconButton
+                    size="small"
+                    icon={<Eye size={16} />}
+                    color="rgb(77 141 225)"
+                    onClick={() => handleView(params.row)}
+                />
+            </Box>
+        ),
+    },
 ];

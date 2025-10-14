@@ -51,10 +51,10 @@ export default function ServiceCategory() {
                 const formattedData = skills?.map((skill) => ({
                     id: skill._id,
                     name: skill.name || "N/A",
+                    nameHindi: skill.nameHindi || "N/A",
+                    category: skill.category || "N/A",
                     approved: !!skill.isActive,
-                    createdAt: skill.createdAt
-                        ? new Date(skill.createdAt).toLocaleDateString()
-                        : "N/A",
+                    createdAt: skill.createdAt || null,
                 }));
                 setAllServices(formattedData);
             }
