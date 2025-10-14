@@ -41,6 +41,8 @@
     "jobApplication": "Job Application",
     "nearbyjobs": "Nearby Jobs",
     "createJobPost": "Create Job Post",
-    "searchJobPosts": "Search Job Posts"
+    "searchJobPosts": "Search Job Posts",
+    "labour_availability":"Labour Availability",
+    "available_labourers":"Available Labourers"
   }
 }

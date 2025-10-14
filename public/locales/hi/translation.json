@@ -41,6 +41,8 @@
     "jobApplication": "नौकरी आवेदन",
     "nearbyjobs": "पास के जॉब्स",
     "createJobPost": "नौकरी पोस्ट बनाएँ",
-    "searchJobPosts": "नौकरी पोस्ट खोजें"
+    "searchJobPosts": "नौकरी पोस्ट खोजें",
+    "labour_availability":"श्रम उपलब्धता",
+    "available_labourers":"उपलब्ध मजदूर"
   }
 }

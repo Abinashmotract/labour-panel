@@ -62,7 +62,7 @@ const SideBar = () => {
       { title: t("nav.jobPost"), path: "/job-post", icon: <InventoryOutlined /> },
       { title: t("nav.jobApplication"), path: "/application", icon: <InventoryOutlined /> },
       { title: t("nav.labour"), path: "/labour", icon: <CalendarMonthOutlined /> },
-      { title: 'Labour Availability', path: "/labour-availability", icon: <CalendarMonthOutlined /> },
+      { title: t("nav.labour_availability"), path: "/labour-availability", icon: <CalendarMonthOutlined /> },
     ],
   };
 

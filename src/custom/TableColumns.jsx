@@ -455,29 +455,29 @@ export const labourAvailabilityTableColumns = ({ handleView, handleDelete, delet
                 : "N/A";
         },
     },
-    {
-        field: "actions",
-        headerName: "Actions",
-        flex: 1,
-        sortable: false,
-        renderCell: (params) => (
-            <Box sx={{ display: 'flex', gap: 0.5 }}>
-                <CustomIconButton 
-                    size="small" 
-                    icon={<Eye size={16} />} 
-                    color="rgb(77 141 225)" 
-                    onClick={() => handleView(params.row)} 
-                />
-                <CustomIconButton 
-                    size="small" 
-                    icon={<Trash2 size={16} />} 
-                    color="hsl(0 84.2% 60.2%)" 
-                    onClick={() => handleDelete(params.row._id)}
-                    disabled={deletingIds?.includes(params.row._id)}
-                />
-            </Box>
-        ),
-    },
+    // {
+    //     field: "actions",
+    //     headerName: "Actions",
+    //     flex: 1,
+    //     sortable: false,
+    //     renderCell: (params) => (
+    //         <Box sx={{ display: 'flex', gap: 0.5 }}>
+    //             <CustomIconButton 
+    //                 size="small" 
+    //                 icon={<Eye size={16} />} 
+    //                 color="rgb(77 141 225)" 
+    //                 onClick={() => handleView(params.row)} 
+    //             />
+    //             <CustomIconButton 
+    //                 size="small" 
+    //                 icon={<Trash2 size={16} />} 
+    //                 color="hsl(0 84.2% 60.2%)" 
+    //                 onClick={() => handleDelete(params.row._id)}
+    //                 disabled={deletingIds?.includes(params.row._id)}
+    //             />
+    //         </Box>
+    //     ),
+    // },
 ];
 
 export const skillsTableColumns = ({ handleToggleStatus, handleDelete, handleView, togglingIds, handleEdit }) => [

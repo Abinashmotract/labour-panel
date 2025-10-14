@@ -5,6 +5,7 @@ import { labourAvailabilityTableColumns } from '../../custom/TableColumns';
 import { showErrorToast, showSuccessToast } from '../../Toast';
 import { API_BASE_URL } from '../../utils/apiConfig';
 import Cookies from 'js-cookie';
+import { useTranslation } from 'react-i18next';
 
 const LabourAvailability = () => {
     const [allRequests, setAllRequests] = useState([]);
@@ -17,6 +18,7 @@ const LabourAvailability = () => {
         pages: 1,
         total: 0
     });
+    const { t } = useTranslation();
 
     const fetchAllRequests = async (page = 1, status = 'active') => {
         setLoading(true);
@@ -30,7 +32,7 @@ const LabourAvailability = () => {
                 apiUrl = `${API_BASE_URL}/labour-availability/admin/all-requests?page=${page}&limit=10&status=${status}`;
             } else {
                 // Contractor endpoint - shows available labourers
-                apiUrl = `${API_BASE_URL}/labour-availability/available-labours?skills=electrician,plumber,carpenter,mason`;
+                apiUrl = `${API_BASE_URL}/labour-availability/available-labours`;
             }
 
             const response = await fetch(apiUrl, {
@@ -153,7 +155,7 @@ const LabourAvailability = () => {
         <Box sx={{ height: 400, width: '100%' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="h4" component="h1">
-                    {userRole === 'admin' ? 'Labour Availability Requests' : 'Available Labourers'}
+                    {userRole === 'admin' ? 'Labour Availability Requests' : t("nav.available_labourers")}
                 </Typography>
                 {userRole === 'admin' && (
                     <FormControl sx={{ minWidth: 120 }}>
