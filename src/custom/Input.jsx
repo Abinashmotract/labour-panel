@@ -27,7 +27,7 @@ const Input = ({ placeholder, type = "text", value, onChange, icon, endIcon, onE
                     height: multiline ? "auto" : height,
                     "& fieldset": { border: "1px solid #bdbdbd" },
                     "& .MuiInputBase-input": {
-                        padding: "8px 10px",
+                        padding: "0px",
                         fontSize: "14px",
                         height: multiline ? "auto" : "100%",
                         maxHeight: multiline ? "none" : "50px",
