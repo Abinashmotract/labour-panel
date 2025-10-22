@@ -17,6 +17,7 @@ import JobApplication from "./scenes/vendor/JobApplication";
 import LabourAvailability from "./scenes/admin/LabourAvailability";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsAndConditions from "./components/TermsAndConditions";
+import DeleteAccountPolicy from "./components/DeleteAccountPolicy";
 
 const AppRouter = () => {
   const { isAuthenticated, panelType, token, stylistId, login } = useAuth();
@@ -31,6 +32,7 @@ const AppRouter = () => {
         <Route path="/login" element={isAuthenticated === null ? (<div>Loading...</div>) : isAuthenticated ? (<Navigate to="/" replace />) : (<Login onLoginSuccess={login} />)} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-conditionos" element={<TermsAndConditions />} />
+        <Route path="/delete-policy" element={<DeleteAccountPolicy />} />
         <Route element={<PrivateRoute isAuthenticated={isAuthenticated} panelType={panelType} token={token} stylistId={stylistId} />}>
           <Route path="/" element={<App panelType={panelType} />}>
             {panelType === "admin" ? (

@@ -171,7 +171,8 @@ const Login = ({ onLoginSuccess }) => {
           }}
         >
           <Box className="login-form" sx={{ width: "100%", maxWidth: 400 }}>
-            {/* <Link to="/privacy-policy" className="me-4">Privacy Policy</Link>
+            {/* <Link to="/delete-policy" className="me-4">Delete Account Policy</Link>
+            <Link to="/privacy-policy" className="me-4">Privacy Policy</Link>
             <Link to="/terms-conditionos">Terms & Conditions</Link> */}
             <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
               <img src={logo} alt="logo" />
