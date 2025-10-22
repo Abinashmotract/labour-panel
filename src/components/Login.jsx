@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Grid,
   Box,
@@ -113,27 +113,9 @@ const Login = ({ onLoginSuccess }) => {
   };
 
   return (
-    <Box
-      className="login-container"
-      sx={{ height: "100vh", display: "flex", flexDirection: "column" }}
-    >
+    <Box className="login-container" sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       <Grid container spacing={0} sx={{ flex: 1 }}>
-        <Grid
-          item
-          xs={12}
-          md={8}
-          className="left-column"
-          sx={{
-            position: "relative",
-            overflow: "hidden",
-            minHeight: { xs: "50vh", md: "100%" },
-          }}
-        >
-          {/* <video autoPlay muted loop playsInline style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0, }}>
-            <source src={watermark1} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video> */}
-
+        <Grid item xs={12} md={8} className="left-column" sx={{ position: "relative", overflow: "hidden", minHeight: { xs: "50vh", md: "100%" }, }}>
           <img src="https://imgs.search.brave.com/FGqh4uVn8vkK8qtN3N35kfRyWWJwWZgX-QyIUFe65Rs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzM4L2E0/L2I1LzM4YTRiNWY3/Njk0NzU5MGRjZTgx/YzhmOTk0NWY2YTIx/LmpwZw" />
 
           <Box
@@ -208,6 +190,8 @@ const Login = ({ onLoginSuccess }) => {
           }}
         >
           <Box className="login-form" sx={{ width: "100%", maxWidth: 400 }}>
+            {/* <Link to="/privacy-policy" className="me-4">Privacy Policy</Link>
+            <Link to="/terms-conditionos">Terms & Conditions</Link> */}
             <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
               <img src={logo} alt="logo" height="80" />
             </Box>
