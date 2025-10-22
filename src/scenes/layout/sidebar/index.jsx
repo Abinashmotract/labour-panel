@@ -7,7 +7,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
-import logo from "../../../assets/images/LOGO2.svg";
+import logo from "../../../assets/images/loginpagelogo-removebg-preview.png";
 import { tokens } from "../../../theme";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import {
@@ -117,12 +117,12 @@ const SideBar = () => {
                 <img
                   alt="avatar"
                   src={logo}
-                  height={isMobile ? "40" : "50"}
-                  style={{
-                    maxWidth: "100%",
-                    filter: "brightness(0) invert(1)",
-                    transition: "0.3s ease",
-                  }}
+                  height={isMobile ? "45" : "55"}
+                  // style={{
+                  //   maxWidth: "100%",
+                  //   filter: "brightness(0) invert(1)",
+                  //   transition: "0.3s ease",
+                  // }}
                 />{" "}
               </Box>
             )}

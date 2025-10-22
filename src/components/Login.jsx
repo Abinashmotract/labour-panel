@@ -17,7 +17,7 @@ import {
   Lock,
   PersonOutlined,
 } from "@mui/icons-material";
-import logo from "../assets/images/LOGO2.jpeg";
+import logo from "../assets/images/loginpagelogo.jpeg";
 import watermark from "../assets/images/watermark1.png";
 import Cookies from "js-cookie";
 import "../css/login.scss";
@@ -115,9 +115,8 @@ const Login = ({ onLoginSuccess }) => {
   return (
     <Box className="login-container" sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       <Grid container spacing={0} sx={{ flex: 1 }}>
-        <Grid item xs={12} md={8} className="left-column" sx={{ position: "relative", overflow: "hidden", minHeight: { xs: "50vh", md: "100%" }, }}>
+        <Grid item xs={12} md={8} className="left-column" sx={{ position: "relative", overflow: "hidden", }}>
           <img src="https://imgs.search.brave.com/FGqh4uVn8vkK8qtN3N35kfRyWWJwWZgX-QyIUFe65Rs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzM4L2E0/L2I1LzM4YTRiNWY3/Njk0NzU5MGRjZTgx/YzhmOTk0NWY2YTIx/LmpwZw" />
-
           <Box
             sx={{
               position: "absolute",
@@ -137,25 +136,10 @@ const Login = ({ onLoginSuccess }) => {
             <Typography variant="h6" sx={{ color: "white" }}>
               Welcome to
             </Typography>
-            <Typography
-              variant="h2"
-              sx={{
-                fontWeight: "bold",
-                color: "white",
-                fontSize: { sm: "2.5rem", md: "3rem" },
-              }}
-            >
+            <Typography variant="h2" sx={{ fontWeight: "bold", color: "white", fontSize: { sm: "2.5rem", md: "3rem" }, }}>
               MistriConnect
             </Typography>
-            <Typography
-              variant="body1"
-              sx={{
-                color: "white",
-                maxWidth: { sm: 600, md: 800 },
-                mt: 2,
-                fontSize: { sm: "1rem" },
-              }}
-            >
+            <Typography variant="body1" sx={{ color: "white", maxWidth: { sm: 600, md: 800 }, mt: 2, fontSize: { sm: "1rem" }, }}>
               Find reliable mistri and labour workers for your home or
               commercial projects. Whether it’s carpentry, plumbing, electrical,
               or general repairs — get skilled professionals at your doorstep,
@@ -175,10 +159,7 @@ const Login = ({ onLoginSuccess }) => {
             width: { xs: "100%", md: "auto" },
             height: { xs: "100%", md: "auto" },
             zIndex: { xs: 3, md: "auto" },
-            backgroundImage: {
-              xs: "none",
-              md: `url(${watermark})`,
-            },
+            backgroundColor: "#000000",
             backgroundRepeat: "no-repeat",
             backgroundSize: "contain",
             backgroundPosition: "center",
@@ -193,38 +174,18 @@ const Login = ({ onLoginSuccess }) => {
             {/* <Link to="/privacy-policy" className="me-4">Privacy Policy</Link>
             <Link to="/terms-conditionos">Terms & Conditions</Link> */}
             <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-              <img src={logo} alt="logo" height="80" />
+              <img src={logo} alt="logo" />
             </Box>
-            <FormControl>
-              <RadioGroup
-                row
-                aria-labelledby="panel-selection"
-                name="panel-selection"
-                value={panelType}
-                onChange={(e) => setPanelType(e.target.value)}
-              >
-                <FormControlLabel
-                  value="adminpanel"
-                  control={<Radio />}
-                  label="ADMIN PANEL "
-                />
-                <FormControlLabel
-                  value="vendorpanel"
-                  control={<Radio />}
-                  label="CONTRACTE PANEL"
-                />
+            <FormControl sx={{ color: "white", mb: 2 }}>
+              <RadioGroup row aria-labelledby="panel-selection" name="panel-selection" value={panelType} onChange={(e) => setPanelType(e.target.value)}>
+                <FormControlLabel value="adminpanel" control={<Radio sx={{ color: "white", "&.Mui-checked": { color: "white" }, }} />} label="ADMIN PANEL" sx={{ color: "white" }} />
+                <FormControlLabel value="vendorpanel" control={<Radio sx={{ color: "white", "&.Mui-checked": { color: "white" }, }} />} label="CONTRACTE PANEL" sx={{ color: "white" }} />
               </RadioGroup>
             </FormControl>
             {panelType === "adminpanel" ? (
               <>
                 <Box className="mb-2">
-                  <Input
-                    placeholder="Email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    icon={<Email />}
-                  />
+                  <Input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} icon={<Email />} />
                 </Box>
                 <Box>
                   <Input
@@ -241,13 +202,7 @@ const Login = ({ onLoginSuccess }) => {
             ) : (
               <>
                 <Box className="mb-2">
-                  <Input
-                    placeholder="Phone Number"
-                    type="text"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    icon={<PersonOutlined />}
-                  />
+                  <Input placeholder="Phone Number" type="text" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} icon={<PersonOutlined />} />
                 </Box>
                 <Box>
                   <Input
@@ -262,25 +217,22 @@ const Login = ({ onLoginSuccess }) => {
                 </Box>
               </>
             )}
-
             {error && (
               <Typography color="error" sx={{ mt: 1, mb: 1 }}>
                 {error}
               </Typography>
             )}
-
-            <Button
-              variant="contained"
-              fullWidth
-              disabled={isLoading}
-              sx={{
-                mt: 2,
-                bgcolor: "black",
+            <Button variant="contained" fullWidth disabled={isLoading} sx={{
+              mt: 2,
+              color: "white",
+              backgroundColor: "blue",
+              "&:hover": { backgroundColor: "#0047ab" },
+              "&:disabled": {
+                backgroundColor: "blue",
+                opacity: 0.6,
                 color: "white",
-                "&:hover": { bgcolor: "grey" },
-              }}
-              onClick={handleLogin}
-            >
+              },
+            }} onClick={handleLogin}>
               {isLoading ? "Logging in..." : "Login"}
             </Button>
           </Box>
