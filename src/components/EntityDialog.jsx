@@ -52,7 +52,6 @@ const EntityDialog = ({
 
   const handleAddOrUpdate = async () => {
     const selectedValue = inputValue === "other" ? customOtherValue : inputValue;
-
     if (!selectedValue.trim()) {
       showCustomMessage(`${inputLabel} is required!`);
       return;
@@ -60,7 +59,20 @@ const EntityDialog = ({
 
     setLoading(true);
     try {
-      const requestData = { name: selectedValue };
+      // const requestData = { name: selectedValue };
+      let nameHindiValue = selectedValue;
+      if (inputValue !== "other") {
+        const selectedOption = sillsOptions.find(opt => opt.value === selectedValue);
+        if (selectedOption) {
+          const match = selectedOption.label.match(/\(([^)]+)\)/);
+          if (match) nameHindiValue = match[1];
+        }
+      }
+      const requestData = {
+        name: selectedValue,
+        nameHindi: nameHindiValue,
+        category: "technical"
+      };
       const token = Cookies.get("token");
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
