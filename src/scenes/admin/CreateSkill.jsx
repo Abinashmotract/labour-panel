@@ -1,4 +1,4 @@
-import { Box, Container, IconButton, InputBase, useTheme } from "@mui/material";
+import { Box, IconButton, InputBase, useTheme } from "@mui/material";
 import { Header } from "../../components";
 import { SearchOutlined, PersonAdd } from "@mui/icons-material";
 import { useEffect, useState } from "react";
@@ -31,6 +31,9 @@ export default function ServiceCategory() {
     const [isEditMode, setIsEditMode] = useState(false);
     const [editId, setEditId] = useState(null);
     const [editValue, setEditValue] = useState("");
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [totalCount, setTotalCount] = useState(0);
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -39,15 +42,15 @@ export default function ServiceCategory() {
 
     const fetchAllServices = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/skill/admin/skills`, {
+            const response = await axios.get(`${API_BASE_URL}/skill/admin/skills?page=${page}&limit=${pageSize}`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${authToken}`,
                 },
             });
-
             if (response?.data?.status === 200) {
                 const skills = response?.data?.data?.skills || [];
+                setTotalCount(response?.data?.data?.total || 0);
                 const formattedData = skills?.map((skill) => ({
                     id: skill._id,
                     name: skill.name || "N/A",
@@ -69,7 +72,7 @@ export default function ServiceCategory() {
         if (authToken) {
             fetchAllServices();
         }
-    }, [authToken]);
+    }, [authToken, page, pageSize]);
 
     useEffect(() => {
         if (searchText === "") {
@@ -188,7 +191,14 @@ export default function ServiceCategory() {
                 </Box>
                 <CustomIconButton icon={<PersonAdd />} text={t("dashboard.addNewSkill")} fontWeight="bold" color="#6d295a" variant="outlined" onClick={handleOpenCategory} sx={{ width: { xs: "100%", sm: "auto" } }} />
             </Box>
-            <CustomTable columns={columns} rows={filteredUsers} loading={loading} />
+            <CustomTable columns={columns} rows={filteredUsers} loading={loading} paginationMode="server"
+                rowCount={totalCount}
+                page={page - 1}
+                pageSize={pageSize}
+                onPaginationModelChange={({ page, pageSize }) => {
+                    setPage(page + 1);
+                    setPageSize(pageSize);
+                }} />
 
             <EntityDialog
                 open={openCategoryDialog}
