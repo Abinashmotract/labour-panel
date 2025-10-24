@@ -501,14 +501,14 @@ export const skillsTableColumns = ({ handleToggleStatus, handleDelete, handleVie
             return params.row.nameHindi || "N/A";
         },
     },
-    {
-        field: "category",
-        headerName: "Category",
-        flex: 1,
-        renderCell: (params) => {
-            return params.row.category || "N/A";
-        },
-    },
+    // {
+    //     field: "category",
+    //     headerName: "Category",
+    //     flex: 1,
+    //     renderCell: (params) => {
+    //         return params.row.category || "N/A";
+    //     },
+    // },
     {
         field: "statusLabel",
         headerName: "Status",
