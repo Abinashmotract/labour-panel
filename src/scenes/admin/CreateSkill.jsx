@@ -42,7 +42,7 @@ export default function ServiceCategory() {
 
     const fetchAllServices = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/skill/admin/skills?page=${page}&limit=${pageSize}`, {
+            const response = await axios.get(`${API_BASE_URL}/skill/admin/skills`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${authToken}`,
