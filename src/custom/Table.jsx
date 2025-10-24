@@ -3,11 +3,7 @@ import { Box, Card, CardContent, LinearProgress, useTheme, useMediaQuery, Typogr
 import { tokens } from "../theme";
 import '../index.css'; // Ensure global styles are loaded
 
-const CustomTable = ({ columns, rows, loading, paginationMode = "client",
-    rowCount,
-    page,
-    pageSize,
-    onPaginationModelChange, checkboxSelection = false, noRowsMessage = "No data to show", onSelectionModelChange, selectionModel }) => {
+const CustomTable = ({ columns, rows, loading, checkboxSelection = false, noRowsMessage = "No data to show", onSelectionModelChange, selectionModel }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const isMobile = useMediaQuery("(max-width: 768px)");
@@ -20,7 +16,7 @@ const CustomTable = ({ columns, rows, loading, paginationMode = "client",
             display: "flex",
             flexDirection: "column"
         }}>
-            <CardContent sx={{
+            <CardContent sx={{ 
                 padding: { xs: "8px", sm: "16px" },
                 flex: 1,
                 overflow: "hidden",
@@ -38,16 +34,16 @@ const CustomTable = ({ columns, rows, loading, paginationMode = "client",
                             width: "100%",
                             height: "100%",
                             overflow: "hidden",
-                            "& .MuiDataGrid-root": {
+                            "& .MuiDataGrid-root": { 
                                 border: "none",
                                 fontSize: { xs: "12px", sm: "14px" }
                             },
-                            "& .MuiDataGrid-cell": {
+                            "& .MuiDataGrid-cell": { 
                                 border: "none",
                                 padding: { xs: "8px 4px", sm: "8px 12px" }
                             },
-                            "& .MuiDataGrid-columnHeaders": {
-                                backgroundColor: colors.gray[900],
+                            "& .MuiDataGrid-columnHeaders": { 
+                                backgroundColor: colors.gray[900], 
                                 borderBottom: "none",
                                 fontSize: { xs: "12px", sm: "14px" },
                                 // padding: { xs: "8px 4px", sm: "8px 12px" }
@@ -69,13 +65,13 @@ const CustomTable = ({ columns, rows, loading, paginationMode = "client",
                                 "scrollbarWidth": "thin",
                                 "scrollbarColor": "#6D295A transparent"
                             },
-                            "& .MuiDataGrid-footerContainer": {
-                                borderTop: "none",
+                            "& .MuiDataGrid-footerContainer": { 
+                                borderTop: "none", 
                                 backgroundColor: colors.gray[900],
                                 fontSize: { xs: "12px", sm: "14px" }
                             },
                             "& .MuiDataGrid-toolbarContainer": {
-                                color: colors.primary[100],
+                                color: colors.primary[100], 
                                 backgroundColor: colors.gray[900],
                                 padding: { xs: "8px", sm: "12px" },
                                 flexDirection: { xs: "column", sm: "row" },
@@ -90,13 +86,17 @@ const CustomTable = ({ columns, rows, loading, paginationMode = "client",
                             rows={rows}
                             columns={columns}
                             components={{ Toolbar: GridToolbar }}
-                            rowCount={rowCount}
-                            paginationMode={paginationMode}
-                            paginationModel={{ page, pageSize }}
-                            onPaginationModelChange={onPaginationModelChange}
+                            initialState={{
+                                pagination: { 
+                                    paginationModel: { 
+                                        pageSize: isMobile ? 5 : 10 
+                                    } 
+                                },
+                            }}
+                            pageSizeOptions={[5, 10, 25, 50]}
                             checkboxSelection={checkboxSelection}
-                            // density={isMobile ? "compact" : "standard"}
-                            // autoHeight={false}
+                            density={isMobile ? "compact" : "standard"}
+                            autoHeight={false}
                             disableColumnMenu={isMobile}
                             disableColumnSelector={isMobile}
                             disableDensitySelector={isMobile}
@@ -104,23 +104,23 @@ const CustomTable = ({ columns, rows, loading, paginationMode = "client",
                             getRowClassName={(params) => params.row.status === 'expired' ? 'expired-row' : ''}
                             slots={{
                                 noRowsOverlay: () => (
-                                    <Box
-                                        height="100%"
-                                        display="flex"
-                                        alignItems="center"
-                                        justifyContent="center"
-                                    >
-                                        <Typography>{noRowsMessage}</Typography>
-                                    </Box>
+                                  <Box
+                                    height="100%"
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                  >
+                                    <Typography>{noRowsMessage}</Typography>
+                                  </Box>
                                 ),
-                            }}
+                              }}
                             sx={{
                                 height: { xs: "60vh", sm: "70vh", md: "75vh" },
                                 width: "100%"
                             }}
                             onRowSelectionModelChange={(model) => {
-                                console.log('DataGrid selection changed:', model);
-                                if (onSelectionModelChange) onSelectionModelChange(model);
+                              console.log('DataGrid selection changed:', model);
+                              if (onSelectionModelChange) onSelectionModelChange(model);
                             }}
                             rowSelectionModel={selectionModel}
                         />

@@ -48,6 +48,7 @@ export default function JobPosts() {
           Authorization: `Bearer ${authToken}`,
         },
       });
+      console.log("Job Posts Response:", response?.data?.data);
       if (response?.data?.success) {
         const fullData = (response?.data?.data || []).map((item) => ({
           ...item,

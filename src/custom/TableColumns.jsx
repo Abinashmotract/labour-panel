@@ -455,29 +455,6 @@ export const labourAvailabilityTableColumns = ({ handleView, handleDelete, delet
                 : "N/A";
         },
     },
-    // {
-    //     field: "actions",
-    //     headerName: "Actions",
-    //     flex: 1,
-    //     sortable: false,
-    //     renderCell: (params) => (
-    //         <Box sx={{ display: 'flex', gap: 0.5 }}>
-    //             <CustomIconButton 
-    //                 size="small" 
-    //                 icon={<Eye size={16} />} 
-    //                 color="rgb(77 141 225)" 
-    //                 onClick={() => handleView(params.row)} 
-    //             />
-    //             <CustomIconButton 
-    //                 size="small" 
-    //                 icon={<Trash2 size={16} />} 
-    //                 color="hsl(0 84.2% 60.2%)" 
-    //                 onClick={() => handleDelete(params.row._id)}
-    //                 disabled={deletingIds?.includes(params.row._id)}
-    //             />
-    //         </Box>
-    //     ),
-    // },
 ];
 
 export const skillsTableColumns = ({ handleToggleStatus, handleDelete, handleView, togglingIds, handleEdit }) => [
@@ -501,14 +478,6 @@ export const skillsTableColumns = ({ handleToggleStatus, handleDelete, handleVie
             return params.row.nameHindi || "N/A";
         },
     },
-    // {
-    //     field: "category",
-    //     headerName: "Category",
-    //     flex: 1,
-    //     renderCell: (params) => {
-    //         return params.row.category || "N/A";
-    //     },
-    // },
     {
         field: "statusLabel",
         headerName: "Status",
@@ -552,123 +521,6 @@ export const skillsTableColumns = ({ handleToggleStatus, handleDelete, handleVie
         field: "action",
         headerName: "Action",
         flex: 1,
-        sortable: false,
-        renderCell: (params) => (
-            <Box sx={{ display: 'flex', gap: 0.5 }}>
-                <CustomIconButton size="small" icon={<Eye size={16} />} color="rgb(77 141 225)" onClick={() => handleView(params.row)} />
-                <CustomIconButton size="small" icon={<Pencil size={16} />} color="green" onClick={() => handleEdit(params.row)} />
-                <CustomIconButton size="small" icon={<Trash2 size={16} />} color="hsl(0 84.2% 60.2%)" onClick={() => handleDelete(params.row.id)} />
-            </Box>
-        ),
-    },
-];
-
-export const ProductTableColumns = ({ handleDelete, handleView, handleEdit }) => [
-    {
-        field: "photo",
-        headerName: "Image",
-        width: 80,
-        renderCell: (params) => {
-            const photoUrl = params.row.photos && params.row.photos.length > 0 ? params.row.photos[0] : null;
-            const fallbackUrl = "https://cdn.pixabay.com/photo/2017/02/16/13/42/box-2071537_1280.png";
-
-            return (
-                <img
-                    src={photoUrl || fallbackUrl}
-                    alt="img"
-                    height={40}
-                    width={40}
-                    onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = fallbackUrl;
-                    }}
-                />
-            );
-        },
-    },
-    { field: "name", headerName: "Product Name", flex: 1 },
-    { field: "subtitle", headerName: "Subtitle", flex: 1 },
-    {
-        field: "price",
-        headerName: "Price",
-        flex: 0.7,
-        renderCell: (params) => {
-            const priceVal = Number(params.row.price?.replace(/[^0-9.]/g, "")) || 0;
-            let chipColor = 'error.main';
-            if (priceVal < 50) chipColor = 'success.main';
-            else if (priceVal <= 200) chipColor = 'warning.main';
-            return (
-                <Chip
-                    label={params.row.price}
-                    size="small"
-                    variant="filled"
-                    sx={{
-                        bgcolor: chipColor,
-                        color: 'white',
-                        fontWeight: 'bold',
-                    }}
-                />
-            );
-        },
-    },
-    {
-        field: "stockQuantity",
-        headerName: "Stock",
-        flex: 0.7,
-        renderCell: (params) => {
-            const quantity = Number(params.row.stockQuantity) || 0;
-            let chipColor = 'error.main';
-            if (quantity > 10) chipColor = 'success.main';
-            else if (quantity > 0) chipColor = 'warning.main';
-            return (
-                <Chip
-                    label={quantity}
-                    size="small"
-                    variant="filled"
-                    sx={{
-                        bgcolor: chipColor,
-                        color: 'white',
-                        fontWeight: 'bold',
-                    }}
-                />
-            );
-        },
-    },
-    {
-        field: "manufacturer",
-        headerName: "Manufacturer",
-        flex: 1,
-        renderCell: (params) => {
-            const manufacturer = params.row.manufacturer;
-            const name = typeof manufacturer === "object" && manufacturer?.name
-                ? manufacturer.name
-                : "N/A";
-            return <span>{name}</span>;
-        },
-    },
-    { field: "goodToKnow", headerName: "Good To Know", flex: 1 },
-    {
-        field: "inStock",
-        headerName: "In Stock",
-        width: 120,
-        renderCell: (params) => (
-            <Chip
-                label={params.row.inStock ? "Yes" : "No"}
-                size="small"
-                variant="filled"
-                sx={{
-                    bgcolor: params.row.inStock ? 'success.main' : 'error.main',
-                    color: 'white',
-                    fontWeight: 'bold',
-                }}
-            />
-        ),
-    },
-    { field: "createdAt", headerName: "Created At", flex: 0.8 },
-    {
-        field: "action",
-        headerName: "Action",
-        width: 150,
         sortable: false,
         renderCell: (params) => (
             <Box sx={{ display: 'flex', gap: 0.5 }}>
@@ -760,7 +612,6 @@ export const serviceManagementTableColumns = ({ handleToggleStatus, handleDelete
         renderCell: (params) => (
             <Box sx={{ display: 'flex', gap: 0.5 }}>
                 <CustomIconButton size="small" icon={<Eye size={16} />} color="rgb(77 141 225)" onClick={() => handleView(params.row)} />
-                {/* <CustomIconButton size="small" icon={<Trash2 size={16} />} color="hsl(0 84.2% 60.2%)" onClick={() => handleDelete(params.row.id)} /> */}
             </Box>
         ),
     },
