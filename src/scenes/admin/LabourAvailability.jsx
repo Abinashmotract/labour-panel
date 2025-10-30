@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Chip, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Box, Typography, Chip, Select, MenuItem, FormControl, InputLabel, Slider, TextField, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { labourAvailabilityTableColumns } from '../../custom/TableColumns';
 import { showErrorToast, showSuccessToast } from '../../Toast';
 import { API_BASE_URL } from '../../utils/apiConfig';
 import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
+import { getCoordinatesFromAddress } from '../../utils/geocode';
 
 const LabourAvailability = () => {
     const [allRequests, setAllRequests] = useState([]);
@@ -20,6 +21,12 @@ const LabourAvailability = () => {
     });
     const { t } = useTranslation();
 
+    // Contractor-side location filtering state
+    const [latitude, setLatitude] = useState(null);
+    const [longitude, setLongitude] = useState(null);
+    const [distanceKm, setDistanceKm] = useState(50); // default 50km
+    const [addressQuery, setAddressQuery] = useState('');
+
     const fetchAllRequests = async (page = 1, status = 'active') => {
         setLoading(true);
         try {
@@ -32,7 +39,17 @@ const LabourAvailability = () => {
                 apiUrl = `${API_BASE_URL}/labour-availability/admin/all-requests?page=${page}&limit=10&status=${status}`;
             } else {
                 // Contractor endpoint - shows available labourers
-                apiUrl = `${API_BASE_URL}/labour-availability/available-labours`;
+                const params = new URLSearchParams();
+                if (typeof longitude === 'number' && typeof latitude === 'number') {
+                    params.append('longitude', String(longitude));
+                    params.append('latitude', String(latitude));
+                }
+                if (distanceKm) {
+                    // backend expects meters
+                    params.append('maxDistance', String(Math.round(distanceKm * 1000)));
+                }
+                const qs = params.toString();
+                apiUrl = `${API_BASE_URL}/labour-availability/available-labours${qs ? `?${qs}` : ''}`;
             }
 
             const response = await fetch(apiUrl, {
@@ -96,8 +113,51 @@ const LabourAvailability = () => {
         // Get user role from localStorage
         const role = localStorage.getItem('panelType') || 'contractor';
         setUserRole(role);
+        if (role !== 'admin') {
+            // Try to get current location for contractor side
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        setLatitude(pos.coords.latitude);
+                        setLongitude(pos.coords.longitude);
+                    },
+                    () => {
+                        // silently ignore; user can search by address
+                    },
+                    { enableHighAccuracy: true }
+                );
+            }
+        }
         fetchAllRequests(1, statusFilter);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [statusFilter]);
+
+    // Refetch when contractor updates distance or coordinates
+    useEffect(() => {
+        if (userRole !== 'admin') {
+            fetchAllRequests(1, statusFilter);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [latitude, longitude, distanceKm]);
+
+    // Auto-search location as user types (debounced)
+    useEffect(() => {
+        if (userRole === 'admin') return;
+        const q = (addressQuery || '').trim();
+        if (q.length < 3) return; // avoid noisy calls
+        const timer = setTimeout(async () => {
+            try {
+                const geo = await getCoordinatesFromAddress(q);
+                setLatitude(geo.latitude);
+                setLongitude(geo.longitude);
+                fetchAllRequests(1, statusFilter);
+            } catch (e) {
+                // no toast on debounce to avoid noise
+            }
+        }, 600);
+        return () => clearTimeout(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [addressQuery, userRole]);
 
     const handleView = (row) => {
         console.log('View request:', row);
@@ -151,6 +211,12 @@ const LabourAvailability = () => {
         fetchAllRequests(params.page + 1, statusFilter);
     };
 
+    const handleDistanceCommit = (_, v) => {
+        setDistanceKm(Array.isArray(v) ? v[0] : v);
+        // Trigger immediate refresh on slider release
+        fetchAllRequests(1, statusFilter);
+    };
+
     return (
         <Box sx={{ height: 400, width: '100%' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -171,6 +237,33 @@ const LabourAvailability = () => {
                             <MenuItem value="expired">Expired</MenuItem>
                         </Select>
                     </FormControl>
+                )}
+                {userRole !== 'admin' && (
+                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" sx={{ width: '100%', maxWidth: 700 }}>
+                        <Box sx={{ minWidth: 220 }}>
+                            <Typography variant="body2" sx={{ mb: 1 }}>
+                                {t('Distance')}: {distanceKm} km
+                            </Typography>
+                            <Slider
+                                value={distanceKm}
+                                min={1}
+                                max={200}
+                                step={1}
+                                onChange={(_, v) => setDistanceKm(Array.isArray(v) ? v[0] : v)}
+                                onChangeCommitted={handleDistanceCommit}
+                                valueLabelDisplay="auto"
+                                valueLabelFormat={(v) => `${v} km`}
+                                aria-label="Distance in km"
+                            />
+                        </Box>
+                        <TextField
+                            placeholder={t('Search location (area/city)')}
+                            value={addressQuery}
+                            onChange={(e) => setAddressQuery(e.target.value)}
+                            size="small"
+                            sx={{ flex: 1 }}
+                        />
+                    </Stack>
                 )}
             </Box>
 
