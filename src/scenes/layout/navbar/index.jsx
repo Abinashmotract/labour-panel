@@ -133,7 +133,7 @@ useEffect(() => {
               fontWeight="bold"
               fontSize={{ xs: "1rem", sm: "1.5rem", md: "2rem" }}
               color="#FFFFFF"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/dashboard")}
               sx={{ "&:hover": { color: "rgba(255, 255, 255, 0.8)", cursor: "pointer" }, whiteSpace: "nowrap" }}
             >
               {t('title')}

@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Route, Routes, Navigate, } from "react-router-
 import App from "./App";
 import { Dashboard } from "./scenes";
 import Login from "./components/Login";
+import LandingPage from "./components/LandingPage";
+import ContractorLogin from "./components/ContractorLogin";
+import AdminLogin from "./components/AdminLogin";
 import PrivateRoute from "./utils/PrivateRoute";
 import VendorDashboard from "./vendors/VendorDashboard";
 import VendorProfile from "./scenes/vendor/VendorProfile";
@@ -29,12 +32,13 @@ const AppRouter = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={isAuthenticated === null ? (<div>Loading...</div>) : isAuthenticated ? (<Navigate to="/" replace />) : (<Login onLoginSuccess={login} />)} />
+        <Route path="/login" element={isAuthenticated === null ? (<div>Loading...</div>) : isAuthenticated ? (<Navigate to="/dashboard" replace />) : (<ContractorLogin onLoginSuccess={login} />)} />
+        <Route path="/admin" element={isAuthenticated === null ? (<div>Loading...</div>) : isAuthenticated ? (<Navigate to="/dashboard" replace />) : (<AdminLogin onLoginSuccess={login} />)} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-conditionos" element={<TermsAndConditions />} />
         <Route path="/delete-policy" element={<DeleteAccountPolicy />} />
         <Route element={<PrivateRoute isAuthenticated={isAuthenticated} panelType={panelType} token={token} stylistId={stylistId} />}>
-          <Route path="/" element={<App panelType={panelType} />}>
+          <Route path="/dashboard" element={<App panelType={panelType} />}>
             {panelType === "admin" ? (
               <>
                 <Route index element={<Dashboard />} />
@@ -51,13 +55,31 @@ const AppRouter = () => {
                 <Route path="contractor-profile" element={<VendorProfile />} />
                 <Route path="labour" element={<Services />} />
                 <Route path="labour-availability" element={<LabourAvailability />} />
-                 {/* <Route path="referal" element={<ReferalByAgent />} /> */}
               </>
             ) : (
               <Route index element={<Navigate to="/login" replace />} />
             )}
           </Route>
+          {/* Redirect old paths to dashboard nested paths */}
+          {panelType === "vendor" && (
+            <>
+              <Route path="/job-post" element={<Navigate to="/dashboard/job-post" replace />} />
+              <Route path="/application" element={<Navigate to="/dashboard/application" replace />} />
+              <Route path="/contractor-profile" element={<Navigate to="/dashboard/contractor-profile" replace />} />
+              <Route path="/labour" element={<Navigate to="/dashboard/labour" replace />} />
+              <Route path="/labour-availability" element={<Navigate to="/dashboard/labour-availability" replace />} />
+            </>
+          )}
+          {panelType === "admin" && (
+            <>
+              <Route path="/labours" element={<Navigate to="/dashboard/labours" replace />} />
+              <Route path="/skills" element={<Navigate to="/dashboard/skills" replace />} />
+              <Route path="/contracter" element={<Navigate to="/dashboard/contracter" replace />} />
+              <Route path="/labour-availability" element={<Navigate to="/dashboard/labour-availability" replace />} />
+            </>
+          )}
         </Route>
+        <Route path="/" element={isAuthenticated ? (<Navigate to="/dashboard" replace />) : (<LandingPage />)} />
       </Routes>
     </Router>
   );
