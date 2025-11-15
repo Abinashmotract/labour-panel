@@ -220,13 +220,13 @@ const ContractorLogin = ({ onLoginSuccess }) => {
               <div className="error-message" style={{ display: 'block' }}>{error}</div>
             )}
             
-            <div className="form-options">
+            {/* <div className="form-options">
               <div className="remember-me">
                 <input type="checkbox" id="remember" />
                 <label htmlFor="remember">Remember me</label>
               </div>
               <a className="forgot-password" onClick={() => showScreen("forgot")}>Forgot Password?</a>
-            </div>
+            </div> */}
             
             <button type="submit" className="action-button" disabled={isLoading}>
               {isLoading ? <><i className="fas fa-spinner fa-spin"></i> Logging In...</> : "Log In"}
