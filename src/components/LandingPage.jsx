@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/landing-page.css";
-import logoImage from "../assets/images/loginpagelogo.jpeg";
+import phoneMockup from "../assets/samsung-galaxy-s24-ultra-mockup/phoneMockup1.png";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -84,7 +84,7 @@ const LandingPage = () => {
               <li><a href="#stats">Success</a></li>
               <li className="nav-buttons">
                 <button className="contractor-login" onClick={handleContractorLogin}>Contractor Login</button>
-                <a href="https://play.google.com/store/apps/details?id=io.nearbylabour.app" className="cta-button">Download App</a>
+                {/* <a href="https://play.google.com/store/apps/details?id=io.nearbylabour.app" className="cta-button">Download App</a> */}
               </li>
             </ul>
             <button className="mobile-menu-btn">
@@ -124,7 +124,7 @@ const LandingPage = () => {
               </div>
             </div>
             <div className="hero-image">
-              <img src='https://play-lh.googleusercontent.com/jc8IperGwK-qUTn8VN0N6AYS_NpmiW-K-us_jPVaa8OpdhQP_UwKKllpt1PtIFnDQKduKXiZWRcrkSD-shnEaQ=w240-h480-rw' alt="Nearby Labour App" className="app-mockup floating" />
+              <img src={phoneMockup} alt="Nearby Labour App" className="app-mockup floating" />
             </div>
           </div>
         </div>
@@ -276,13 +276,11 @@ const LandingPage = () => {
                 <li><a href="#features">Features</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
                 <li><a href="#stats">Our Success</a></li>
-                <li><a href="#download">Download</a></li>
               </ul>
             </div>
             <div className="footer-column">
               <h3>Support</h3>
               <ul className="footer-links">
-                <li><a href="#">Help Center</a></li>
                 <li><a href="#">Contact Us</a></li>
                 <li><Link to="/privacy-policy">Privacy Policy</Link></li>
                 <li><Link to="/terms-conditionos">Terms of Service</Link></li>
@@ -291,15 +289,7 @@ const LandingPage = () => {
             <div className="footer-column">
               <h3>Contact Info</h3>
               <ul className="footer-links">
-                <li>
-                  <i className="fas fa-map-marker-alt"></i>
-                  <strong>S/O:</strong> Panchu Ram Jangid <br />
-                  <strong>Village:</strong> Kankediyas <br />
-                  <strong>Post:</strong> Peelwa <br />
-                  <strong>Tehsil:</strong> Parbatsar <br />
-                  <strong>District:</strong> Didwana–Kuchaman <br />
-                  <strong>Pincode:</strong> 341503
-                </li>
+                <li><i className="fas fa-map-marker-alt"></i> Kankediyas, Peelwa, Parbatsar, Didwana–Kuchaman, 341503</li>
                 <li><i className="fas fa-phone"></i> +91 76656 27330</li>
                 <li><i className="fas fa-envelope"></i> nearbylabour@gmail.com</li>
               </ul>
