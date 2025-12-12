@@ -210,8 +210,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Stats Section */}
       <section className="stats" id="stats">
         <div className="container">
           <div className="section-title">
@@ -238,8 +236,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
       <section className="cta-section" id="download">
         <div className="container">
           <h2>Ready to Transform Your Labour Hiring?</h2>
@@ -255,8 +251,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
       <footer>
         <div className="container">
           <div className="footer-content">
