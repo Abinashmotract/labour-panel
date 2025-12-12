@@ -295,8 +295,21 @@ const LandingPage = () => {
               </ul>
             </div>
           </div>
-          <div className="copyright">
+          <div
+            className="copyright d-flex justify-content-between align-items-center"
+            style={{ gap: "20px" }}
+          >
             <p>&copy; 2023 Nearby Labour. All rights reserved.</p>
+            <p>
+              Design &amp; Developed by{" "}
+              <a
+                href="https://portfolio-p17s.onrender.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Abinash Sinha
+              </a>
+            </p>
           </div>
         </div>
       </footer>
