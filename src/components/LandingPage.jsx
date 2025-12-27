@@ -210,8 +210,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Stats Section */}
       <section className="stats" id="stats">
         <div className="container">
           <div className="section-title">
@@ -238,8 +236,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
       <section className="cta-section" id="download">
         <div className="container">
           <h2>Ready to Transform Your Labour Hiring?</h2>
@@ -255,8 +251,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
       <footer>
         <div className="container">
           <div className="footer-content">
@@ -295,8 +289,21 @@ const LandingPage = () => {
               </ul>
             </div>
           </div>
-          <div className="copyright">
+          <div
+            className="copyright d-flex justify-content-between align-items-center"
+            style={{ gap: "20px" }}
+          >
             <p>&copy; 2023 Nearby Labour. All rights reserved.</p>
+            <p>
+              Design &amp; Developed by{" "}
+              <a
+                href="https://portfolio-p17s.onrender.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Abinash Sinha
+              </a>
+            </p>
           </div>
         </div>
       </footer>
