@@ -30,22 +30,80 @@ export const AuthProvider = ({ children }) => {
   const [stylistId, setStylistId] = useState(null);
   const [logoutReason, setLogoutReason] = useState(null); 
 
+  // Helper function to perform logout
+  const performLogout = async (reason = null) => {
+    try {
+      const cookieToken = Cookies.get("token");
+      const currentPanelType = localStorage.getItem("panelType");
+      if (cookieToken && currentPanelType) {
+        if (currentPanelType === 'admin') {
+          await axios.post(
+            `${API_BASE_URL}/admin/logout`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${cookieToken}`,
+                'Content-Type': 'application/json',
+              },
+              withCredentials: true,
+            }
+          );
+        } else {
+          await axios.post(`${API_BASE_URL}/auth/logout`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${cookieToken}`,
+              },
+              withCredentials: true,
+            }
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Logout API error:", error?.response?.data?.message || error.message);
+    }
+    localStorage.clear();
+    Cookies.remove("token");
+    setIsAuthenticated(false);
+    setPanelType(null);
+    setToken(null);
+    setStylistId(null);
+    if (reason) setLogoutReason(reason);
+  };
+
   // Check token expiration on mount and at intervals
   useEffect(() => {
-    const checkAuth = () => {
-      const auth = localStorage.getItem("isAuthenticated") === "true";
-      const type = localStorage.getItem("panelType");
+    const checkAuth = async () => {
       const cookieToken = Cookies.get("token");
+      const type = localStorage.getItem("panelType");
       const storedStylistId = localStorage.getItem("stylistId");
 
-      setIsAuthenticated(auth);
-      setPanelType(type);
-      setToken(cookieToken);
-      setStylistId(storedStylistId);
-
-      // If token is expired, logout
-      if (cookieToken && isTokenExpired(cookieToken)) {
-        logout('expired');
+      // First, check if token exists and is valid
+      if (cookieToken && !isTokenExpired(cookieToken)) {
+        // Token is valid, restore authentication state
+        setIsAuthenticated(true);
+        setPanelType(type);
+        setToken(cookieToken);
+        setStylistId(storedStylistId);
+        
+        // Ensure localStorage is also updated for consistency
+        if (type) {
+          localStorage.setItem("isAuthenticated", "true");
+          localStorage.setItem("panelType", type);
+        }
+        if (storedStylistId) {
+          localStorage.setItem("stylistId", storedStylistId);
+        }
+      } else if (cookieToken && isTokenExpired(cookieToken)) {
+        // Token exists but is expired, logout
+        await performLogout('expired');
+      } else {
+        // No token found, user is not authenticated
+        setIsAuthenticated(false);
+        setPanelType(null);
+        setToken(null);
+        setStylistId(null);
       }
     };
 
@@ -54,7 +112,7 @@ export const AuthProvider = ({ children }) => {
     const interval = setInterval(() => {
       const cookieToken = Cookies.get("token");
       if (cookieToken && isTokenExpired(cookieToken)) {
-        logout('expired');
+        performLogout('expired');
       }
     }, 30000);
 
@@ -71,40 +129,7 @@ export const AuthProvider = ({ children }) => {
 
   // Accept reason param for logout
   const logout = async (reason = null) => {
-    try {
-      if (panelType === 'admin') {
-        await axios.post(
-          `${API_BASE_URL}/admin/logout`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${Cookies.get('token')}`,
-              'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-          }
-        );
-      } else {
-        await axios.post(`${API_BASE_URL}/auth/logout`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${Cookies.get('token')}`,
-            },
-            withCredentials: true,
-          }
-        );
-      }
-    } catch (error) {
-      console.error("Logout API error:", error?.response?.data?.message || error.message);
-    }
-    localStorage.clear();
-    Cookies.remove("token");
-    setIsAuthenticated(false);
-    setPanelType(null);
-    setToken(null);
-    setStylistId(null);
-    if (reason) setLogoutReason(reason); 
+    await performLogout(reason);
   };
 
   // Function to clear logout reason after showing notification

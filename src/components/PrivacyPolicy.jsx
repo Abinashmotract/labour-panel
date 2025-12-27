@@ -8,6 +8,7 @@ import {
     Divider,
 } from "@mui/material";
 import "../css/landing-page.css";
+import logo from "../assets/images/loginpagelogo.jpeg";
 
 // Additional styles to ensure navbar displays correctly
 const navbarStyles = `
@@ -100,9 +101,8 @@ const PrivacyPolicy = () => {
             <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999, backgroundColor: '#ffffff' }}>
                 <div className="container">
                     <nav>
-                        <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-                            <i className="fas fa-hard-hat"></i>
-                            Nearby Labour
+                        <div className="" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+                        <img src={logo} alt="Nearby Labour" style={{ height: 70 }} />
                         </div>
                         <ul className="nav-links">
                             <li><Link to="/#features">Features</Link></li>

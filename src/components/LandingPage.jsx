@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/landing-page.css";
 import phoneMockup from "../assets/samsung-galaxy-s24-ultra-mockup/phoneMockup1.png";
+import logo from "../assets/images/loginpagelogo.jpeg";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -74,9 +75,8 @@ const LandingPage = () => {
       <header>
         <div className="container">
           <nav>
-            <div className="logo">
-              <i className="fas fa-hard-hat"></i>
-              Nearby Labour
+            <div className="">
+              <img src={logo} alt="Nearby Labour" style={{ height: 70 }} />
             </div>
             <ul className="nav-links">
               <li><a href="#features">Features</a></li>

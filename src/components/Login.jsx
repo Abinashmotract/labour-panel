@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import "../css/contractor-login.css";
 import axios from "axios";
 import { API_BASE_URL } from "../utils/apiConfig";
+import logo from "../assets/images/loginpagelogo.jpeg";
 
 const Login = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState("");
@@ -99,13 +100,12 @@ const Login = ({ onLoginSuccess }) => {
       <div className="screen active" id="loginScreen">
         <div className="screen-left">
           <div className="screen-left-content">
-            <div className="logo">
-              <i className="fas fa-hard-hat"></i>
-              Nearby Labour
+            <div className="">
+              <img src={logo} alt="Nearby Labour" style={{ height: 70 }} />
             </div>
             <h2>
-              {panelType === "adminpanel" 
-                ? "Welcome Back, Admin!" 
+              {panelType === "adminpanel"
+                ? "Welcome Back, Admin!"
                 : "Welcome Back, Contractor!"}
             </h2>
             <p>
@@ -113,7 +113,7 @@ const Login = ({ onLoginSuccess }) => {
                 ? "Access your admin dashboard to manage the platform, users, and all system operations."
                 : "Access your contractor dashboard to manage projects, workers, and payments all in one place."}
             </p>
-            
+
             <ul className="features-list">
               {panelType === "adminpanel" ? (
                 <>
@@ -133,13 +133,13 @@ const Login = ({ onLoginSuccess }) => {
             </ul>
           </div>
         </div>
-        
+
         <div className="screen-right">
           <div className="screen-header">
             <h1>{panelType === "adminpanel" ? "Admin Login" : "Contractor Login"}</h1>
             <p>Enter your credentials to access your account</p>
           </div>
-          
+
           <form className="screen-form" onSubmit={handleLogin}>
             <div className="form-group">
               <label>
@@ -171,10 +171,10 @@ const Login = ({ onLoginSuccess }) => {
                 <div className="form-group">
                   <label htmlFor="email">Email Address</label>
                   <div className="input-with-icon">
-                    <input 
-                      type="email" 
-                      id="email" 
-                      className="form-control" 
+                    <input
+                      type="email"
+                      id="email"
+                      className="form-control"
                       placeholder="Enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -188,10 +188,10 @@ const Login = ({ onLoginSuccess }) => {
                 <div className="form-group">
                   <label htmlFor="phoneNumber">Phone Number</label>
                   <div className="input-with-icon">
-                    <input 
-                      type="text" 
-                      id="phoneNumber" 
-                      className="form-control" 
+                    <input
+                      type="text"
+                      id="phoneNumber"
+                      className="form-control"
                       placeholder="Enter your phone number"
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
@@ -201,40 +201,40 @@ const Login = ({ onLoginSuccess }) => {
                 </div>
               </>
             )}
-            
+
             <div className="form-group">
               <label htmlFor="password">Password</label>
               <div className="input-with-icon">
-                <input 
-                  type={showPassword ? "text" : "password"} 
-                  id="password" 
-                  className="form-control" 
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  className="form-control"
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <i className="fas fa-lock"></i>
-                <button 
-                  type="button" 
-                  className="password-toggle" 
+                <button
+                  type="button"
+                  className="password-toggle"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   <i className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}></i>
                 </button>
               </div>
             </div>
-            
+
             {error && (
               <div className="error-message" style={{ display: 'block' }}>{error}</div>
             )}
-            
+
             <div className="form-options">
               <div className="remember-me">
                 <input type="checkbox" id="remember" />
                 <label htmlFor="remember">Remember me</label>
               </div>
             </div>
-            
+
             <button type="submit" className="action-button" disabled={isLoading}>
               {isLoading ? <><i className="fas fa-spinner fa-spin"></i> Logging In...</> : "Log In"}
             </button>

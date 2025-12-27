@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "../utils/apiConfig";
 import Cookies from "js-cookie";
 import "../css/contractor-login.css";
+import logo from "../assets/images/loginpagelogo.jpeg";
 
 const AdminLogin = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState("");
@@ -10,6 +11,18 @@ const AdminLogin = ({ onLoginSuccess }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+
+  // Load saved credentials on component mount
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("adminRememberedEmail");
+    const savedRememberMe = localStorage.getItem("adminRememberMe") === "true";
+    
+    if (savedRememberMe && savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -35,6 +48,16 @@ const AdminLogin = ({ onLoginSuccess }) => {
       localStorage.setItem("isAuthenticated", "true");
       Cookies.set("token", token, { expires: 1 });
       localStorage.setItem("panelType", "admin");
+      
+      // Handle remember me functionality
+      if (rememberMe) {
+        localStorage.setItem("adminRememberedEmail", email);
+        localStorage.setItem("adminRememberMe", "true");
+      } else {
+        localStorage.removeItem("adminRememberedEmail");
+        localStorage.removeItem("adminRememberMe");
+      }
+      
       onLoginSuccess(true, "admin", token, null);
     } catch (error) {
       setError(
@@ -50,9 +73,8 @@ const AdminLogin = ({ onLoginSuccess }) => {
       <div className="screen active" id="loginScreen">
         <div className="screen-left">
           <div className="screen-left-content">
-            <div className="logo">
-              <i className="fas fa-hard-hat"></i>
-              Nearby Labour
+            <div className="">
+            <img src={logo} alt="Nearby Labour" style={{ height: 70 }} />
             </div>
             <h2>Welcome Back, Admin!</h2>
             <p>Access your admin dashboard to manage the platform, users, and all system operations.</p>
@@ -114,7 +136,12 @@ const AdminLogin = ({ onLoginSuccess }) => {
             
             <div className="form-options">
               <div className="remember-me">
-                <input type="checkbox" id="remember" />
+                <input 
+                  type="checkbox" 
+                  id="remember" 
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                />
                 <label htmlFor="remember">Remember me</label>
               </div>
             </div>
