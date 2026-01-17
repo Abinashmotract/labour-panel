@@ -27,7 +27,9 @@ const LabourAvailability = () => {
     const [distanceKm, setDistanceKm] = useState(50); // default 50km
     const [addressQuery, setAddressQuery] = useState('');
 
-    const fetchAllRequests = async (page = 1, status = 'active') => {
+    const [searchText, setSearchText] = useState('');
+
+    const fetchAllRequests = async (page = 1, status = 'active', search = '') => {
         setLoading(true);
         try {
             const token = Cookies.get('token');
@@ -48,8 +50,15 @@ const LabourAvailability = () => {
                     // backend expects meters
                     params.append('maxDistance', String(Math.round(distanceKm * 1000)));
                 }
+                if (search && search.trim()) {
+                    params.append('search', search.trim());
+                }
                 const qs = params.toString();
-                apiUrl = `${API_BASE_URL}/labour-availability/available-labours${qs ? `?${qs}` : ''}`;
+                // Use search endpoint if search is provided, otherwise use regular endpoint
+                const endpoint = search && search.trim() 
+                    ? '/labour-availability/search-available-labours'
+                    : '/labour-availability/available-labours';
+                apiUrl = `${API_BASE_URL}${endpoint}${qs ? `?${qs}` : ''}`;
             }
 
             const response = await fetch(apiUrl, {
@@ -128,17 +137,17 @@ const LabourAvailability = () => {
                 );
             }
         }
-        fetchAllRequests(1, statusFilter);
+        fetchAllRequests(1, statusFilter, searchText);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [statusFilter]);
 
     // Refetch when contractor updates distance or coordinates
     useEffect(() => {
         if (userRole !== 'admin') {
-            fetchAllRequests(1, statusFilter);
+            fetchAllRequests(1, statusFilter, searchText);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [latitude, longitude, distanceKm]);
+    }, [latitude, longitude, distanceKm, searchText]);
 
     // Auto-search location as user types (debounced)
     useEffect(() => {
@@ -150,7 +159,7 @@ const LabourAvailability = () => {
                 const geo = await getCoordinatesFromAddress(q);
                 setLatitude(geo.latitude);
                 setLongitude(geo.longitude);
-                fetchAllRequests(1, statusFilter);
+                fetchAllRequests(1, statusFilter, searchText);
             } catch (e) {
                 // no toast on debounce to avoid noise
             }
@@ -158,6 +167,16 @@ const LabourAvailability = () => {
         return () => clearTimeout(timer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [addressQuery, userRole]);
+
+    // Handle search text change with debounce
+    useEffect(() => {
+        if (userRole === 'admin') return;
+        const timer = setTimeout(() => {
+            fetchAllRequests(1, statusFilter, searchText);
+        }, 500);
+        return () => clearTimeout(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchText]);
 
     const handleView = (row) => {
         console.log('View request:', row);
@@ -260,6 +279,13 @@ const LabourAvailability = () => {
                             placeholder={t('Search location (area/city)')}
                             value={addressQuery}
                             onChange={(e) => setAddressQuery(e.target.value)}
+                            size="small"
+                            sx={{ flex: 1 }}
+                        />
+                        <TextField
+                            placeholder={t('Search labour (name/phone/email)')}
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
                             size="small"
                             sx={{ flex: 1 }}
                         />

@@ -4,7 +4,7 @@ import { Box, Chip, CircularProgress, Switch, Typography, MenuItem, Select } fro
 import ImageWithLoader from "./ImageWithLoader";
 import PersonIcon from "@mui/icons-material/Person";
 
-export const userTableColumns = ({ handleDelete, handleView, handleToggleAgent }) => [
+export const userTableColumns = ({ handleDelete, handleView, handleEdit, handleToggleAgent }) => [
     {
         field: "photo",
         headerName: "Profile Picture",
@@ -14,7 +14,6 @@ export const userTableColumns = ({ handleDelete, handleView, handleToggleAgent }
                 params.row.profilePicture && params.row.profilePicture.length > 0
                     ? params.row.profilePicture
                     : null;
-
             const fallbackUrl =
                 "https://w7.pngwing.com/pngs/406/861/png-transparent-default-facebook-user-profile-blue-silhouette-neck-symbol-sky-folder-users-blue-silhouette-application-thumbnail.png";
             return (
@@ -26,7 +25,6 @@ export const userTableColumns = ({ handleDelete, handleView, handleToggleAgent }
         },
     },
     { field: "fullName", headerName: "Full Name", flex: 1 },
-    { field: "email", headerName: "Email", flex: 1 },
     { field: "mobile", headerName: "Mobile", flex: 1 },
     {
         field: "role",
@@ -127,6 +125,12 @@ export const userTableColumns = ({ handleDelete, handleView, handleToggleAgent }
                     icon={<Eye size={16} />}
                     color="rgb(77 141 225)"
                     onClick={() => handleView(params.row)}
+                />
+                <CustomIconButton
+                    size="small"
+                    icon={<Pencil size={16} />}
+                    color="green"
+                    onClick={() => handleEdit(params.row.id)}
                 />
                 <CustomIconButton
                     size="small"

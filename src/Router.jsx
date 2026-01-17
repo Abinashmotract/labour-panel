@@ -18,6 +18,8 @@ import LoadingScreen from "./components/LoadingScreen";
 import Services from "./scenes/vendor/Services";
 import JobApplication from "./scenes/vendor/JobApplication";
 import LabourAvailability from "./scenes/admin/LabourAvailability";
+import ContractorAcceptances from "./scenes/admin/ContractorAcceptances";
+import ContractorJobAcceptances from "./scenes/admin/ContractorJobAcceptances";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsAndConditions from "./components/TermsAndConditions";
 import DeleteAccountPolicy from "./components/DeleteAccountPolicy";
@@ -46,6 +48,8 @@ const AppRouter = () => {
             <Route path="skills" element={panelType === "admin" ? <CreateSkill /> : <Navigate to="/dashboard" replace />} />
             <Route path="contracter" element={panelType === "admin" ? <Contracter /> : <Navigate to="/dashboard" replace />} />
             <Route path="labour-availability" element={panelType === "admin" || panelType === "vendor" ? <LabourAvailability /> : <Navigate to="/dashboard" replace />} />
+            <Route path="contractor-acceptances" element={panelType === "admin" ? <ContractorAcceptances /> : <Navigate to="/dashboard" replace />} />
+            <Route path="contractor-job-acceptances" element={panelType === "admin" ? <ContractorJobAcceptances /> : <Navigate to="/dashboard" replace />} />
             {/* Vendor routes - always defined, authorization checked in components */}
             <Route path="job-post" element={panelType === "vendor" ? <JobPosts /> : <Navigate to="/dashboard" replace />} />
             <Route path="application" element={panelType === "vendor" ? <JobApplication /> : <Navigate to="/dashboard" replace />} />
@@ -63,6 +67,8 @@ const AppRouter = () => {
           <Route path="/labours" element={<Navigate to="/dashboard/labours" replace />} />
           <Route path="/skills" element={<Navigate to="/dashboard/skills" replace />} />
           <Route path="/contracter" element={<Navigate to="/dashboard/contracter" replace />} />
+          <Route path="/contractor-acceptances" element={<Navigate to="/dashboard/contractor-acceptances" replace />} />
+          <Route path="/contractor-job-acceptances" element={<Navigate to="/dashboard/contractor-job-acceptances" replace />} />
         </Route>
         <Route path="/" element={isAuthenticated ? (<Navigate to="/dashboard" replace />) : (<LandingPage />)} />
         {/* Catch-all route for any unmatched paths */}

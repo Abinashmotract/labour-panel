@@ -15,6 +15,7 @@ import { CustomIconButton } from "../../custom/Button";
 import AgentEntityDialog from "../../components/AgentEntityDialog";
 import SelectInput from "../../custom/Select";
 import { useTranslation } from 'react-i18next';
+import UserEditDialog from "../../components/UserEditDialog";
 
 export default function CustomerDetails() {
     const [allUsers, setAllUsers] = useState([]);
@@ -30,6 +31,8 @@ export default function CustomerDetails() {
     const [alertOpen, setAlertOpen] = useState(false);
     const [deleting, setDeleting] = useState(false);
     const [roleFilter, setRoleFilter] = useState("");
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+    const [selectedUserForEdit, setSelectedUserForEdit] = useState(null);
 
     const theme = useTheme();
     const { t } = useTranslation();
@@ -209,7 +212,20 @@ export default function CustomerDetails() {
         }
     };
 
-    const columns = userTableColumns({ handleDelete, handleView, handleToggleAgent });
+    const handleEdit = (userId) => {
+        const fullUserDetails = originalUsers.find(u => u._id === userId);
+        if (fullUserDetails) {
+            setSelectedUserForEdit(fullUserDetails);
+            setIsEditDialogOpen(true);
+        }
+    };
+
+    const handleCloseEditDialog = () => {
+        setIsEditDialogOpen(false);
+        setSelectedUserForEdit(null);
+    };
+
+    const columns = userTableColumns({ handleDelete, handleView, handleEdit, handleToggleAgent });
 
     return (
         <Box>
@@ -263,6 +279,15 @@ export default function CustomerDetails() {
                 onConfirm={handleConfirmDelete}
                 loading={deleting}
                 disableCancel={deleting}
+            />
+            <UserEditDialog
+                open={isEditDialogOpen}
+                handleClose={handleCloseEditDialog}
+                userData={selectedUserForEdit}
+                onSuccess={() => {
+                    handleCloseEditDialog();
+                    fetchAllUsers();
+                }}
             />
         </Box>
     );

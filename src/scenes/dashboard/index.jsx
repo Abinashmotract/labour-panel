@@ -96,8 +96,9 @@ function Dashboard() {
     },
   ];
 
+
   return (
-    <Box sx={{ width: "100%", maxWidth: "100%", p: 2 }}>
+    <Box sx={{ width: "100%", maxWidth: "100%" }}>
       {loading ? (
         <Box
           sx={{
@@ -116,9 +117,9 @@ function Dashboard() {
             subtitle="Welcome to your dashboard"
           />
 
-          <Grid container spacing={3} sx={{ mt: 2 }}>
+          <Grid container spacing={3}>
             {overviewStats?.map((stat) => (
-              <Grid item xs={12} sm={6} md={4} key={stat.title}>
+              <Grid item xs={12} sm={6} md={4} key={stat?.title}>
                 <Card
                   sx={{
                     borderRadius: "16px",
@@ -136,24 +137,25 @@ function Dashboard() {
                       gap: 1,
                     }}
                   >
-                    {stat.icon}
+                    {stat?.icon}
                     <Typography
                       variant="subtitle2"
                       sx={{ fontWeight: 700, color: "#000" }}
                     >
-                      {stat.title}
+                      {stat?.title}
                     </Typography>
                     <Typography
                       variant="h5"
                       sx={{ fontWeight: 900, color: "#000" }}
                     >
-                      {stat.value}
+                      {stat?.value}
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
             ))}
           </Grid>
+
         </>
       )}
     </Box>

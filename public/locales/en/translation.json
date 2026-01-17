@@ -31,7 +31,22 @@
     "allSkills": "All Skills",
     "addNewSkill": "Add New Skill",
     "searchSkill": "Search Skill",
-    "contractorprofile": "Contractor Profile"    
+    "contractorprofile": "Contractor Profile",
+    "contractorAcceptancesTitle": "Contractor Acceptances for Labour Requests",
+    "contractorAcceptancesSubtitle": "View which contractors accepted labour requests",
+    "contractorJobAcceptancesTitle": "Contractor Job Posts - Accepted Labours",
+    "contractorJobAcceptancesSubtitle": "View accepted labours for contractor job posts",
+    "labour": "Labour",
+    "contractor": "Contractor",
+    "jobTitle": "Job Title",
+    "acceptedAt": "Accepted At",
+    "labourName": "Labour Name",
+    "email": "Email",
+    "phone": "Phone",
+    "noContractorAcceptances": "No contractor acceptances found",
+    "noJobAcceptances": "No contractor job acceptances found",
+    "labours": "Labours",
+    "contractorLabel": "Contractor"
   },
   "nav": {
     "labourContractors": "Labour/Contractors",
@@ -43,6 +58,8 @@
     "createJobPost": "Create Job Post",
     "searchJobPosts": "Search Job Posts",
     "labour_availability":"Labour Availability",
-    "available_labourers":"Available Labourers"
+    "available_labourers":"Available Labourers",
+    "contractorAcceptances": "Contractor Acceptances",
+    "jobAcceptedLabours": "Job Accepted Labours"
   }
 }

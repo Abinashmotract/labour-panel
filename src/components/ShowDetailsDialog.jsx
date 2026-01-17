@@ -4,7 +4,6 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-    Button,
     Typography,
     Box,
     Grid,
@@ -47,8 +46,8 @@ const CustomerDetailsView = ({ data }) => (
     <Box sx={{ backgroundColor: "#f4f6f8", p: { xs: 1, md: 2 } }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
             <Avatar
-                src={data.profilePicture || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png"}
-                alt={data.firstName}
+                src={data?.profilePicture || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png"}
+                alt={data?.firstName}
                 sx={{ width: 72, height: 72 }}
                 onError={(e) => {
                     e.target.onerror = null;
@@ -56,28 +55,28 @@ const CustomerDetailsView = ({ data }) => (
                 }}
             />
             <Typography variant="h5" fontWeight="bold">
-                {data.firstName || "Customer"}
+                {data?.firstName || "Customer"}
             </Typography>
         </Box>
 
         <Section title="Customer Information" icon={<User size={24} />}>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
-                    <DetailItem icon={<User size={20} />} label="Full Name" value={`${data.firstName || ""} ${data.lastName || ""}`} />
-                    <DetailItem icon={<Mail size={20} />} label="Email" value={data.email} />
-                    <DetailItem icon={<User size={20} />} label="Gender" value={data.gender} />
-                    <DetailItem icon={<Briefcase size={20} />} label="Work Category" value={data.work_category} />
+                    <DetailItem icon={<User size={20} />} label="Full Name" value={`${data?.firstName || ""} ${data?.lastName || ""}`} />
+                    <DetailItem icon={<Mail size={20} />} label="Email" value={data?.email} />
+                    <DetailItem icon={<User size={20} />} label="Gender" value={data?.gender} />
+                    <DetailItem icon={<Briefcase size={20} />} label="Work Category" value={data?.work_category} />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <DetailItem icon={<Phone size={20} />} label="Phone" value={data.phoneNumber} />
-                    <DetailItem icon={<Calendar size={20} />} label="Joined On" value={new Date(data.createdAt).toLocaleString()} />
-                    <DetailItem icon={<BadgePercent size={20} />} label="Experience" value={data.work_experience} />
+                    <DetailItem icon={<Phone size={20} />} label="Phone" value={data?.phoneNumber} />
+                    <DetailItem icon={<Calendar size={20} />} label="Joined On" value={new Date(data?.createdAt).toLocaleString()} />
+                    <DetailItem icon={<BadgePercent size={20} />} label="Experience" value={data?.work_experience} />
                 </Grid>
                 <Grid item xs={12}>
                     <DetailItem
                         icon={<MapPin size={20} />}
                         label="Address"
-                        value={`${data.addressLine1 || ""}, ${data.addressLine2 || ""}, ${data.city || ""}, ${data.region || ""} - ${data.postalCode || ""}`}
+                        value={`${data?.addressLine1 || ""}, ${data?.addressLine2 || ""}, ${data?.city || ""}, ${data?.region || ""} - ${data?.postalCode || ""}`}
                     />
                 </Grid>
             </Grid>
@@ -88,29 +87,29 @@ const CustomerDetailsView = ({ data }) => (
 const StylistDetailsView = ({ data }) => {
 
     const isAllEmpty = [
-        data.expertise,
-        data.education,
-        data.experience,
-        data.certificates,
-        data.portfolio,
-        data.photos
+        data?.expertise,
+        data?.education,
+        data?.experience,
+        data?.certificates,
+        data?.portfolio,
+        data?.photos
     ].every(arr => !arr || arr.length === 0);
     return (
         <Box sx={{ backgroundColor: '#f4f6f8', p: { xs: 1, md: 2 } }}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={5}>
                     <Section title="Personal Information" icon={<User size={24} />}>
-                        <DetailItem icon={<User size={20} />} label="Full Name" value={data.fullName} />
-                        <DetailItem icon={<Mail size={20} />} label="Email" value={data.email} />
-                        <DetailItem icon={<Calendar size={20} />} label="DOB" value={data.dob ? new Date(data.dob).toLocaleDateString() : 'N/A'} />
-                        <DetailItem icon={<Phone size={20} />} label="Phone" value={data.phoneNumber} />
-                        <DetailItem icon={<MapPin size={20} />} label="Address" value={data.address} />
+                        <DetailItem icon={<User size={20} />} label="Full Name" value={data?.fullName} />
+                        <DetailItem icon={<Mail size={20} />} label="Email" value={data?.email} />
+                        <DetailItem icon={<Calendar size={20} />} label="DOB" value={data?.dob ? new Date(data?.dob).toLocaleDateString() : 'N/A'} />
+                        <DetailItem icon={<Phone size={20} />} label="Phone" value={data?.phoneNumber} />
+                        <DetailItem icon={<MapPin size={20} />} label="Address" value={data?.address} />
                     </Section>
-                    {data.about && (
+                    {data?.about && (
                         <Section title="Shop Details" icon={<Building2 size={24} />}>
-                            <DetailItem icon={<Star size={20} />} label="Shop Name" value={data.about.shopName} />
-                            <DetailItem icon={<Phone size={20} />} label="Timings" value={data.about.timings ? `${data.about.timings.from} - ${data.about.timings.till}` : 'N/A'} />
-                            <Typography variant="body2" color="text.secondary" sx={{ mt: 1, p: 1, background: '#fff', borderRadius: 1 }}>{data.about.about}</Typography>
+                            <DetailItem icon={<Star size={20} />} label="Shop Name" value={data?.about.shopName} />
+                            <DetailItem icon={<Phone size={20} />} label="Timings" value={data?.about.timings ? `${data?.about.timings.from} - ${data?.about.timings.till}` : 'N/A'} />
+                            <Typography variant="body2" color="text.secondary" sx={{ mt: 1, p: 1, background: '#fff', borderRadius: 1 }}>{data?.about.about}</Typography>
                         </Section>
                     )}
                 </Grid>
@@ -123,10 +122,10 @@ const StylistDetailsView = ({ data }) => {
                         </Box>
                     ) : (
                         <>
-                            {data.expertise?.length > 0 && (
+                            {data?.expertise?.length > 0 && (
                                 <Section title="Expertise" icon={<Sparkles size={24} />}>
                                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                                        {data.expertise.map((exp, i) => {
+                                        {data?.expertise.map((exp, i) => {
                                             let label = '';
                                             if (typeof exp === 'string') {
                                                 label = exp;
@@ -152,10 +151,10 @@ const StylistDetailsView = ({ data }) => {
                                     </Box>
                                 </Section>
                             )}
-                            {data.education?.length > 0 && (
+                            {data?.education?.length > 0 && (
                                 <Section title="Education" icon={<GraduationCap size={24} />}>
                                     <Stack spacing={2}>
-                                        {data.education.map((edu, index) => (
+                                        {data?.education.map((edu, index) => (
                                             <Box key={index} sx={{ p: 1.5, border: '1px solid #e0e0e0', borderRadius: 1.5 }}>
                                                 <Typography sx={{ fontWeight: 'bold' }}>{edu.degree}</Typography>
                                                 <Typography variant="body2">{edu.institute}, {edu.year}</Typography>
@@ -164,10 +163,10 @@ const StylistDetailsView = ({ data }) => {
                                     </Stack>
                                 </Section>
                             )}
-                            {data.experience?.length > 0 && (
+                            {data?.experience?.length > 0 && (
                                 <Section title="Experience" icon={<Briefcase size={24} />}>
                                     <Stack spacing={2}>
-                                        {data.experience.map((exp, index) => (
+                                        {data?.experience.map((exp, index) => (
                                             <Box key={index} sx={{ p: 1.5, border: '1px solid #e0e0e0', borderRadius: 1.5 }}>
                                                 <Typography sx={{ fontWeight: 'bold' }}>{exp.role} at {exp.salon}</Typography>
                                                 <Typography variant="body2">Duration: {exp.duration}</Typography>
@@ -176,10 +175,10 @@ const StylistDetailsView = ({ data }) => {
                                     </Stack>
                                 </Section>
                             )}
-                            {data.certificates?.length > 0 && (
+                            {data?.certificates?.length > 0 && (
                                 <Section title="Certificates & Portfolio" icon={<Award size={24} />}>
                                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'center' }}>
-                                        {data.certificates.map((cert, index) => (
+                                        {data?.certificates.map((cert, index) => (
                                             <Link href={cert.url} target="_blank" rel="noopener noreferrer" key={index}>
                                                 <Avatar variant="rounded" src={cert.url} alt={cert.name} sx={{ width: 120, height: 120, border: '2px solid', borderColor: 'primary.main', transition: 'transform 0.2s ease-in-out', '&:hover': { transform: 'scale(1.05)' } }} />
                                             </Link>
@@ -202,9 +201,9 @@ const ShowDetailsDialog = ({ open, onClose, data }) => {
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
-            <DialogTitle sx={{ pb: 1, textTransform: 'capitalize' }}>{data.role} Details: {data.fullName}</DialogTitle>
+            <DialogTitle sx={{ pb: 1, textTransform: 'capitalize' }}>{data?.role} Details: {data?.fullName}</DialogTitle>
             <DialogContent dividers sx={{ p: 0, '&.MuiDialogContent-root': { p: 0 } }}>
-                {data.role === 'stylist'
+                {data?.role === 'stylist'
                     ? <StylistDetailsView data={data} />
                     : <CustomerDetailsView data={data} />
                 }

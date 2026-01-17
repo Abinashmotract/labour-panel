@@ -23,7 +23,7 @@ export default function Services() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const authToken = Cookies.get("token");
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const fetchAllUsers = async () => {
     try {
@@ -80,20 +80,62 @@ export default function Services() {
     fetchAllUsers();
   }, []);
 
-  const handleSearch = (e) => {
-    const value = e.target.value.toLowerCase();
+  const handleSearch = async (e) => {
+    const value = e.target.value;
     setSearchText(value);
 
     if (value === "") {
-      setFilteredUsers(allUsers);
+      fetchAllUsers();
     } else {
-      const filtered = allUsers.filter(
-        (user) =>
-          user.fullName.toLowerCase().includes(value) ||
-          user.email.toLowerCase().includes(value) ||
-          user.mobile.toLowerCase().includes(value)
-      );
-      setFilteredUsers(filtered);
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${API_BASE_URL}/user/contractor/search-labour`,
+          {
+            params: { search: value },
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+
+        const users = response?.data?.data || [];
+        setOriginalUsers(users);
+
+        const formattedData = users.map((user) => ({
+          id: user._id,
+          fullName:
+            `${user.firstName || ""} ${user.lastName || ""}`.trim() || "N/A",
+          email: user.email || "N/A",
+          mobile: user.phoneNumber || "N/A",
+          role: user.role || "N/A",
+          gender: user.gender || "N/A",
+          profilePicture: user.profilePicture || "",
+          createdAt: user.createdAt
+            ? new Date(user.createdAt).toLocaleDateString()
+            : "N/A",
+          isPhoneVerified: user.isPhoneVerified ? "Yes" : "No",
+          address: user.addressLine1 || "N/A",
+          workCategory: user.work_category || "N/A",
+          workExperience: user.work_experience || "N/A",
+          latitude:
+            user.location?.coordinates?.length > 1
+              ? user.location.coordinates[1]
+              : "N/A",
+          longitude:
+            user.location?.coordinates?.length > 0
+              ? user.location.coordinates[0]
+              : "N/A",
+        }));
+
+        setAllUsers(formattedData);
+        setFilteredUsers(formattedData);
+      } catch (error) {
+        console.error("Error searching users:", error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -108,14 +150,7 @@ export default function Services() {
   return (
     <Box>
       <Header title="All Labours" />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
-        }}
-      >
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2, }}>
         <Box
           display="flex"
           alignItems="center"

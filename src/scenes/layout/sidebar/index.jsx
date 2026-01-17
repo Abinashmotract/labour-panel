@@ -17,6 +17,8 @@ import {
   InventoryOutlined,
   Close,
   CalendarMonthOutlined,
+  CheckCircleOutlined,
+  AssignmentOutlined,
 } from "@mui/icons-material";
 import Item from "./Item";
 import { ToggledContext } from "../../../App";
@@ -57,6 +59,8 @@ const SideBar = () => {
     admin: [
       { title: t("nav.labourContractors"), path: "/labours", icon: <PeopleAltOutlined /> },
       { title: t("nav.skills"), path: "/skills", icon: <PeopleAltOutlined /> },
+      { title: t("nav.contractorAcceptances"), path: "/contractor-acceptances", icon: <CheckCircleOutlined /> },
+      { title: t("nav.jobAcceptedLabours"), path: "/contractor-job-acceptances", icon: <AssignmentOutlined /> },
     ],
     vendor: [
       { title: t("nav.jobPost"), path: "/job-post", icon: <InventoryOutlined /> },

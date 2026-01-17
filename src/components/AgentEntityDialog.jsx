@@ -99,11 +99,33 @@ const AgentEntityDialog = ({ open, handleClose, dialogTitle = "Add New User", in
   };
 
   const handleSubmit = async () => {
-    if (!formValues.firstName || !formValues.lastName ||
-      !formValues.email || !formValues.phoneNumber || !formValues.role) {
-      showCustomMessage("All fields are required");
+    // Validate required fields (email is optional)
+    if (!formValues.firstName || !formValues.firstName.trim()) {
+      showCustomMessage("First name is required");
       return;
     }
+    if (!formValues.lastName || !formValues.lastName.trim()) {
+      showCustomMessage("Last name is required");
+      return;
+    }
+    if (!formValues.phoneNumber || !formValues.phoneNumber.trim()) {
+      showCustomMessage("Phone number is required");
+      return;
+    }
+    if (!formValues.role) {
+      showCustomMessage("Role is required");
+      return;
+    }
+    
+    // Validate email format if provided (email is optional)
+    if (formValues.email && formValues.email.trim()) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formValues.email.trim())) {
+        showCustomMessage("Invalid email format");
+        return;
+      }
+    }
+    
     setLoading(true);
     try {
       const createRes = await axios.post(
@@ -157,37 +179,40 @@ const AgentEntityDialog = ({ open, handleClose, dialogTitle = "Add New User", in
         {otpStep === "details" && (
           <>
             <Box sx={{ mb: 2 }}>
-              <InputLabel>Role</InputLabel>
+              <InputLabel>Role <span style={{ color: "red" }}>*</span></InputLabel>
               <Select
                 fullWidth
                 value={formValues.role}
                 onChange={(e) => handleChange("role", e.target.value)}
               >
+                <MenuItem value="">Select Role</MenuItem>
                 <MenuItem value="labour">Labour</MenuItem>
                 <MenuItem value="contractor">Contractor</MenuItem>
               </Select>
             </Box>
             <Box sx={{ mb: 2 }}>
-              <InputLabel>First Name</InputLabel>
+              <InputLabel>First Name <span style={{ color: "red" }}>*</span></InputLabel>
               <Input
                 placeholder="Enter first name"
                 value={formValues.firstName}
                 onChange={(e) => handleChange("firstName", e.target.value)}
                 fullWidth
+                required
               />
             </Box>
             <Box sx={{ mb: 2 }}>
-              <InputLabel>Last Name</InputLabel>
+              <InputLabel>Last Name <span style={{ color: "red" }}>*</span></InputLabel>
               <Input
                 placeholder="Enter last name"
                 value={formValues.lastName}
                 onChange={(e) => handleChange("lastName", e.target.value)}
                 fullWidth
+                required
               />
             </Box>
             <Box sx={{ mb: 2 }}>
-              <InputLabel>Email</InputLabel>
-              <Input placeholder="Enter email" type="email" value={formValues.email} onChange={(e) => handleChange("email", e.target.value)} fullWidth />
+              <InputLabel>Email (Optional)</InputLabel>
+              <Input placeholder="Enter email (optional)" type="email" value={formValues.email} onChange={(e) => handleChange("email", e.target.value)} fullWidth />
             </Box>
           </>
         )}

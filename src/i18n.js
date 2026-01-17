@@ -10,12 +10,15 @@ i18n
   .use(initReactI18next)
   .init({
     supportedLngs: ['en','hi'],
-    fallbackLng: 'en',
+    fallbackLng: 'hi',
+    lng: 'hi',                  // Set default language to Hindi
     ns: ['translation'],
     defaultNS: 'translation',
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
-      caches: ['localStorage']
+      caches: ['localStorage'],
+      lookupLocalStorage: 'i18nextLng',
+      defaultLocale: 'hi'       // Default to Hindi if no language detected
     },
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json'

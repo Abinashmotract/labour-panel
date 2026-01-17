@@ -31,7 +31,22 @@
     "allSkills": "सभी कौशल",
     "addNewSkill": "नया कौशल जोड़ें",
     "searchSkill": "कौशल खोजें",
-    "contractorprofile": "ठेकेदार प्रोफ़ाइल"
+    "contractorprofile": "ठेकेदार प्रोफ़ाइल",
+    "contractorAcceptancesTitle": "मज़दूर अनुरोधों के लिए ठेकेदार स्वीकृतियां",
+    "contractorAcceptancesSubtitle": "देखें कि किन ठेकेदारों ने मज़दूर अनुरोध स्वीकार किए",
+    "contractorJobAcceptancesTitle": "ठेकेदार नौकरी पोस्ट - स्वीकृत मजदूर",
+    "contractorJobAcceptancesSubtitle": "ठेकेदार नौकरी पोस्ट के लिए स्वीकृत मजदूर देखें",
+    "labour": "मज़दूर",
+    "contractor": "ठेकेदार",
+    "jobTitle": "नौकरी शीर्षक",
+    "acceptedAt": "स्वीकृत समय",
+    "labourName": "मज़दूर नाम",
+    "email": "ईमेल",
+    "phone": "फोन",
+    "noContractorAcceptances": "कोई ठेकेदार स्वीकृति नहीं मिली",
+    "noJobAcceptances": "कोई ठेकेदार नौकरी स्वीकृति नहीं मिली",
+    "labours": "मजदूर",
+    "contractorLabel": "ठेकेदार"
   },
   "nav": {
     "labourContractors": "मज़दूर/ठेकेदार",
@@ -43,6 +58,8 @@
     "createJobPost": "नौकरी पोस्ट बनाएँ",
     "searchJobPosts": "नौकरी पोस्ट खोजें",
     "labour_availability":"श्रम उपलब्धता",
-    "available_labourers":"उपलब्ध मजदूर"
+    "available_labourers":"उपलब्ध मजदूर",
+    "contractorAcceptances": "ठेकेदार स्वीकृतियां",
+    "jobAcceptedLabours": "नौकरी स्वीकृत मजदूर"
   }
 }
